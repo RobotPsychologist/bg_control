@@ -63,9 +63,9 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 |Month | Milestones | 
 | :- | :-------------------- |
 |September | Hired a finalized team who want to work on this project |
-| October  | Team Onboarding, Diabetes Workshop, Time-Series + Causal Modeling Workshop, Github + MLOps Training, outline of modelling pipeline. |
-| November | EDA focuses on identifying meals from BG data, and the setup of our MLOps pipeline. |
-| December | EDA focus on meal-time scoring metrics, and evaluation of scoring functions in the MLOps pipeline. Writing a substack article summarizing the results of the various meal-time score metrics with visualizations. |
+| October  | Team Onboarding, Diabetes Workshop, Time-Series + Causal Modeling Workshop, Github + MLOps Training, outline of modeling pipeline. |
+| November | EDA focuses on identifying meals from BG data, and the setup of our MLOps pipelines. |
+| December | EDA focus on meal-time scoring metrics, and evaluation of scoring functions in the MLOps pipelines. Writing a substack article summarizing the results of the various meal-time score metrics with visualizations. |
 | January  | Extensive training runs for causal modelling and time series representation learning. |
 | February | Writing up results for publication, soliciting feedback from advisors, multiple drafts and editing. |
 | March    | Dissemination of results. |
@@ -79,13 +79,13 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 [Christopher Risi](https://www.linkedin.com/in/christopherrisi/) is a computer science PhD student at the University of Waterloo specializing in artificial intelligence. He works in the University of Waterloo's [Computational Health Informatics Lab (CHIL)](https://chil.uwaterloo.ca/) and as a Consultant, AI Research and Health Insights at [Gluroo Imaginations Inc](https://gluroo.com/). Christopher's research focuses on finding ways to utilize a wide variety of AI tools for easing and improving diabetes management. Christopher has Latent Autoimmune Diabetes of Adults (LADA) a subtype of T1D.
 
 
-#### Walker Payne
+#### Walker Payne :syringe: :droplet:
 
 #### Dvir Zagury-Grynbaum
 
 ### Core Members:
 
-#### TBD 1
+#### TBD 1 :syringe: :droplet:
 
 #### TBD 2
 
