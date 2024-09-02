@@ -38,17 +38,65 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 ### Interesting Papers
 
 #### 1. Diabetes Management
-- 
+##### Meal Identification / Anomaly Detection
+- [Data-Driven Blood Glucose Pattern Classification and Anomalies Detection: Machine-Learning Applications in Type 1 Diabetes](https://pubmed.ncbi.nlm.nih.gov/31042157/)
+- [Identification of the Optimal Meal Detection Strategy for Adults, Adolescents, and Children with Type 1 Diabetes: an in Silico Validation](https://ieeexplore.ieee.org/document/10197041)
+- [An LSTM-based Approach Towards Automated Meal Detection from Continuous Glucose Monitoring in Type 1 Diabetes Mellitus | IEEE Conference Publication](https://ieeexplore.ieee.org/document/9635246)
+- [Automated meal detection from continuous glucose monitor data through simulation and explanation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6857509/)
 #### 2. Time-Series Representation Learning
 - 
 #### 3. Causal Modelling
-- 
-## About Us
 
-### Christopher Risi
+
+## Project Timeline
+
+|Month | Milestones | 
+| - | :- |
+|September | Hired a finalized team who want to work on this project |
+| October | Team Onboarding, Diabetes Workshop, Time-Series + Causal Modeling Workshop, Github + MLOps Training, outline of modelling pipeline. |
+| November | EDA focuses on identifying meals from BG data, and the setup of our MLOps pipeline. |
+| December | EDA focus on meal-time scoring metrics, and evaluation of scoring functions in the MLOps pipeline. Writing a substack article summarizing the results of the various meal-time score metrics with visualizations. |
+| January | Extensive training runs for causal modelling and time series representation learning. |
+| February | Writing up results for publication, soliciting feedback from advisors, multiple drafts and editing. |
+| March | Dissemination of results. |
+| April | Project wrap-up, next steps and future work, celebration!
+|
+
+ 
+
+ 
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+
+## About Us - Short Bios
+
+### Technical Project Managers:
+#### Christopher Risi
 [Christopher Risi](https://www.linkedin.com/in/christopherrisi/) is a computer science PhD student at the University of Waterloo specializing in artificial intelligence. He works in the University of Waterloo's [Computational Health Informatics Lab (CHIL)](https://chil.uwaterloo.ca/) and as a Consultant, AI Research and Health Insights at [Gluroo Imaginations Inc](https://gluroo.com/). Christopher's research focuses on finding ways to utilize a wide variety of AI tools for easing and improving diabetes management. Christopher has Latent Autoimmune Diabetes of Adults (LADA) a subtype of T1D.
 
 
-### Walker Payne
+#### Walker Payne
 
-### Dvir Zagury-Grynbaum
+#### Dvir Zagury-Grynbaum
+
+### Core Members:
+
+#### TBD 1
+
+#### TBD 2
+
+#### TBD [...]
