@@ -2,20 +2,20 @@
 
 ## Causal Modeling and Time Series Representation Learning for Diabetes Management
 
-TPMs: [Christopher Risi](https://github.com/RobotPsychologist), [Walker Payne](https://github.com/walkerpayne), Dvir Zagury-Grynbaum
+TPMs: [Christopher Risi](https://github.com/RobotPsychologist), [Walker Payne](https://github.com/walkerpayne), [Dvir Zagury-Grynbaum](https://github.com/dvirzg).
 
-Gluroo aims to simplify diabetes management by streamlining the tracking of fitness, nutrition, and insulin use for people with diabetes (PWD). This project focuses on improving short-term prandial (meal-time) and postprandial blood glucose outcomes for people with type 1 diabetes, a complex disease that affects nearly 10 million people worldwide. We aim to leverage semi-supervised learning to identify unlabelled meals in time-series blood glucose data, develop meal-scoring functions, and explore causal machine-learning techniques. Our goal is to provide actionable insights to PWD and their care practitioners, enhancing health outcomes and quality of life.
+Gluroo aims to simplify diabetes management by streamlining the tracking of fitness, nutrition, and insulin use for People with Diabetes (PWD). This project focuses on improving short-term prandial (during meal-time) and postprandial blood glucose level outcomes for people with Type 1 Diabetes (T1D), a complex disease that affects nearly 10 million people worldwide. We aim to leverage semi-supervised learning to identify unlabelled meals in time-series blood glucose data, develop meal-scoring functions, and explore causal machine-learning techniques to suggest optimal treatments for user profiles. Our goal is to provide actionable insights to PWD and their care practitioners, enhancing health outcomes and quality of life.
 
 ## Project Goals
 
 1. **Meal Identification** develop the ability to identify unlabelled meals in time series BG data.
     - ***AI Topics:*** *Feature Engineering, Time Series Representation Learning*
 
-2. **Meal Scoring** develop the ability to score/evaluate T1D postprandial BGL characteristics to serve as a meal-scoring function. Find prandial measures that strongly correlate or predict long-term diabetic health indicators like [Time-in-Range (TIR)](https://jdrf.ca/resources/time-in-range/), [HbA1C%](https://www.breakthrought1d.org/news-and-updates/jdrf-report-how-hba1c-came-1976/), [Glucose Management Indicator](https://diabetesjournals.org/care/article/41/11/2275/36593/Glucose-Management-Indicator-GMI-A-New-Term-for), and [Glucose Variability (GV)](https://journals.lww.com/indjem/fulltext/2013/17040/glycemic_variability__clinical_implications.10.aspx).
+2. **Meal Scoring** develop the ability to score/evaluate T1D postprandial Blood Glucode Level (BGL) characteristics to serve as a meal-scoring function. Find prandial measures that strongly correlate or predict long-term diabetic health indicators like [Time-in-Range (TIR)](https://jdrf.ca/resources/time-in-range/), [HbA1C%](https://www.breakthrought1d.org/news-and-updates/jdrf-report-how-hba1c-came-1976/), [Glucose Management Indicator](https://diabetesjournals.org/care/article/41/11/2275/36593/Glucose-Management-Indicator-GMI-A-New-Term-for), and [Glucose Variability (GV)](https://journals.lww.com/indjem/fulltext/2013/17040/glycemic_variability__clinical_implications.10.aspx).
     - ***AI Topics:*** *Feature Engineering, Time Series Forecasting, Time Series Representation Learning*
-3. **Prandial Interventions and Counterfactuals** Develop and explore various causal machine learning techniques for reasoning about pre/postprandial interventions to improve meal scores (uplift modeling, intervention estimations). Develop the ability to provide hindsight (counterfactuals) to PWD that can offer coaching tools to diabetic care practitioners.
-Generate counterfactual suggestions as coaching tools for T1D management based on above data features. E.g. if you did $X$ during this meal, the glucose response curve would look like $Y$.
-    - ***AI Topics:*** *Time Series Forecasting + Causal Modeling.*
+3. **Prandial Interventions and Counterfactuals** develop and explore various causal machine learning techniques for estimating the effects of and suggesting pre/postprandial interventions to improve meal scores (uplift modeling, intervention estimations). Develop the ability to provide hindsight (counterfactuals) to PWD that provides interactive experimentation abilities to diabetic care practitioners. This helps PWD find their personalized best call of action to get intended health results, and help them experiment on different strategies and their direct effects.
+This is seen in counterfactual estimations as recommendations for better T1D management. E.g. if a user did $X$ during that meal, the glucose response curve would have looked like $Y$.
+    - ***AI Topics:*** *Time Series Causal Modelling, Causal Inference, Intervention and Counterfactual Estimation, Causal AI.*
 
 4. **Blood Glucose Controller** develop a simulated insulin BG-controller using [open source FDA approved blood glucose control simulators](https://github.com/jxx123/simglucose).
    -    ***AI Topics:*** *Representation Learning, Time Series Forecasting, Reinforcement Learning.*
@@ -48,7 +48,7 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 #### 3. Causal Modelling
 - [Causal Machine Learning: A Survey and Open Problems](https://arxiv.org/pdf/2206.15475)
-- [Causality - Judea Pearl ](https://bayes.cs.ucla.edu/BOOK-2K/)
+- [Causality - Judea Pearl ](https://bayes.cs.ucla.edu/BOOK-2K/) (Causal Inference textbook gold standard, long read).
 #### 4. Time Series + Causal Modeling
 - [Causal inference for time series analysis: problems, methods and evaluation
 ](https://link.springer.com/article/10.1007/s10115-021-01621-0)
@@ -82,7 +82,8 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 #### Walker Payne :syringe: :droplet:
 [Walker Payne](https://www.linkedin.com/in/walker-payne/) is a data scientist at [Gluroo](https://www.gluroo.com). He is also a type 1 diabetic, having been diagnosed nearly 15 years ago.
 
-#### Dvir Zagury-Grynbaum
+#### Dvir Zagury-Grynbaum :syringe: :droplet:
+[Dvir Zagury-Grynbaum](https://www.linkedin.com/in/dvirzagury/) is a mathematical physics undergraduate student at the University of Waterloo with research and application experience in causal inference and causal AI. He will bring his expertise to help answer questions standard ML tools have trouble with in finite data scenarios where Randomized Controlled Trials are not always possible, such as diabetes health data scenarios. 
 
 ### Core Members:
 
