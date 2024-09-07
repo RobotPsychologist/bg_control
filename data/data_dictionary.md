@@ -17,9 +17,9 @@ Example2: 2024-05-01 14:26:03.470000-05:00,1057.0,88.0,1714590328750.0,6gGlucose
 | affects_iob | | iob: insulin on board, the amount of insulin administered that the PWD has not yet absorbed. |
 | dose_units | | Number of units of insulin administered. |
 | food_g | | |
-| food_glycemic_index | |  |
+| food_glycemic_index | | The glycemic index of the carbohydrates. |
 | dose_automatic | | |
-| fp_bgl | | |
+| fp_bgl | | Finger prick blood glucose level. Sometimes, when the continuous glucose monitor (CGM) isn't working the PWD will take a blood glucose reading by stabbing their finger and measuring the sugar from the blood directly. |
 | message_basal_change | | Change in basal insulin dose. Basal insulin is the amount of baseline slow acting insulin the PWD takes each day. |
 | __typename | | |
 | trend | | the direction the blood glucose level is changing. |
