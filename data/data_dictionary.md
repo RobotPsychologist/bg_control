@@ -1,7 +1,7 @@
 # Data Dictionary
 
-2024-05-01 09:46:39.884000-05:00,1057.0,101.0,1714574729090.0,Dosed 4u,,DOSE_INSULIN,False,True,4.0,,,False,,,Message
-2024-05-01 14:26:03.470000-05:00,1057.0,88.0,1714590328750.0,6g Glucose,,INTERVENTION_SNACK,True,False,,6.0,1.0,False,,,Message,
+Example1: 2024-05-01 09:46:39.884000-05:00,1057.0,101.0,1714574729090.0,Dosed 4u,,DOSE_INSULIN,False,True,4.0,,,False,,,Message
+Example: 2024-05-01 14:26:03.470000-05:00,1057.0,88.0,1714590328750.0,6gGlucose,,INTERVENTION_SNACK,True,False,,6.0,1.0,False,,,Message,
 
 | Field Name | Datatype | Description |
 | -------- | ------- | ------- | 
