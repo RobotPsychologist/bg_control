@@ -2,9 +2,9 @@
 
 | Field Name | Datatype | Description |
 | -------- | ------- | ------- | 
-|  date | | |
-| sender_id | | | 
-| bgl | | |
+|  date | timeseries | time of blood glucose level |
+| sender_id | N/A | ignore | 
+| bgl |  | blood glucose level |
 | bgl_date_millis | | |
 | text | | |
 | template | | |
