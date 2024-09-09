@@ -92,7 +92,8 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 ### Core Members:
 
-#### TBD 1 :syringe: :droplet:
+#### Abdullah Shahid :syringe: :droplet:
+[Abdullah Shahid](https://www.linkedin.com/in/abdullahshahid247/) is a computer science undergraduate at the University of Waterloo. Diagnosed with Type 1 Diabetes nearly a decade ago, he has developed a diabetic lifestyle management app as a personal project in the past and has interned at companies like Lyft. He aims to leverage his experience to make life easier for diabetics around the world.
 
 #### TBD 2
 
