@@ -78,6 +78,7 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 
 ## About Us - Short Bios
+:syringe: :droplet: = T1D
 
 ### Technical Project Managers:
 #### Christopher Risi :syringe: :droplet:
@@ -87,7 +88,7 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 #### Walker Payne :syringe: :droplet:
 [Walker Payne](https://www.linkedin.com/in/walker-payne/) is a data scientist at [Gluroo](https://www.gluroo.com). He is also a type 1 diabetic, having been diagnosed nearly 15 years ago.
 
-#### Dvir Zagury-Grynbaum :syringe: :droplet:
+#### Dvir Zagury-Grynbaum
 [Dvir Zagury-Grynbaum](https://www.linkedin.com/in/dvirzagury/) is a mathematical physics undergraduate student at the University of Waterloo with research and application experience in causal inference and causal AI. He will bring his expertise to help answer questions standard ML tools have trouble with in finite data scenarios where Randomized Controlled Trials are not always possible, such as diabetes health data scenarios. 
 
 ### Core Members:
