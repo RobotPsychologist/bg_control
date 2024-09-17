@@ -99,3 +99,7 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 #### TBD 2
 
 #### TBD [...]
+
+
+### Stakeholder Members:
+Stakeholder members will be PWDs with much to contribute in the form of knowledge and lived experience but may not have the time or ability to contribute to development, coding, or writing.
