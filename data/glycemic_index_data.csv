@@ -1,0 +1,588 @@
+food_name,glycemic_index,glycemic_load,category
+Baguette (white),95,46.5,baked_products
+Baguette (whole grain),73,28.3,baked_products
+Bagel (wheat),70,35.4,baked_products
+Biscuit,70,34.0,baked_products
+Biscotti (dry cookies),70,35.0,baked_products
+Pancakes,66,16.6,baked_products
+Buckwheat pancakes,40,3.6,baked_products
+Brioche (bun),70,32.9,baked_products
+Bagels,70,48.1,baked_products
+Hamburger bun,61,30.1,baked_products
+Waffles,75,54.3,baked_products
+Crackers,80,10.0,baked_products
+Croissant,70,21.7,baked_products
+Flatbread,69,38.6,baked_products
+"Shortbread Cookies (Integral Flour, Sugar Free)",40,17.2,baked_products
+Shortbread,60,32.2,baked_products
+"Cookies (whole grain flour, sugar free)",50,23.4,baked_products
+Cookies (pastries),70,46.2,baked_products
+"Butter cookies (flour, butter, sugar)",55,29.1,baked_products
+Oatmeal cookies,55,39.5,baked_products
+Multi Grain Cookies,51,33.2,baked_products
+Banana pie,47,17.1,baked_products
+Pita,57,31.9,baked_products
+Pizza,60,19.8,baked_products
+Donuts,75,38.3,baked_products
+Bakery products (wheat),90,33.9,baked_products
+Wheat bread,70,34.3,baked_products
+Rye bread,65,31.2,baked_products
+Rice waffles,64,52.3,baked_products
+Rice biscuits,85,58.6,baked_products
+Rice cake,85,69.7,baked_products
+Straw,60,41.6,baked_products
+Rye crackers,64,44.8,baked_products
+"Sandwich bread, white",75,39.4,baked_products
+French baguette made from wheat flour,70,23.4,baked_products
+Bread (oatmeal),47,19.2,baked_products
+White bread “baguette”,70,36.0,baked_products
+Gluten free white bread,90,14.0,baked_products
+Buckwheat bread,50,22.9,baked_products
+Brown yeast bread,65,26.0,baked_products
+White flour bread,90,43.9,baked_products
+Wholemeal bread,65,31.2,baked_products
+Germinated bread,35,12.7,baked_products
+Wholemeal bread,40,15.9,baked_products
+Milk bread,60,29.9,baked_products
+Pumpernickel Bread,45,21.6,baked_products
+Rice Bread,70,48.0,baked_products
+Bran bread,65,29.4,baked_products
+Pumpkin bread,40,17.0,baked_products
+Fruit bread,47,24.4,baked_products
+Agave (syrup),15,11.4,beverages
+Pineapple Juice (unsweetened),50,6.8,beverages
+Orange juice (freshly squeezed and sugar free),45,4.8,beverages
+Grape Juice (unsweetened),45,6.9,beverages
+Grapefruit juice (unsweetened),45,2.7,beverages
+Coffee beans,50,0.1,beverages
+Cocoa Powder (Sugar Free),20,4.4,beverages
+Cranberry Juice (unsweetened),50,7.3,beverages
+Lemon juice (unsweetened),20,0.6,beverages
+Carrot Juice (unsweetened),40,2.6,beverages
+"Soft drinks (soda, cola)",60,6.0,beverages
+Beer,70,2.5,beverages
+Dry cider,40,11.6,beverages
+Pineapple juice (sugar free),50,6.4,beverages
+Grape juice (sugar free),55,9.3,beverages
+Grapefruit juice (sugar free),45,4.5,beverages
+Pear juice,50,5.5,beverages
+Cranberry juice (sugar free),50,7.3,beverages
+Red beet juice,64,0.0,beverages
+Tomato juice,35,1.5,beverages
+Apple juice (sugar free),50,5.7,beverages
+Orange juice,48,4.8,beverages
+Apple juice,41,4.5,beverages
+Sports drinks,75,2.9,beverages
+Chicory,15,0.6,beverages
+Chicory (drink),40,1.1,beverages
+Apple cider (brut),40,0.0,beverages
+Apple Juice (unsweetened),40,4.9,beverages
+"Vanilla ice cream (regular, with sugar)",60,14.4,dairy
+Yogurt,35,1.6,dairy
+Yogurt 1.5% natural,35,0.5,dairy
+Sweet yogurt,52,4.7,dairy
+Soy yogurt (natural),20,1.6,dairy
+Fruit yogurt,52,1.5,dairy
+Fat-free yogurt,33,2.5,dairy
+Kefir (1% fat),31,1.2,dairy
+Kefir (regular),36,1.4,dairy
+Kefir low-fat,25,0.0,dairy
+Goat milk,24,1.1,dairy
+Almond milk,30,3.9,dairy
+Milk,31,1.6,dairy
+Coconut Milk,40,1.1,dairy
+Natural milk,32,1.3,dairy
+Skim milk,27,0.1,dairy
+Oat milk (raw),69,3.5,dairy
+Rice Milk,85,5.5,dairy
+Soya milk,30,1.8,dairy
+Chocolate milk,34,3.7,dairy
+Skim milk,31,1.5,dairy
+Whole milk,34,1.6,dairy
+Ice cream,62,14.9,dairy
+Ice cream (with fructose),35,9.4,dairy
+Soya milk ice cream,35,6.0,dairy
+"Ice cream (skim, vanilla)",46,13.8,dairy
+Skim cheese,30,0.4,dairy
+Yogurt,32,1.3,dairy
+Cream,0,0.0,dairy
+Cream (18%),33,1.3,dairy
+Cream (30%),0,0.0,dairy
+Cream (10%),30,3.0,dairy
+Sour cream,0,0.0,dairy
+Sour cream (20%),56,11.2,dairy
+Soya cream,20,12.9,dairy
+"Cheese (Mozzarella, pressed cottage cheese, etc.)",0,0.0,dairy
+Processed cheese,57,15.4,dairy
+Tofu cheese,15,0.6,dairy
+Chees Feta,30,1.2,dairy
+Cottage cheese pancakes,70,8.4,dairy
+Cottage cheese,30,0.8,dairy
+Cottage cheese 9% fat,30,2.7,dairy
+Low-fat cottage cheese,30,0.3,dairy
+Curd,45,10.3,dairy
+Whole milk 3%,27,1.2,dairy
+Cheddar,0,0.0,dairy
+Hamburger,66,1.3,fast_foods
+Instant potatoes,87,66.1,fast_foods
+Potato chips,70,37.0,fast_foods
+French fries,75,22.6,fast_foods
+Chinese noodles,35,23.4,fast_foods
+Corn chips,63,28.8,fast_foods
+Instant noodles,52,29.5,fast_foods
+Popcorn,55,40.7,fast_foods
+"Chips, corn, salted",42,25.6,fast_foods
+Apricot,34,3.8,fruits
+Apricots (canned in syrup),60,12.9,fruits
+Quince (canned / jelly without sugar),40,3.8,fruits
+Quince (canned / jelly with sugar),65,7.2,fruits
+Quince (fresh fruit),35,3.4,fruits
+Cherry plum,25,0.0,fruits
+Pineapple,66,8.6,fruits
+Pineapple (canned in syrup),65,10.1,fruits
+Orange (fresh fruit),35,4.1,fruits
+Watermelon,75,5.6,fruits
+"Acerola, Barbados Cherry (fresh)",20,0.1,fruits
+Banana,48,10.1,fruits
+Dessert Banana (Green),45,15.7,fruits
+Dessert Banana (ripe),60,13.1,fruits
+Platano (raw),45,14.4,fruits
+Bananas (Dried),48,42.4,fruits
+"Grapes, green (raw)",45,5.4,fruits
+"Grapes, red (raw)",45,8.1,fruits
+Grapes,56,9.6,fruits
+"Grapes, black",59,11.0,fruits
+"Cherry (sweet, fresh)",25,4.0,fruits
+Blueberry,25,2.0,fruits
+Pomegranate (fresh),35,6.7,fruits
+Grapefruit,22,0.0,fruits
+Canned Grapefruit,47,4.3,fruits
+"Pomelo, sheddock (fresh)",25,2.0,fruits
+Pear (fresh fruit),30,4.7,fruits
+Melon pear (pepino),40,8.0,fruits
+Canned pears,55,8.6,fruits
+Pears (dried),43,26.9,fruits
+Melon,65,5.2,fruits
+Blackberry (fresh berry),25,2.5,fruits
+Yellow gooseberry,15,1.8,fruits
+Raisins,65,51.5,fruits
+Raisins (red and gold),65,46.8,fruits
+Fig (fresh),35,6.7,fruits
+Fig (dried),50,28.9,fruits
+Kiwi,50,7.3,fruits
+Strawberries (fresh berries),25,1.9,fruits
+Cranberries (fresh),45,5.5,fruits
+Dried apricots,35,21.2,fruits
+Lemon (Fresh Fruit),20,0.6,fruits
+Lychee (fresh fruit),50,7.6,fruits
+Lychee (canned syrup),79,14.8,fruits
+Raspberries (fresh berries),25,3.0,fruits
+Mango,56,8.4,fruits
+Mandarin,30,3.9,fruits
+Tangerine (canned),47,4.2,fruits
+Passion fruit,30,6.9,fruits
+Cloudberry (fresh berries),25,1.7,fruits
+Medlar japanese plum,55,5.7,fruits
+Nectarine (fresh fruit),35,4.1,fruits
+Sea buckthorn,30,0.8,fruits
+Prickly pear (fresh fruit),35,3.4,fruits
+Papaya (fresh),60,5.5,fruits
+"Pepino, melon pear",40,8.0,fruits
+Peach (canned in syrup),55,8.1,fruits
+Peach (fresh fruit),35,4.0,fruits
+Dried Peaches,35,20.2,fruits
+Platano (cooked),70,27.4,fruits
+Plantano (Raw),45,13.6,fruits
+Breadfruit,65,17.6,fruits
+Pomelo,30,3.0,fruits
+"Passion fruit, granadilla (fresh)",30,4.0,fruits
+Plums (fresh),35,3.9,fruits
+Red currant (fresh berry),25,1.9,fruits
+Black currant (fresh berry),15,1.1,fruits
+Dried fruits,60,49.8,fruits
+"Tangerines, tangerines, satsuma (fresh)",30,3.9,fruits
+Physalis,15,0.6,fruits
+Dates,70,48.4,fruits
+Dried dates,40,27.7,fruits
+"Persimmon, persimmon eastern (fresh)",50,7.7,fruits
+Sweet cherry,25,0.1,fruits
+Blueberries,53,4.0,fruits
+Prunes,40,25.6,fruits
+Dried apples,35,20.6,fruits
+An Apple,36,5.0,fruits
+Applesauce (unsweetened),35,4.0,fruits
+Goji berries,25,13.3,fruits
+Amaranth (analogue of popcorn),70,43.4,grains
+Amaranth seeds (unprepared),35,19.9,grains
+"White corn, sweet corn, frozen corn",55,10.4,grains
+Bulgur,55,10.2,grains
+Durum wheat vermicelli,35,8.1,grains
+Soy vermicelli,30,24.6,grains
+Buckwheat,50,22.0,grains
+Wild rice,45,33.8,grains
+Yellow corn,65,10.1,grains
+Grains (sprouted),15,6.2,grains
+Energy bar (sugar free),50,23.4,grains
+"Cereals, whole (sugar free)",45,27.3,grains
+"Kamut, Egyptian Wheat (cooked)",40,25.4,grains
+Capellini (pasta),45,32.9,grains
+Potato flour (starch),95,78.9,grains
+Buckwheat porridge,40,12.4,grains
+Cornmeal porridge (mamalyga),70,14.7,grains
+"Oatmeal porridge (crushed), oatmeal dishes",60,9.0,grains
+Millet porridge,70,18.9,grains
+Rice porridge with milk (with sugar),75,13.6,grains
+Quinoa (unprepared),40,22.8,grains
+Quinoa (cooked),35,7.3,grains
+Corn starch,85,72.3,grains
+Pearl barley (steamed),60,40.1,grains
+Barley groats,25,15.8,grains
+Сorn (canned),65,26.6,grains
+Fresh corn,35,1.8,grains
+Cornflakes,85,55.3,grains
+Couscous,60,12.0,grains
+Lasagna,47,7.0,grains
+Buckwheat noodles,59,41.6,grains
+Rice noodles,65,16.2,grains
+Udon noodles,62,8.5,grains
+Linen,35,9.7,grains
+Whole Wheat Pasta,40,10.6,grains
+Pasta,50,15.4,grains
+Pasta (from durum wheat),50,11.6,grains
+Buckwheat Pasta,40,28.4,grains
+"Macaroons, Coconut Flour",32,18.1,grains
+Durum wheat semolina,60,42.4,grains
+Matzo (white flour),70,58.8,grains
+Buckwheat flour,40,28.2,grains
+Wholemeal flour,60,33.5,grains
+Arroroot Flour,85,72.0,grains
+Kamut flour,45,32.4,grains
+Quinoa flour,40,22.9,grains
+Spelled flour,45,30.5,grains
+Chestnut flour,65,46.1,grains
+Corn flour,70,53.8,grains
+Chickpea flour,35,23.1,grains
+Peeled wheat flour (whole grain),65,44.8,grains
+Premium wheat flour,85,58.6,grains
+Whole grain rye flour,45,28.9,grains
+Rice flour,95,76.1,grains
+Soya flour,25,4.5,grains
+Muesli,56,31.6,grains
+Muesli (sugar free),50,23.6,grains
+Muesli (with sugar or honey),65,43.8,grains
+Gnocchi,70,14.0,grains
+"Oats, Hercules",59,36.0,grains
+Instant oats porridge,74,41.4,grains
+Oatmeal (cooked on the water),60,9.0,grains
+Oat flour,25,3.0,grains
+"Bran (wheat, oat)",15,6.8,grains
+Wholemeal Pasta,50,32.1,grains
+Whole grain pasta made by al dente,40,14.6,grains
+Corn pasta,68,46.4,grains
+Perlovka,25,18.4,grains
+Sunflower (seeds),35,7.0,grains
+Spelled wheat,40,24.5,grains
+Millet,70,51.1,grains
+Whole Grain Wheat,45,26.8,grains
+"Wheat flour, white (unenriched)",85,62.6,grains
+Wheat flakes,45,27.4,grains
+Rye flour (medium grinding),50,27.9,grains
+Rye flakes,45,37.2,grains
+Risotto,70,22.1,grains
+Flavored Rice,70,6.7,grains
+Basmati Rice,50,37.5,grains
+Unpeeled Basmati Rice,45,16.2,grains
+White rice standard,70,17.4,grains
+Instant rice,85,65.5,grains
+Wild rice (black),35,7.3,grains
+Long grain rice,60,46.8,grains
+Rice Jasmine,60,44.0,grains
+Sticky rice,90,18.9,grains
+Brown rice,50,36.5,grains
+Red rice,55,38.8,grains
+Rice flakes,80,61.6,grains
+Seeds (pumpkin),25,13.5,grains
+Chia Seeds (Dried),30,12.6,grains
+A mixture of refined cereals with sugar,70,16.2,grains
+Sorghum,70,46.5,grains
+Spaghetti (well cooked),55,12.8,grains
+Whole Grain Spaghetti,40,10.6,grains
+Spaghetti al dente,45,21.5,grains
+Spaghetti bolognese,52,9.9,grains
+Tagliatelle (well cooked),55,34.8,grains
+"Tortilla, White Corn",49,23.1,grains
+Fettuccine,32,21.6,grains
+Whole Grain (Rye),34,19.0,grains
+Yam,65,18.2,grains
+Barley porridge,70,46.1,grains
+Barley flour,30,16.8,grains
+White beans,35,21.4,greens
+White beans (boiled),33,8.3,greens
+Soybeans,15,4.5,greens
+"Beans, fava (raw)",40,7.2,greens
+"Peas (green, fresh)",35,4.5,greens
+"Peas (frozen, boiled)",51,4.6,greens
+Pea soup,60,3.7,greens
+Green peas (canned),45,2.9,greens
+Green peas,15,1.5,greens
+Orache,53,34.0,greens
+Lettuce (fresh),15,0.5,greens
+Onion (fresh),15,1.6,greens
+Leek,15,1.2,greens
+Shallot,15,2.5,greens
+Peeled peas (fresh),25,15.0,greens
+Mung Bean Mung,25,15.8,greens
+Chickpeas,10,6.1,greens
+Chickpeas (canned),35,6.8,greens
+Plain / Spotted Beans (Fresh),35,5.9,greens
+"Motley beans, borlotti, roman beans",35,12.4,greens
+Parsley,15,0.9,greens
+Parsley (cooked),52,3.3,greens
+Bamboo sprouts,20,1.0,greens
+Lentil sprouts,25,5.5,greens
+"Salad (“iceberg”, leaf, arugula, etc.)",15,0.3,greens
+Sweet corn,48,8.9,greens
+Boiled sweetcorn,60,13.5,greens
+Beetroot,15,0.6,greens
+"Celery (boiled, without salt)",85,4.0,greens
+Celery (fresh),15,0.3,greens
+Soybean,15,4.5,greens
+Asparagus,15,0.6,greens
+String Beans (Fresh),30,1.1,greens
+Tempeh,15,1.4,greens
+"Tofu, bean curd",15,0.1,greens
+Dill (fresh),25,1.6,greens
+Urad bean (steamed),43,27.1,greens
+"Falafel (from beans, fava)",40,8.4,greens
+Falafel (chickpea),65,28.1,greens
+Beans (cooked),80,17.2,greens
+Azuki Beans,35,22.0,greens
+White beans,35,22.4,greens
+Green beans,30,2.1,greens
+Red beans,35,18.4,greens
+Fennel,15,1.1,greens
+Hummus,25,3.5,greens
+Lentils (yellow),30,19.6,greens
+Lentils (green),25,12.5,greens
+Spinach,15,0.3,greens
+Sorrel,15,0.0,greens
+Endive,15,0.0,greens
+Mutton (Lamb),0,0.0,meat
+Boiled lamb,0,0.0,meat
+Beef Stroganoff,56,7.3,meat
+"Ham, sliced, sausages",0,0.0,meat
+"Beef (steak, etc.)",0,0.0,meat
+Boiled lean beef,0,0.0,meat
+Boiled beef tongue,0,0.0,meat
+Beef brains,0,0.0,meat
+Roast beef liver,50,0.0,meat
+Goose,0,0.0,meat
+Turkey,0,0.0,meat
+Turkey (boiled),0,0.0,meat
+Cooked sausage,34,9.5,meat
+Pork cutlets,50,9.8,meat
+Rabbit,0,0.0,meat
+Rabbit (fried),0,0.0,meat
+Boiled chicken breast,0,0.0,meat
+Chicken,0,0.0,meat
+Chicken (fried),0,0.0,meat
+Kidneys (braised),0,0.0,meat
+Fat,0,0.0,meat
+Sausages,30,0.6,meat
+Fried pork,0,0.0,meat
+Fat Pork,0,0.0,meat
+Grilled pork,0,0.0,meat
+Lean pork,0,0.0,meat
+Sausages,28,6.7,meat
+Veal,0,0.0,meat
+Boiled veal,0,0.0,meat
+Roast duck,0,0.0,meat
+Duck,0,0.0,meat
+"Foie gras, goose liver paste (canned)",0,0.0,meat
+Chickens,0,0.0,meat
+Mushrooms,15,0.8,mushrooms
+Mushrooms (cooked),36,1.9,mushrooms
+Peanut,15,2.4,nuts
+Peanuts (Dry Roasted),15,2.3,nuts
+White almond paste / puree (without sweeteners),35,16.7,nuts
+Walnuts,15,1.1,nuts
+Acorns,25,10.3,nuts
+Chestnut,60,26.5,nuts
+Pine nuts,15,2.9,nuts
+Cashew nuts,25,3.1,nuts
+Cashew nuts (salted),22,6.6,nuts
+Coconut,45,0.8,nuts
+Hazelnuts,25,2.5,nuts
+Almond,15,1.9,nuts
+Walnut,15,2.1,nuts
+Hazelnut,15,2.5,nuts
+Pine nuts,15,1.9,nuts
+Cashew nuts,15,4.5,nuts
+Nuts (mix with raisins),21,9.8,nuts
+Tamarind (sweet),65,40.8,nuts
+Pistachios,15,4.2,nuts
+Peanut Oil (Sugar Free),40,8.6,oil_and_sauces
+Goose fat,0,0.0,oil_and_sauces
+Fat (animal / vegetable),0,0.0,oil_and_sauces
+Coconut milk (raw),40,1.1,oil_and_sauces
+Mayonnaise (homemade),0,0.0,oil_and_sauces
+Mayonnaise (sweetened),60,0.2,oil_and_sauces
+Margarine,0,0.0,oil_and_sauces
+Butter,0,0.0,oil_and_sauces
+Almond oil,25,0.0,oil_and_sauces
+Olive oil,0,0.0,oil_and_sauces
+Pesto (sauce),15,0.9,oil_and_sauces
+Vegetable fat,0,0.0,oil_and_sauces
+Butter (high fat),14,0.1,oil_and_sauces
+Soy sauce,20,1.0,oil_and_sauces
+Mashed Tomato,35,3.1,oil_and_sauces
+"Tomato sauce (natural, sugar free)",35,1.3,oil_and_sauces
+Red caviar,0,0.0,seafood
+"Seafood (oysters, shrimp, mussels, etc.)",0,0.0,seafood
+"Crustaceans (lobster, crab, spiny lobster)",5,0.1,seafood
+"Fish (salmon, tuna, etc.)",0,0.0,seafood
+Surimi (minced fish in crab sticks),50,3.4,seafood
+Vegetable soup,40,2.5,soups
+Lentil soup puree,44,6.6,soups
+Vegetable soup,60,2.2,soups
+Soup with chicken and mushrooms,46,0.7,soups
+Tomato soup,38,2.7,soups
+Lentil soup,30,2.4,soups
+Basil,5,0.1,spices
+Balsamic vinegar,5,2.8,spices
+Vanilla,5,3.3,spices
+Mustard (with sugar),55,5.9,spices
+Dijon mustard,35,3.3,spices
+Ginger,15,0.6,spices
+Ketchup,55,14.0,spices
+Hemp seed (peeled),4,0.3,spices
+Cinnamon,5,2.9,spices
+Sesame,35,8.1,spices
+"Sesame paste, tahini",40,4.9,spices
+Sesame seed,35,4.3,spices
+Carob (carob powder),15,11.7,spices
+Lotus (root powder),33,4.1,spices
+Flaxseed,35,0.6,spices
+Lupine,15,6.1,spices
+Poppy seed,35,9.8,spices
+"Cassava (bitter, sweet)",55,20.9,spices
+Oregano,5,3.2,spices
+Spices (cinnamon),5,4.0,spices
+Caraway,5,0.6,spices
+Vinegar,15,0.0,spices
+Horseradish,10,1.1,spices
+Garlic,30,9.0,spices
+Peanut Butter (Sugar Free),25,7.0,sweets
+"Muesli Bar, Gluten Free",50,37.1,sweets
+White chocolate,44,26.0,sweets
+Glucose,96,94.1,sweets
+Glucose (Dextrose),100,95.0,sweets
+Jam,51,47.5,sweets
+Maple syrup,55,36.9,sweets
+Strawberry Jam (High Sugar),65,45.5,sweets
+Strawberry Jam (Low Sugar),51,31.1,sweets
+Coconut Sugar,35,1.8,sweets
+Chocolate candy with sweeteners,23,8.2,sweets
+Corn Syrup (Dark),115,89.2,sweets
+Marmalade (sugar free),30,22.2,sweets
+Marmalade with sugar,65,49.8,sweets
+Honey,60,45.8,sweets
+Molasses,70,52.5,sweets
+Almond paste (sugar free),35,15.1,sweets
+Condensed milk with sugar,80,6.8,sweets
+Milk chocolate,49,28.9,sweets
+Syrup,70,54.8,sweets
+Chocolate bar (with sugar),70,38.1,sweets
+Air rice (analogue of popcorn),85,76.3,sweets
+Sugar,58,58.0,sweets
+Brown sugar,70,68.6,sweets
+Condensed milk,61,32.9,sweets
+Glucose syrup,100,70.5,sweets
+Maple syrup,65,43.5,sweets
+Corn syrup,15,11.7,sweets
+Wheat syrup,100,78.0,sweets
+Rice Syrup,100,77.0,sweets
+Chicory Syrup,55,5.2,sweets
+Sorbet (sugar free),40,4.8,sweets
+Sorbet (with sugar),65,17.9,sweets
+Stevia,0,0.0,sweets
+Fruit Bar (strawberry),90,60.8,sweets
+Fructose,20,20.0,sweets
+Dark Chocolate (with 85% Cocoa Content),20,9.6,sweets
+Sorbet,65,52.5,sweets
+Chocolate,49,29.9,sweets
+Chocolate (+ 70% cocoa),25,9.0,sweets
+Dark chocolate,23,13.8,sweets
+Chocolate powder with sugar,60,19.1,sweets
+Sherbet,50,27.6,sweets
+Avocado,10,0.9,vegetables
+Artichoke,20,1.2,vegetables
+Eggplant,20,1.7,vegetables
+Eggplant Caviar,40,5.3,vegetables
+"Sweet potato (batata, yam)",70,11.1,vegetables
+Broccoli,15,0.5,vegetables
+Broccoli (cooked),45,3.1,vegetables
+"Rutabaga, fodder beets",70,6.1,vegetables
+Brussels sprouts (fresh),15,1.1,vegetables
+Boiled potatoes,70,12.3,vegetables
+Baked potato,95,20.0,vegetables
+Squash caviar,75,3.6,vegetables
+Squash,15,0.7,vegetables
+Capers,20,0.8,vegetables
+White cabbage,15,0.9,vegetables
+Brussels sprouts,15,0.3,vegetables
+Sauerkraut,15,0.8,vegetables
+Cauliflower,15,0.8,vegetables
+Fried potato,95,19.1,vegetables
+Mashed potatoes,83,11.4,vegetables
+Kohlrabi,20,2.1,vegetables
+Pickled Cucumber,15,0.7,vegetables
+Black olives,15,4.8,vegetables
+Carrot (cooked),85,4.3,vegetables
+Carrot (fresh),30,2.0,vegetables
+Canned vegetables (factory),65,3.4,vegetables
+Cucumber,15,0.4,vegetables
+Dill pickles,15,0.2,vegetables
+Olives,15,0.9,vegetables
+Parsnip,85,15.3,vegetables
+Chinese cabbage,20,0.4,vegetables
+Sweet pepper,15,0.8,vegetables
+Chilli,15,1.4,vegetables
+Chilli Green (Fresh),15,1.2,vegetables
+Tomatoes (fresh),30,1.1,vegetables
+Ratatouille,20,1.0,vegetables
+Rhubarb,15,0.4,vegetables
+Radish,15,0.5,vegetables
+"Turnip (cooked, boiled)",85,3.9,vegetables
+Turnip (raw),30,1.9,vegetables
+Beets (Boiled),65,7.0,vegetables
+Beetroot (fresh),30,2.6,vegetables
+Scorzonera (Kozelec),30,0.3,vegetables
+"Sweet pepper (red, green), paprika",15,1.0,vegetables
+Salted cucumbers,15,0.3,vegetables
+Tomatoes,30,1.1,vegetables
+Tomatoes (dried),35,10.2,vegetables
+Jerusalem artichoke (fresh),50,6.4,vegetables
+"Turnip, turnip (fresh)",30,1.8,vegetables
+Pumpkin,65,4.5,vegetables
+Pumpkin (boiled),75,5.3,vegetables
+Cauliflower (fresh),15,0.8,vegetables
+Braised Cauliflower,15,0.0,vegetables
+Zucchini,15,0.5,vegetables
+"Chayote (Mexican cucumber), mashed from it",50,2.3,vegetables
+Yeast,35,6.3,others
+Brewer’s yeast,35,0.0,others
+Maltodextrin,95,94.0,others
+Palm pulp,20,1.2,others
+Omelette,49,7.3,others
+Dumplings,86,24.9,others
+Ravioli (from soft wheat),70,20.8,others
+Ravioli (from durum wheat),40,11.6,others
+Sushi,55,11.6,others
+"Sushi, salmon",48,7.3,others
+Tacos,70,14.0,others
+Tapioca (dried),85,74.6,others
+Taro,48,12.7,others
+Tahin,40,8.4,others
+Egg powder,60,2.7,others
+Egg,0,0.0,others
