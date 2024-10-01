@@ -21,6 +21,9 @@ Gluroo aims to simplify diabetes management by streamlining the tracking of fitn
 4. **Blood Glucose Controller** develop a simulated insulin BG-controller using [open source FDA approved blood glucose control simulators](https://github.com/jxx123/simglucose).
    - **_AI Topics:_** _Representation Learning, Time Series Forecasting, Reinforcement Learning._
 
+5. **Long-range hypoglycemic forecasting** -
+
+
 ## Background
 
 Diabetes requires a unique way of living. For most, to successfully manage the disease and avoid its long-term adverse effects, you must have detailed fitness and nutrition tracking, not unlike professional athletes or bodybuilders, but with the added complication of knowing how and when to administer insulin. Some can get away without detailed monitoring if they are highly habitual. For most, that’s an undesirable restriction, but where a Person with Diabetes (PWD) falls on that scale is a trade-off that depends on the individual.
@@ -64,6 +67,7 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 - [Causal inference for time series](https://www.nature.com/articles/s43017-023-00431-y)
 - [A Survey of Deep Causal Models and Their Industrial Applications](https://arxiv.org/pdf/2209.08860)
 - [Causal Inference with Time-Series Cross-Sectional Data: A Reflection](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3979613)
+
 
 ## Project Timeline
 
