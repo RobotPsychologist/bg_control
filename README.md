@@ -21,7 +21,7 @@ Gluroo aims to simplify diabetes management by streamlining the tracking of fitn
 4. **Blood Glucose Controller** develop a simulated insulin BG-controller using [open source FDA approved blood glucose control simulators](https://github.com/jxx123/simglucose).
    - **_AI Topics:_** _Representation Learning, Time Series Forecasting, Reinforcement Learning._
 
-5. **Long-range hypoglycemic forecasting** -
+5. **Long-range hypoglycemic forecasting** one of the most distressing aspects of living with T1D is the anxiety and fear surrounding [Dead in Bed (DIB) syndrome](https://www.thieme-connect.com/products/ejournals/pdf/10.4103/2321-0656.140880.pdf). Our goal with this project is to provide T1Ds with a long-range glycemic sleep forecast. Strong, practical, and useable results in this space would [significantly impact the diabetes community in relieving diabetes distress](https://journals.sagepub.com/doi/full/10.1177/19322968241267886). 
 
 
 ## Background
