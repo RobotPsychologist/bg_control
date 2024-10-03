@@ -10,3 +10,4 @@ This is not the finalized file, but you can get started with these tasks.
 6. A brief description of your background on the README page. No need to put your full name if you aren't comfortable with that. But it's a good place to draw attention to your professional websites and socials. 
    1. **If you have T1D, it's helpful if you put :syringe: :droplet: beside your name.** so other members know where to go for T1D specific questions and insights.
    2. **If you've lived with someone for a long period of time who has T1D it's helpful if you put 🧑‍⚕️🍭 beside your name.** so other members know where the can ask questions about caring for T1Ds.
+7. If you are one of our less experienced developers I highly recommend taking this online winter course from MIT [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/)
