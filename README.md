@@ -1,4 +1,4 @@
-# Blood Glucose Control with Wat.ai and Gluroo
+# Blood Glucose Control with [WAT.ai](https://watai.ca/) and [Gluroo Imaginations Inc](https://gluroo.com/).
 
 ## Causal Modeling and Time Series Representation Learning for Diabetes Management
 
