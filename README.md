@@ -73,7 +73,7 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 #### 6. Nocturnal Hypoglycemic Forecasting
 - [Fear of Hypoglycemia and Diabetes Distress: Expected Reduction by Glucose Prediction](https://journals.sagepub.com/doi/full/10.1177/19322968241267886)
-
+- [Deep Multi-Output Forecasting: Learning to Accurately Predict Blood Glucose Trajectories](https://dl.acm.org/doi/abs/10.1145/3219819.3220102)
 
 ## Project Timeline
 
