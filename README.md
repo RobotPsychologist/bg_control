@@ -68,7 +68,10 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 - [A Survey of Deep Causal Models and Their Industrial Applications](https://arxiv.org/pdf/2209.08860)
 - [Causal Inference with Time-Series Cross-Sectional Data: A Reflection](https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3979613)
 
-#### 5. Nocturnal Hypoglycemic Forecasting
+#### 5. Reinforcement Learning for Blood Glucose Control
+- [Deep Reinforcement Learning for Closed-Loop Blood Glucose Control](http://proceedings.mlr.press/v126/fox20a/fox20a.pdf)
+
+#### 6. Nocturnal Hypoglycemic Forecasting
 - [Fear of Hypoglycemia and Diabetes Distress: Expected Reduction by Glucose Prediction](https://journals.sagepub.com/doi/full/10.1177/19322968241267886)
 
 
