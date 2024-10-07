@@ -12,7 +12,7 @@ Gluroo aims to simplify diabetes management by streamlining the tracking of fitn
 
 1. **Meal Identification** develop the ability to identify unlabelled meals in time series BG data.
 
-   - **_AI Topics:_** _Feature Engineering, Time Series Representation Learning_
+   - **_AI Topics:_** _Feature Engineering, Time Series Annotation, Time Series Representation Learning_
 
 2. **Meal Scoring** develop the ability to score/evaluate T1D postprandial Blood Glucode Level (BGL) characteristics to serve as a meal-scoring function. Find prandial measures that strongly correlate or predict long-term diabetic health indicators like [Time-in-Range (TIR)](https://jdrf.ca/resources/time-in-range/), [HbA1C%](https://www.breakthrought1d.org/news-and-updates/jdrf-report-how-hba1c-came-1976/), [Glucose Management Indicator](https://diabetesjournals.org/care/article/41/11/2275/36593/Glucose-Management-Indicator-GMI-A-New-Term-for), and [Glucose Variability (GV)](https://journals.lww.com/indjem/fulltext/2013/17040/glycemic_variability__clinical_implications.10.aspx).
    - **_AI Topics:_** _Feature Engineering, Time Series Forecasting, Time Series Representation Learning_
