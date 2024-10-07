@@ -76,6 +76,10 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 - [Fear of Hypoglycemia and Diabetes Distress: Expected Reduction by Glucose Prediction](https://journals.sagepub.com/doi/full/10.1177/19322968241267886)
 - [Deep Multi-Output Forecasting: Learning to Accurately Predict Blood Glucose Trajectories](https://dl.acm.org/doi/abs/10.1145/3219819.3220102)
 
+#### 6. Video Tutorials
+- [Franz Kiraly: sktime - python toolbox for time series: advanced forecasting](https://www.youtube.com/watch?v=4Rf9euAhjNc)
+
+
 ## Project Timeline
 
 | Month | Milestones |
