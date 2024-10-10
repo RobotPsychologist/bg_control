@@ -242,7 +242,55 @@ def anton_r(df):
     graph_foods([df_pat1_foods, df_pat2_foods])
     return None
 
-def gavin_k():
+def gavin_k(df):
+    df['date_original'] = pd.to_datetime(df['date_original'], errors='coerce')
+    df['hour'] = df['date_original'].dt.hour
+    df['day_of_week'] = df['date_original'].dt.dayofweek
+    df['week'] = df['date_original'].dt.isocalendar().week
+    df['day'] = df['date_original'].dt.date
+
+    # Remove rows with NaN or invalid blood glucose levels (i.e. negative or NaN values in bgl)
+    df_clean = df.dropna(subset=['bgl']).loc[df['bgl'] > 0].copy()
+
+    # Drop any irrelevant columns
+    columns_to_drop = ['sender_id', 'bgl_date_millis', 'text', 'template', 'msg_type',
+                    'affects_fob', 'affects_iob', 'dose_units', 'food_g', 'food_glycemic_index',
+                    'dose_automatic', 'fp_bgl', 'message_basal_change', '__typename', 'trend']
+
+    df_clean.drop(columns=columns_to_drop, inplace=True)
+    df = df_clean
+    # Plot 1: Heatmap of Blood Glucose by Hour and Day of the Week
+    plt.figure(figsize=(12, 8))
+    heatmap_data = df.pivot_table(index='hour', columns='day_of_week', values='bgl', aggfunc='median')
+    sns.heatmap(heatmap_data, cmap='coolwarm', annot=True, fmt='.1f', linewidths=.5)
+    plt.title('Hourly Glucose Heatmap')
+    plt.xlabel('Day of the Week (0=Monday, 6=Sunday)')
+    plt.ylabel('Hour of the Day')
+    plt.show()
+
+    # Plot 2: Boxplot of Blood Glucose Levels by Hour
+    plt.figure(figsize=(14, 8))
+    plt.boxplot([df[df['hour'] == hour]['bgl'] for hour in range(24)], positions=range(24))
+    plt.title('Boxplot of Blood Glucose Levels by Hour')
+    plt.xlabel('Hour of Day')
+    plt.ylabel('Blood Glucose Level (mg/dL)')
+    plt.grid(True)
+    plt.axhline(y=180, color='red', linestyle='--', label='Hyperglycemia Threshold')
+    plt.axhline(y=70, color='green', linestyle='--', label='Hypoglycemia Threshold')
+    plt.legend()
+    plt.show()
+
+    # Plot 3: Blood Glucose Distribution with KDE
+    plt.figure(figsize=(12, 8))
+    sns.histplot(df['bgl'], kde=True, bins=30, color='skyblue', edgecolor='black')
+    plt.title('Blood Glucose Distribution with KDE')
+    plt.xlabel('Blood Glucose Level (mg/dL)')
+    plt.ylabel('Density')
+    plt.grid(True)
+    plt.axvline(x=180, color='red', linestyle='--', label='Hyperglycemia Threshold')
+    plt.axvline(x=70, color='green', linestyle='--', label='Hypoglycemia Threshold')
+    plt.legend()
+    plt.show()
 
     return None
 
