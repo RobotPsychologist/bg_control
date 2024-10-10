@@ -4,6 +4,7 @@ import seaborn as sns
 import seaborn.objects as so
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+import matplotlib.patches as mpatches
 import numpy as np
 
 
@@ -192,6 +193,7 @@ def anton_r(df):
         sns.despine(fig)
 
         ax1 = fig.add_subplot(gs[0, 0])
+        ax1.grid(True, which='major', linestyle='--', linewidth='0.5', color='black')
         top_10_pwd_0 = PWD[0].iloc[PWD[0]['Count'].nlargest(n=10).index]
         sns.barplot(ax=ax1, x=top_10_pwd_0["Food"], y=top_10_pwd_0["Count"], hue=top_10_pwd_0["Health_Status"])
         ax1.tick_params(axis='x', labelrotation=60)
@@ -200,6 +202,7 @@ def anton_r(df):
         ax1.set_title(f"Patient #{patient_ids[0]}")
 
         ax2 = fig.add_subplot(gs[0, 1])
+        ax2.grid(True, which='major', linestyle='--', linewidth='0.5', color='black')
         top_10_pwd_1 = PWD[1].iloc[PWD[1]['Count'].nlargest(n=10).index]
         sns.barplot(ax = ax2, x = top_10_pwd_1["Food"], y = top_10_pwd_1["Count"], hue = top_10_pwd_1["Health_Status"])
         ax2.tick_params(axis='x', labelrotation=60)
@@ -208,29 +211,39 @@ def anton_r(df):
         ax2.set_title(f"Patient #{patient_ids[1]}")
 
         ax3 = fig.add_subplot(gs[1, :])
-        # fix this tomorrow : https://python-graph-gallery.com/stacked-and-percent-stacked-barplot/
+        ax3.grid(True, which='major', linestyle='--', linewidth='0.5', color='black')
+        ax3.set_ylabel("Percent Healthy Food")
         health_summary_pwd_0 = PWD[0].groupby(by = "Health_Status")["Count"].sum().reset_index()
         health_summary_pwd_0["Patient"] = patient_ids[0]
         health_summary_pwd_1 = PWD[1].groupby(by = "Health_Status")["Count"].sum().reset_index()
         health_summary_pwd_1["Patient"] = patient_ids[1]
         health_summary = pd.concat([health_summary_pwd_0, health_summary_pwd_1])
-        print(health_summary)
+        total = health_summary.groupby('Patient')['Count'].sum().reset_index()
+        unhealthy = health_summary[health_summary.Health_Status == "unhealthy"].groupby('Patient')["Count"].sum().reset_index()
+
+        unhealthy['Count'] = [i / j * 100 for i,j in zip(unhealthy['Count'], total['Count'])]
+        total['Count'] = [i / j * 100 for i,j in zip(total['Count'], total['Count'])]
 
         # bar chart 1 -> top bars (group of 'smoker=No')
-        bar1 = sns.barplot(x="Patient",  y="total_bill", data=health_summary_pwd_0, color='darkblue')
+        bar1 = sns.barplot(x="Patient",  y="Count", data=total, color='#1f77b4')
 
         # bar chart 2 -> bottom bars (group of 'smoker=Yes')
-        bar2 = sns.barplot(x="Patient", y="total_bill", data=health_summary_pwd_1, color='lightblue')
+        bar2 = sns.barplot(x="Patient", y="Count", data=unhealthy, color='darkorange')
+
         # add legend
-        top_bar = mpatches.Patch(color='darkblue', label='smoker = No')
-        bottom_bar = mpatches.Patch(color='lightblue', label='smoker = Yes')
+        top_bar = mpatches.Patch(color='#1f77b4', label='Unhealthy = No')
+        bottom_bar = mpatches.Patch(color='darkorange', label='Unhealthy = Yes')
         plt.legend(handles=[top_bar, bottom_bar])
 
+        # show the graph
+        plt.tight_layout()
+        plt.show()
 
     graph_foods([df_pat1_foods, df_pat2_foods])
     return None
 
 def gavin_k():
+
     return None
 
 
