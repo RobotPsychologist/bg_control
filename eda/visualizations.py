@@ -75,7 +75,159 @@ def andrew_y(df):
 
     return None
 
-def anton_r():
+def anton_r(df):
+    all_food = df[(df["msg_type"] == "ANNOUNCE_MEAL")]["text"].str.cat(sep=' ').lower()
+    foods = {
+    'Cappuccino': 'healthy',
+    'Eggs': 'healthy',
+    'Toast': 'unhealthy',
+    'Mandarin': 'healthy',
+    'Wasa': 'healthy',
+    'Nutella': 'unhealthy',
+    'RX Bar': 'healthy',
+    'Chick-fil-A salad': 'healthy',
+    'Nuggets': 'unhealthy',
+    'Chips': 'unhealthy',
+    'Taffy': 'unhealthy',
+    'Coffee creamer': 'unhealthy',
+    'Sandwich': 'unhealthy',
+    'Chocolate': 'unhealthy',
+    'Ice cream': 'unhealthy',
+    'Bar': 'unhealthy',
+    'Crackers': 'unhealthy',
+    'Burrito': 'unhealthy',
+    'Quiche': 'unhealthy',
+    'Pastries': 'unhealthy',
+    'Gyro bowl': 'unhealthy',
+    'Basmati rice': 'healthy',
+    'Graham crackers': 'unhealthy',
+    'Salad': 'healthy',
+    'Beer': 'unhealthy',
+    'Mac n cheese': 'unhealthy',
+    'Breakfast burrito': 'unhealthy',
+    'Cafe au lait': 'healthy',
+    'Bread': 'unhealthy',
+    'Soup': 'healthy',
+    'Omelette': 'healthy',
+    'Strawberries': 'healthy',
+    'Latte': 'healthy',
+    'Taco Bell': 'unhealthy',
+    'Salmon': 'healthy',
+    'Pineapple': 'healthy',
+    'Waffle': 'unhealthy',
+    'Blueberries': 'healthy',
+    'M&Ms': 'unhealthy',
+    'Trail mix': 'healthy',
+    'Sweet potato fries': 'healthy',
+    'Yogurt bowl': 'healthy',
+    'Berries': 'healthy',
+    'Walnuts': 'healthy',
+    'Chicken tenders': 'unhealthy',
+    'Broccoli': 'healthy',
+    'Pie': 'unhealthy',
+    'Pastry': 'unhealthy',
+    'Mochas': 'healthy',
+    'Guacamole': 'healthy',
+    'Beef': 'healthy',
+    'Rice': 'unhealthy',
+    'Pad Thai': 'unhealthy',
+    'Taco': 'unhealthy',
+    'Popcorn': 'unhealthy',
+    'Meatballs': 'healthy',
+    'Pizza': 'unhealthy',
+    'Caesar salad': 'healthy',
+    'Chicken biscuit': 'unhealthy',
+    'English muffin': 'unhealthy',
+    'Ham': 'unhealthy',
+    'Pancake': 'unhealthy',
+    'Coconut cream pie': 'unhealthy',
+    'Gelato': 'unhealthy',
+    'French fries': 'unhealthy',
+    'Risotto': 'unhealthy',
+    'Fajitas': 'unhealthy',
+    'Cookies': 'unhealthy',
+    'Brownie': 'unhealthy',
+    'Ribs': 'unhealthy',
+    'Sausage': 'unhealthy',
+    'Avocado': 'healthy',
+    'Frittata': 'healthy',
+    'Corn tortilla': 'healthy',
+    'Samosa': 'unhealthy',
+    'Quesadilla': 'unhealthy',
+    'Chicken shawarma': 'unhealthy',
+    'Granola': 'healthy',
+    'Macadamia nuts': 'healthy',
+    'Beef Gozleme': 'unhealthy',
+    'Coconut curry soup': 'healthy',
+    'Fried chicken': 'unhealthy',
+    'Tacos': 'unhealthy',
+    'Sushi': 'healthy',
+    'Almond butter': 'healthy',
+    'Pita': 'unhealthy',
+    'Chocolate mousse': 'unhealthy'
+    }
+
+    foods = pd.DataFrame(list(foods.items()), columns=['Food', 'Health_Status']) #convert dictionary above into df
+
+    foods["Food"] = foods["Food"].apply(lambda x: x.lower()) #and lowercase everything
+
+    def food_freq(df, foods):
+        loc_foods = foods.copy() #not the cleanest way to go around the problem of passing data by reference, but it works
+        all_food = df[(df["msg_type"] == "ANNOUNCE_MEAL")]["text"].str.cat(sep=' ').lower()
+
+        loc_foods["Count"] = 0
+
+        for iter, i in enumerate(loc_foods["Food"]): #count the number of times each food appears in the patient data
+            loc_foods.loc[iter, "Count"] = all_food.count(i)
+
+        return loc_foods
+
+    df_pat1_foods = food_freq(df[df['patient_id']==500030], foods)
+    df_pat2_foods = food_freq(df[df['patient_id']==679372], foods)
+    patient_ids = ['500030', '679372']
+
+    def graph_foods(PWD, patient_ids=patient_ids):
+        fig = plt.figure(figsize=(16, 9))
+        gs = GridSpec(2, 2, figure=fig)
+        sns.despine(fig)
+
+        ax1 = fig.add_subplot(gs[0, 0])
+        top_10_pwd_0 = PWD[0].iloc[PWD[0]['Count'].nlargest(n=10).index]
+        sns.barplot(ax=ax1, x=top_10_pwd_0["Food"], y=top_10_pwd_0["Count"], hue=top_10_pwd_0["Health_Status"])
+        ax1.tick_params(axis='x', labelrotation=60)
+        ax1.set_xlabel("")
+        ax1.set_ylabel("Food Consumption Count")
+        ax1.set_title(f"Patient #{patient_ids[0]}")
+
+        ax2 = fig.add_subplot(gs[0, 1])
+        top_10_pwd_1 = PWD[1].iloc[PWD[1]['Count'].nlargest(n=10).index]
+        sns.barplot(ax = ax2, x = top_10_pwd_1["Food"], y = top_10_pwd_1["Count"], hue = top_10_pwd_1["Health_Status"])
+        ax2.tick_params(axis='x', labelrotation=60)
+        ax2.set_xlabel("")
+        ax2.set_ylabel("Food Consumption Count")
+        ax2.set_title(f"Patient #{patient_ids[1]}")
+
+        ax3 = fig.add_subplot(gs[1, :])
+        # fix this tomorrow : https://python-graph-gallery.com/stacked-and-percent-stacked-barplot/
+        health_summary_pwd_0 = PWD[0].groupby(by = "Health_Status")["Count"].sum().reset_index()
+        health_summary_pwd_0["Patient"] = patient_ids[0]
+        health_summary_pwd_1 = PWD[1].groupby(by = "Health_Status")["Count"].sum().reset_index()
+        health_summary_pwd_1["Patient"] = patient_ids[1]
+        health_summary = pd.concat([health_summary_pwd_0, health_summary_pwd_1])
+        print(health_summary)
+
+        # bar chart 1 -> top bars (group of 'smoker=No')
+        bar1 = sns.barplot(x="Patient",  y="total_bill", data=health_summary_pwd_0, color='darkblue')
+
+        # bar chart 2 -> bottom bars (group of 'smoker=Yes')
+        bar2 = sns.barplot(x="Patient", y="total_bill", data=health_summary_pwd_1, color='lightblue')
+        # add legend
+        top_bar = mpatches.Patch(color='darkblue', label='smoker = No')
+        bottom_bar = mpatches.Patch(color='lightblue', label='smoker = Yes')
+        plt.legend(handles=[top_bar, bottom_bar])
+
+
+    graph_foods([df_pat1_foods, df_pat2_foods])
     return None
 
 def gavin_k():
