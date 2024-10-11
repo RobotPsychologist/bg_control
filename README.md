@@ -121,6 +121,9 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 [Andrew Yang](https://www.linkedin.com/in/andrewatyang/) is Big Mac on Discord.
 
+#### Safiya Makada 🧑‍⚕️🍭
+[Safiya Makada](https://www.linkedin.com/in/safiya-makada/) is a software engineering undergraduate student at the University of Waterloo. She has previous experience as a Machine Learning Engineer Intern in a startup, and has a passion for making technologies that improve health outcomes. Having lived with a type 1 diabetic for 8 years and having work experience with a diabetes nonprofit, she has seen first hand how technology can save lives.
+
 #### TBD [...]
 
 ### Stakeholder Members:
