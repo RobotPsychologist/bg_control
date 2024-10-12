@@ -136,8 +136,9 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 #### Gavin Katz
 [Gavin Katz](https://www.linkedin.com/in/gavin-katz-89990321b/) is a biomedical engineering undergraduate student at the University of Waterloo. He has previous experience working in software development at biotech startups, leveraging his knowledge of ML to create predictive models that assist in the diagnosis of congenital heart disease. He is currently interning at a data analytics firm in Toronto, and is excited to learn about what approches can be taken to improve the lives of those living with diabetes.    
 
-
 #### TBD [...]
+
+####[Cristiano Da Silva](https://www.linkedin.com/in/cristianofdasilva/) is a nanotechnology undergraduate at the University of Waterloo. Diagnosed with Type 1 two years, ago, he sought to improve the sustainability and affordability of diabetes treatment by designing a reuasble glucose monitor applicator, which was recognized as a global winner from Oxford University's Rhodes Trust. As an advocate and educator, Cristiano has hoped to inspire others by sharing his story through organizations like TEDx, SickKids Diabetes Day, and Diabetes Hope Foundation. 
 
 ### Stakeholder Members:
 
