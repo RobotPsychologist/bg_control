@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "meal_identification"
+version = "0.0.1"
+description = "Developing ai algorithms for automatic meal detection from blood glucose concentration cgm data."
+authors = [
+  { name = "Blood Glucose Control AI Design Team" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    
+]
+requires-python = "~=3.12"
+
+[tool.black]
+line-length = 99
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+)/
+'''
+
+[tool.ruff.lint.isort]
+known_first_party = ["meal_identification"]
+force_sort_within_sections = true
