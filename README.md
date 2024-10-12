@@ -125,6 +125,10 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 [Andrew Yang](https://www.linkedin.com/in/andrewatyang/) is Big Mac on Discord.
 
+#### Jonathan Gong
+
+[Jonathan Gong](https://www.linkedin.com/in/jonathan-gong-005491263/) is a computer science undergraduate at the University of Waterloo. He has a passion for AI solutions in healthcare as well as experience with developing computer vision models for medical imaging and disease detection. Explore his latest AI projects on [GitHub](https://github.com/jogong2718).
+
 #### Safiya Makada 🧑‍⚕️🍭
 
 [Safiya Makada](https://www.linkedin.com/in/safiya-makada/) is a software engineering undergraduate student at the University of Waterloo. She has previous experience as a Machine Learning Engineer Intern in a startup, and has a passion for making technologies that improve health outcomes. Having lived with a type 1 diabetic for 8 years and having work experience with a diabetes nonprofit, she has seen first hand how technology can save lives.
