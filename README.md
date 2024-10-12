@@ -117,11 +117,16 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 [Abdullah Shahid](https://www.linkedin.com/in/abdullahshahid247/) is a computer science undergraduate at the University of Waterloo. Diagnosed with Type 1 Diabetes nearly a decade ago, he has developed a diabetic lifestyle management app as a personal project in the past and has interned at companies like Lyft. He aims to leverage his experience to make life easier for diabetics around the world.
 
+#### Junwon Park (Paul)
+
+[Junwon Park](https://www.linkedin.com/in/junwon-park/) is math undergraduate student majoring in Statistics and minor in computation at the University of Waterloo. He has a strong background in dealing with time series data, data quality checks, and anomaly detection for finance data. With these experiences, Junwon (Paul) Park aims to leverage his knowledge to contribute to this project and hopefully help more people with diabeties.
+
 #### Andrew Yang
 
 [Andrew Yang](https://www.linkedin.com/in/andrewatyang/) is Big Mac on Discord.
 
 #### Safiya Makada 🧑‍⚕️🍭
+
 [Safiya Makada](https://www.linkedin.com/in/safiya-makada/) is a software engineering undergraduate student at the University of Waterloo. She has previous experience as a Machine Learning Engineer Intern in a startup, and has a passion for making technologies that improve health outcomes. Having lived with a type 1 diabetic for 8 years and having work experience with a diabetes nonprofit, she has seen first hand how technology can save lives.
 
 #### TBD [...]
