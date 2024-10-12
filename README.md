@@ -129,6 +129,10 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 
 [Safiya Makada](https://www.linkedin.com/in/safiya-makada/) is a software engineering undergraduate student at the University of Waterloo. She has previous experience as a Machine Learning Engineer Intern in a startup, and has a passion for making technologies that improve health outcomes. Having lived with a type 1 diabetic for 8 years and having work experience with a diabetes nonprofit, she has seen first hand how technology can save lives.
 
+#### Gavin Katz
+[Gavin Katz](https://www.linkedin.com/in/gavin-katz-89990321b/) is a biomedical engineering undergraduate student at the University of Waterloo. He has previous experience working in software development at biotech startups, leveraging his knowledge of ML to create predictive models that assist in the diagnosis of congenital heart disease. He is currently interning at a data analytics firm in Toronto, and is excited to learn about what approches can be taken to improve the lives of those living with diabetes.    
+
+
 #### TBD [...]
 
 ### Stakeholder Members:
