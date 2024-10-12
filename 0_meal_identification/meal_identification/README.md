@@ -59,3 +59,9 @@ Developing ai algorithms for automatic meal detection from blood glucose concent
 
 --------
 
+## How to Start Contributing
+This is going to be an iterative development cycle, where you start developing your 
+
+Check out this sktime example: (Time Series Segmentation with sktime and ClaSP)[https://www.sktime.net/en/stable/examples/annotation/segmentation_with_clasp.html]
+
+
