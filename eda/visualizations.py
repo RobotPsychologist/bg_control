@@ -295,7 +295,36 @@ def gavin_k(df):
     return None
 
 
-def jonathan_g():
+def jonathan_g(df, user_id):
+    plt.figure(figsize=(16,9))
+    df_cleaned = df.dropna(subset=df.iloc[:, 2:17].columns, how='all')
+    user_ids = [user_id] # can add more patients to the list such as [500030, 679372]
+
+    # can replace user_ids with this when wanting to visualize all patients df_cleaned['user_id'].unique()
+    for patient_id in user_ids:
+
+        # Filter data for each patient
+        patient_data = df_cleaned[df_cleaned['user_id'] == patient_id].copy()
+        patient_data = patient_data.sort_values(by='date')
+
+        # Patients data on a time interval
+        patient_data = patient_data.iloc[150:500]
+
+        # Plot the patient's data
+        plt.plot(patient_data['date'], patient_data['bgl'], label=f'Patient {patient_id}')
+
+        # Compute the derivative (rate of change) of BGL levels
+        patient_data['BGL_Derivative'] = patient_data['bgl'].diff().fillna(0)
+
+        # Plot the derivative
+        plt.plot(patient_data['date'], patient_data['BGL_Derivative'], '--', label=f'BG" Derivative - Patient {patient_id}')
+
+    plt.xlabel('Date')
+    plt.ylabel('BGL Level and their derivative')
+    plt.title('BGL Levels Over Time by Patient and the derivative of BGL levels')
+    plt.legend()
+
+    plt.show()
     return None
 
 def julia_z():
