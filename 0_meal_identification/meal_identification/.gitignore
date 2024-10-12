@@ -1,5 +1,5 @@
 # Data
-/data/
+# /data/ is used to store the data files, at this stage we will continue to have it in source control.
 
 # Mac OS-specific storage files
 .DS_Store
