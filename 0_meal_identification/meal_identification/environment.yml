@@ -17,6 +17,10 @@ dependencies:
   - numpy
   - pandas
   - scikit-learn
+  - pytorch
+  - pytorch-lightning
+  - pytorch-forecasting
+  - sktime
   - pip:
     - python-dotenv
     - mkdocs
