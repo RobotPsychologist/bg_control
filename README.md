@@ -148,3 +148,8 @@ Shivam Singal is a software engineering student at the University of Waterloo, s
 #### Cristiano Da Silva :syringe: :droplet:
 
 [Cristiano Da Silva](https://www.linkedin.com/in/cristianofdasilva/) Is a nanotechnology undergraduate at the University of Waterloo. Diagnosed with Type 1 two years, ago, he sought to improve the sustainability and affordability of diabetes treatment by designing a reuasble glucose monitor applicator, which was recognized as a global winner from Oxford University's Rhodes Trust. As an advocate and educator, Cristiano has hoped to inspire others by sharing his story through organizations like TEDx, SickKids Diabetes Day, and Diabetes Hope Foundation. 
+
+#### Vilohith Rao
+
+[Vilohith Rao](https://www.linkedin.com/in/vilohith-rao-bangalore-mahesh-966295213/) is a Data Science student at the University of Waterloo.
+
