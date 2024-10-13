@@ -134,16 +134,16 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 [Safiya Makada](https://www.linkedin.com/in/safiya-makada/) is a software engineering undergraduate student at the University of Waterloo. She has previous experience as a Machine Learning Engineer Intern in a startup, and has a passion for making technologies that improve health outcomes. Having lived with a type 1 diabetic for 8 years and having work experience with a diabetes nonprofit, she has seen first hand how technology can save lives.
 
 #### Gavin Katz
+
 [Gavin Katz](https://www.linkedin.com/in/gavin-katz-89990321b/) is a biomedical engineering undergraduate student at the University of Waterloo. He has previous experience working in software development at biotech startups, leveraging his knowledge of ML to create predictive models that assist in the diagnosis of congenital heart disease. He is currently interning at a data analytics firm in Toronto, and is excited to learn about what approaches can be taken to improve the lives of those living with diabetes.    
 
 #### Alyssa D'Souza
+
 [Alyssa D'Souza](https://www.linkedin.com/in/alyssa-dsouza/) is a software engineering undergraduate student at the University of Waterloo, specializing in AI and computational math. With prior software development experience at the Ontario Institute for Cancer Research, she is eager to find similarly impactful opportunities and is excited to bring a blend of software engineering and ML skills to the team.
 
 #### Shivam Singal
+
 Shivam Singal is a software engineering student at the University of Waterloo, specializing in machine learning and data engineering. Previously, he worked with WAT.ai to develop a reinforcement learning-based chess engine, gaining hands-on experience in self-learning algorithms. He has also built data processing pipelines and machine learning models through past internships, building a strong foundation in AI-driven solutions for real-world applications. Shivam is eager to bring his skills to the blood glucose control project and is excited to explore how machine learning can improve health outcomes for people with diabetes.
 
-#### TBD [...]
-
-### Stakeholder Members:
-
-Stakeholder members will be PWDs with much to contribute in the form of knowledge and lived experience but may not have the time or ability to contribute to development, coding, or writing.
+####[Cristiano Da Silva](https://www.linkedin.com/in/cristianofdasilva/) 
+Is a nanotechnology undergraduate at the University of Waterloo. Diagnosed with Type 1 two years, ago, he sought to improve the sustainability and affordability of diabetes treatment by designing a reuasble glucose monitor applicator, which was recognized as a global winner from Oxford University's Rhodes Trust. As an advocate and educator, Cristiano has hoped to inspire others by sharing his story through organizations like TEDx, SickKids Diabetes Day, and Diabetes Hope Foundation. 
