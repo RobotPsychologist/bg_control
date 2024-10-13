@@ -20,7 +20,9 @@ dependencies:
   - pytorch
   - pytorch-lightning
   - pytorch-forecasting
-  - sktime
+  - sktime[all_extras]
+  - numba
+  - seaborn
   - pip:
     - python-dotenv
     - mkdocs
