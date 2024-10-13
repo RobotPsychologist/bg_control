@@ -136,6 +136,9 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 #### Gavin Katz
 [Gavin Katz](https://www.linkedin.com/in/gavin-katz-89990321b/) is a biomedical engineering undergraduate student at the University of Waterloo. He has previous experience working in software development at biotech startups, leveraging his knowledge of ML to create predictive models that assist in the diagnosis of congenital heart disease. He is currently interning at a data analytics firm in Toronto, and is excited to learn about what approaches can be taken to improve the lives of those living with diabetes.    
 
+#### Alyssa D'Souza
+[Alyssa D'Souza](https://www.linkedin.com/in/alyssa-dsouza/) is a software engineering undergraduate student at the University of Waterloo, specializing in AI and computational math. With prior software development experience at the Ontario Institute for Cancer Research, she is eager to find similarly impactful opportunities and is excited to bring a blend of software engineering and ML skills to the team.
+
 #### Shivam Singal
 Shivam Singal is a software engineering student at the University of Waterloo, specializing in machine learning and data engineering. Previously, he worked with WAT.ai to develop a reinforcement learning-based chess engine, gaining hands-on experience in self-learning algorithms. He has also built data processing pipelines and machine learning models through past internships, building a strong foundation in AI-driven solutions for real-world applications. Shivam is eager to bring his skills to the blood glucose control project and is excited to explore how machine learning can improve health outcomes for people with diabetes.
 
