@@ -153,3 +153,6 @@ Shivam Singal is a software engineering student at the University of Waterloo, s
 
 [Vilohith Rao](https://www.linkedin.com/in/vilohith-rao-bangalore-mahesh-966295213/) is a Data Science student at the University of Waterloo.
 
+
+#### Tony Chan
+[Tony Chan](https://www.linkedin.com/in/tony-chan-a871a1254/) is a Computer Engineering student at the University of Waterloo with experience in full-stack development for healthcare systems, AI, and machine learning. He has a strong track record in building scalable systems, integrating complex technologies, and solving technical challenges. Tony is passionate about using technology to make a meaningful impact, especially in improving and saving people's lives.
