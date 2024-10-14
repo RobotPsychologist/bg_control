@@ -153,3 +153,6 @@ Shivam Singal is a software engineering student at the University of Waterloo, s
 
 [Vilohith Rao](https://www.linkedin.com/in/vilohith-rao-bangalore-mahesh-966295213/) is a Data Science student at the University of Waterloo.
 
+#### Anton Ryavkin
+
+Anton Ryavkin is a mathematics undergraduate student at the University of Waterloo majoring in Statistics and Computational Mathematics. Having lived with a Type 1 diabetic for several years, he understands the day-to-day struggles of people with diabetes and the importance of technology in the management of the disease. Anton seeks to help people with diabetes by leveraging his ML experience from past internships and schoolwork.
