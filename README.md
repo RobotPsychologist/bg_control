@@ -156,3 +156,8 @@ Shivam Singal is a software engineering student at the University of Waterloo, s
 #### Anton Ryavkin
 
 Anton Ryavkin is a mathematics undergraduate student at the University of Waterloo majoring in Statistics and Computational Mathematics. Having lived with a Type 1 diabetic for several years, he understands the day-to-day struggles of people with diabetes and the importance of technology in the management of the disease. Anton seeks to help people with diabetes by leveraging his ML experience from past internships and schoolwork.
+=======
+
+#### Tony Chan
+[Tony Chan](https://www.linkedin.com/in/tony-chan-a871a1254/) is a Computer Engineering student at the University of Waterloo with experience in full-stack development for healthcare systems, AI, and machine learning. He has a strong track record in building scalable systems, integrating complex technologies, and solving technical challenges. Tony is passionate about using technology to make a meaningful impact, especially in improving and saving people's lives.
+
