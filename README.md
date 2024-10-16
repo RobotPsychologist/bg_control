@@ -62,10 +62,10 @@ If we can provide counterfactuals that improve PWD’s postprandial BG character
 - [Awesome Causality Algorithms and Papers](https://github.com/rguo12/awesome-causality-algorithms?tab=readme-ov-file)
 - [Causal Inference Applications in the Industry](https://github.com/matteocourthoud/awesome-causal-inference/blob/main/src/industry-applications.md)
 - [Improving the accuracy of medical diagnosis with causal machine learning](https://www.nature.com/articles/s41467-020-17419-7)
-- Textbooks:
-   - [Causality - Judea Pearl ](https://bayes.cs.ucla.edu/BOOK-2K/) (gold standard)
-   - [Causal Inference for The Brave and True](https://matheusfacure.github.io/python-causality-handbook/landing-page.html)
-   - [The Effect: An Introduction to Research Design and Causality](https://theeffectbook.net/)
+##### Textbooks:
+- [Causality - Judea Pearl ](https://bayes.cs.ucla.edu/BOOK-2K/) (gold standard)
+- [Causal Inference for The Brave and True](https://matheusfacure.github.io/python-causality-handbook/landing-page.html)
+- [The Effect: An Introduction to Research Design and Causality](https://theeffectbook.net/)
 
 #### 4. Time Series + Causal Modeling
 
