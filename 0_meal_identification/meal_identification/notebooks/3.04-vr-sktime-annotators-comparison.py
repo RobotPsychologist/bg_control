@@ -2,7 +2,11 @@ import os
 import importlib
 import inspect
 import sktime.annotation as ann
-
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import OneHotEncoder
+import yaml
 # List of relevant class names
 relevant_class_names = [
     "ClaSPSegmentation",
@@ -10,7 +14,7 @@ relevant_class_names = [
     "GaussianHMM",
     "GMMHMM",
     "GreedyGaussianSegmentation",
-    "HMM",
+    # "HMM",
     "InformationGainSegmentation",
     "PoissonHMM",
     "STRAY",
@@ -46,10 +50,26 @@ def import_relevant_classes():
             except ImportError as e:
                 print(f"Could not import {module_name}: {e}")
 
+
+def load_model_configs():
+    with open('model_configs.yaml', 'r') as file:
+        return yaml.safe_load(file)
+    
 # Run the function to import relevant classes
 import_relevant_classes()
 
+model_configs = load_model_configs()
 # Display the collected relevant classes
 print(f"Collected {len(model_classes)} relevant classes:")
 for cls in model_classes:
-    print(f"- {cls.__name__}: {cls}")
+    print(f"- {cls.__name__}")
+    if cls.__name__ in model_configs:
+        config = model_configs[cls.__name__]
+        instance = cls(**config)
+        print(f"  Instantiated with config: {config}")
+    else:
+        print("  No config found, using default parameters")
+        instance = cls()
+
+
+
