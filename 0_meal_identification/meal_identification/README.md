@@ -59,3 +59,14 @@ Developing ai algorithms for automatic meal detection from blood glucose concent
 
 --------
 
+## How to Start Contributing
+This will be an iterative development cycle where you develop your time series annotation models in .ipynb. Once your notebook has demonstrated something useful, we will move it to the source code directory so others can reuse it and set it up for large-scale hyperparameter tuning.
+
+Check out this sktime example: [Time Series Segmentation with sktime and ClaSP](https://www.sktime.net/en/stable/examples/annotation/segmentation_with_clasp.html)
+
+skTime already has many time series annotation algorithms available through its API: 
+* [sktime time series annotation API](https://www.sktime.net/en/stable/api_reference/annotation.html)
+
+We want to try out every one of these algorithms and evaluate which ones work best with our problem. 
+Go ahead and start creating an ipynb following the file naming conventions outlines in the notebooks directory. 
+Please try to follow the [PEP8](https://peps.python.org/pep-0008/) Style Guide in your development to facilitate the transfer to source code. 
