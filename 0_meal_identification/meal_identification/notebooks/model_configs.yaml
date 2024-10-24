@@ -1,0 +1,6 @@
+general:
+  num_days: 7 # number of days to use for fitting and prediction
+GreedyGaussianSegmentation:
+  k_max: 10
+
+# add hyperparameters for other models here if needed
