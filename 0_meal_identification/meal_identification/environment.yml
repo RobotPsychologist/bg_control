@@ -27,3 +27,4 @@ dependencies:
     - python-dotenv
     - mkdocs
     - -e .
+    - ipynb
