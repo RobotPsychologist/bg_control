@@ -60,7 +60,8 @@ def dataset_creator(raw_data_path='0_meal_identification/meal_identification/dat
 
     def get_root_dir(current_dir=None):
         '''
-        Get the root directory of the project by looking for a 'bg_control' directory.
+        Get the root directory of the project by looking for a specific directory 
+        (e.g., '.github') that indicates the project root.
 
         Parameters
         ----------
@@ -75,12 +76,15 @@ def dataset_creator(raw_data_path='0_meal_identification/meal_identification/dat
         if current_dir is None:
             current_dir = os.getcwd()
 
+        # Directory that uniquely identifies the root
+        unique_dir = '.github' 
+
         while current_dir != os.path.dirname(current_dir):
-            if os.path.basename(current_dir) == 'bg_control':
+            if os.path.isdir(os.path.join(current_dir, unique_dir)):
                 return current_dir
             current_dir = os.path.dirname(current_dir)
 
-        raise FileNotFoundError("Project root directory 'bg_control' not found.")
+        raise FileNotFoundError(f"Project root directory not found. '{unique_dir}' directory missing in path.")
 
     def load_data(raw_data_path, keep_cols):
         '''
@@ -116,7 +120,7 @@ def dataset_creator(raw_data_path='0_meal_identification/meal_identification/dat
                   data_label='dataLabelUnspecified_',
                   patient_id='idUnspecified_',
                   data_gen_date=datetime.today().strftime('%Y-%m-%d'),
-                  inclue_gen_date_label=True):
+                  include_gen_date_label=True):
         '''
         Save the data to the output directory
 
@@ -143,7 +147,7 @@ def dataset_creator(raw_data_path='0_meal_identification/meal_identification/dat
         project_root = get_root_dir()
         print(f"Project root: {project_root}")
         full_out_path_dir = os.path.join(project_root, output_dir)
-        if inclue_gen_date_label:
+        if include_gen_date_label:
             data.to_csv(os.path.join(full_out_path_dir, f"{data_gen_date}_{patient_id}_{data_label}.csv"), index=True)
             print(f"Data saved successfully in: {output_dir}")
             print(f"\n \t Dataset label: {data_gen_date}_{patient_id}__{data_label}")
@@ -386,3 +390,5 @@ def plot_announce_meal_histogram(df, hours_or_15minutes='hours'):
         plt.show()
 
 
+if __name__ == "__main__":
+    print(os.getcwd())
