@@ -25,5 +25,38 @@ def main(
     # -----------------------------------------
 
 
+def raw_data_loader():
+    '''file to memory, for raw data to in-memory representation of raw data.'''
+    pass
+
+def processed_data_loader():
+    '''file to memory, for processed data to in-memory representation of processed data.'''
+    pass
+
+def processed_data_saver():
+    '''memory to file, for processed data to in-memory representation of processed data.'''
+
+    def dataset_label_modifier_fn():
+        pass
+
+    pass
+
+def data_processor():
+    '''data processing, for raw data to processed data.'''
+
+    def coerce_time_fn():
+        pass
+
+    def erase_meal_overlap_fn():
+        pass
+
+    def keep_top_n_carb_meals_fn():
+        pass
+
+
+
+
+
+
 if __name__ == "__main__":
     app()
