@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import matplotlib.patches as mpatches
 import numpy as np
+import matplotlib.dates as mdates
 
 
 def andrew_y(df):
@@ -330,7 +331,90 @@ def jonathan_g(df, user_id):
 def julia_z():
     return None
 
-def junwon_p():
+def junwon_p(df, n_days=3, agg_interval=None):
+    """
+    Processes change in BGL over second (slope/differenced) and plots trends for randomly selected consecutive days.
+    Also plots the original plot to see/compare changes in slopes and actual data.
+
+    Parameters:
+    df (pd.DataFrame): Cleaned data frame for one user.
+    n_days (int): Number of consecutive days to plot (default: 3).
+    agg_interval (str or None): Resampling interval ('15T' for 15 minutes, '1H' for 1 hour, None to show original data).
+    
+    Returns:
+    pd.DataFrame: Processed DataFrame with added blood glucose change rates.
+    """
+    # Ensure DataFrame is sorted by 'date'
+    df = df.sort_values(by='date')
+
+    # Drop duplicate entries by 'date', keeping the first
+    df = df.drop_duplicates(subset='date', keep='first')
+
+    # Calculate the difference in blood glucose levels between consecutive rows
+    df['bgl_diff'] = df['bgl'].diff()
+
+    # Calculate time difference between consecutive entries in seconds
+    df['time_diff'] = df['date'].diff().dt.total_seconds()
+
+    # Calculate rate of blood glucose change per second
+    df['bgl_change_per_second'] = df['bgl_diff'] / df['time_diff']
+
+    # Extract unique dates
+    unique_dates = df['date'].dt.date.unique()
+
+    # Randomly select a starting point for consecutive days
+    start_idx = np.random.randint(0, len(unique_dates) - n_days)
+    selected_dates = unique_dates[start_idx:start_idx + n_days]
+
+    # Filter the DataFrame for the selected dates and set 'date' as the index
+    df_filtered = df[df['date'].dt.date.isin(selected_dates)].set_index('date')
+
+    # Resample the filtered data if an aggregation interval is provided
+    if agg_interval is not None:
+        df_filtered = df_filtered.resample(agg_interval).mean(numeric_only=True)
+
+    # Create two subplots: one for 'bgl' and one for 'bgl_change_per_second'
+    fig, axes = plt.subplots(2, 1, figsize=(10, 10))
+
+    # Plot the 'bgl' values (original or resampled)
+    sns.lineplot(ax=axes[0], x=df_filtered.index, y=df_filtered['bgl'], marker='o')
+    axes[0].set_title(f'Random BGL Trends Over {n_days} Days', pad=20, fontsize=14)
+    axes[0].set_xlabel('Time (HH:MM)', fontsize=12)
+    axes[0].set_ylabel('BGL', fontsize=12)
+
+    # Mark the start of each new day with vertical lines for 'bgl'
+    for day in selected_dates[1:]:
+        day_start = df_filtered[df_filtered.index.date == day].index.min()
+        axes[0].axvline(day_start, color='gray', linestyle='--')
+        axes[0].text(day_start, axes[0].get_ylim()[1], str(day), ha='center', va='bottom')
+
+    # Set x-axis ticks at 2-hour intervals for better readability (for 'bgl' plot)
+    axes[0].xaxis.set_major_locator(mdates.HourLocator(interval=2))
+    axes[0].xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+    axes[0].tick_params(axis='x', rotation=90)
+
+    # Plot 'bgl_change_per_second'
+    sns.lineplot(ax=axes[1], x=df_filtered.index, y=df_filtered['bgl_change_per_second'], marker='o')
+    axes[1].set_title(f'Random BGL Change per Second Trends Over {n_days} Days', pad=20, fontsize=14)
+    axes[1].set_xlabel('Time (HH:MM)', fontsize=12)
+    axes[1].set_ylabel('BGL Change per Second', fontsize=12)
+
+    # Mark the start of each new day with vertical lines for 'bgl_change_per_second'
+    for day in selected_dates[1:]:
+        day_start = df_filtered[df_filtered.index.date == day].index.min()
+        axes[1].axvline(day_start, color='gray', linestyle='--')
+        axes[1].text(day_start, axes[1].get_ylim()[1], str(day), ha='center', va='bottom')
+
+    # Set x-axis ticks at 2-hour intervals for better readability (for 'bgl_change_per_second' plot)
+    axes[1].xaxis.set_major_locator(mdates.HourLocator(interval=2))
+    axes[1].xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+    axes[1].tick_params(axis='x', rotation=90)
+
+    # Adjust layout to prevent clipping
+    plt.tight_layout()
+    plt.show()
+
+    # return df_filtered  # Return the final DataFrame
     return None
 
 def rebecca_m():
