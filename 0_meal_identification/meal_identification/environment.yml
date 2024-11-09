@@ -23,6 +23,7 @@ dependencies:
   - sktime[all_extras]
   - numba
   - seaborn
+  - pydantic
   - pip:
     - python-dotenv
     - mkdocs
