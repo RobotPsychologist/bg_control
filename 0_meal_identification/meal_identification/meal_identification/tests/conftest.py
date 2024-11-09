@@ -18,6 +18,11 @@ def meal_length():
     """Standard meal length for testing"""
     return pd.Timedelta(hours=2)
 
+@pytest.fixture
+def n_top_carb_meals():
+    """Number of top carbohydrate meals to keep"""
+    return 3
+
 def pytest_generate_tests(metafunc):
     '''
     Uses pytest hooks to generate tests for multiple values of min_carbs

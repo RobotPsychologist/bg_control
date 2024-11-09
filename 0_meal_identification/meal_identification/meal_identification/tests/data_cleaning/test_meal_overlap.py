@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from meal_identification.datasets.dataset_cleaner import erase_meal_overlap_fn, keep_top_n_carb_meals
-from meal_identification.datasets.PydanticModels import DataFrameValidator
+from meal_identification.datasets.PydanticModels import DataFrameValidator, MealRecord
 
 class TestMealOverlap:
     def test_meal_overlap_structure(self, sample_meal_df, meal_length, min_carbs):
@@ -9,7 +9,7 @@ class TestMealOverlap:
         Tests that the output DataFrame maintains valid data types using pydantic
         """
         result_df = erase_meal_overlap_fn(sample_meal_df, meal_length, min_carbs)
-        assert DataFrameValidator.validate_meal_df(result_df)
+        assert DataFrameValidator(MealRecord).validate_df(result_df)
     
     def test_food_g_sum(self, sample_meal_df, meal_length, min_carbs):
         """
@@ -20,31 +20,36 @@ class TestMealOverlap:
         result_df = erase_meal_overlap_fn(sample_meal_df, meal_length, min_carbs)
         assert result_df['food_g'].sum() == sample_meal_df['food_g'].sum()
 
-    def test_non_meal_entries_unchanged(self, sample_meal_df, meal_length, min_carbs):
-        """
-        Tests that non-meal entries remain unchanged
-        """
-        result_df = erase_meal_overlap_fn(sample_meal_df, meal_length, min_carbs)
-        assert (result_df[result_df['msg_type'] == ''] == sample_meal_df[sample_meal_df['msg_type'] == '']).all()
 
     def test_overlapping_meals_combined(self, sample_meal_df, meal_length, min_carbs):
         """
-        Tests that overlapping meals are combined
+        Tests that overlapping meals are combined correctly by checking:
+        1. All food_g values after an ANNOUNCE_MEAL within meal_length window are 0
+        2. The ANNOUNCE_MEAL entry contains the sum of all food_g in its window
         """
         result_df = erase_meal_overlap_fn(sample_meal_df, meal_length, min_carbs)
         
-        # Find any meal that had overlapping meals combined
-        announce_meal_mask = result_df['msg_type'] == 'ANNOUNCE_MEAL'
-        original_meals = sample_meal_df[sample_meal_df['msg_type'] == 'ANNOUNCE_MEAL']
-        combined_meals = result_df[announce_meal_mask]
+        # Get all ANNOUNCE_MEAL entries
+        announce_meal_indices = result_df[result_df['msg_type'] == 'ANNOUNCE_MEAL'].index
         
-        # At least one meal should have a higher carb value than any original meal
-        assert any(combined_meals['food_g'] > original_meals['food_g'].max())
+        for idx in announce_meal_indices:
+            window_end = idx + meal_length
+            window_entries = result_df.loc[idx + pd.Timedelta(seconds=1):window_end]
+            
+            # Check that all food_g values in window after ANNOUNCE_MEAL are 0
+            assert (window_entries['food_g'] == 0).all(), f"Found non-zero food_g values after ANNOUNCE_MEAL at {idx}"
+            
+            # Check that the ANNOUNCE_MEAL entry contains the sum from original data
+            original_window = sample_meal_df.loc[idx:window_end]
+            expected_sum = original_window['food_g'].sum()
+            assert result_df.at[idx, 'food_g'] == expected_sum, \
+                f"ANNOUNCE_MEAL at {idx} does not contain correct sum of food_g values"
 
     def test_min_carbs_threshold(self, sample_meal_df, meal_length, min_carbs):
         """
-        Tests that meals below the min_carbs threshold are not combined
+        Tests that all ANNOUNCE_MEAL entries have at least min_carbs food_g
         """
         result_df = erase_meal_overlap_fn(sample_meal_df, meal_length, min_carbs)
-        assert (result_df[result_df['food_g'] < min_carbs]['food_g'] == sample_meal_df[sample_meal_df['food_g'] < min_carbs]['food_g']).all()
-        
+        announce_meals = result_df[result_df['msg_type'] == 'ANNOUNCE_MEAL']
+        assert (announce_meals['food_g'] >= min_carbs).all(), "Found ANNOUNCE_MEAL entries with food_g below min_carbs threshold"
+

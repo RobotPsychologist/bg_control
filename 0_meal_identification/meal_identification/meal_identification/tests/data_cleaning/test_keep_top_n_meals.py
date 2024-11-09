@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from meal_identification.datasets.dataset_cleaner import keep_top_n_carb_meals
-from meal_identification.datasets.PydanticModels import DataFrameValidator
+from meal_identification.datasets.PydanticModels import DataFrameValidator, MealRecord
 
 class TestKeepTopNMeals:
     def test_validate_structure(self, sample_meal_df, n_top_carb_meals):
@@ -9,7 +9,7 @@ class TestKeepTopNMeals:
         Test that the output DataFrame maintains valid structure via pydantic
         """
         result_df = keep_top_n_carb_meals(sample_meal_df, n_top_carb_meals)
-        assert DataFrameValidator.validate_meal_df(result_df)
+        assert DataFrameValidator(MealRecord).validate_df(result_df)
 
     def test_top_n_carbs_kept(self, sample_meal_df, n_top_carb_meals):
         """
