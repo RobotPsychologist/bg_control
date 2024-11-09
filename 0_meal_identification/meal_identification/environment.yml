@@ -24,6 +24,7 @@ dependencies:
   - numba
   - seaborn
   - pydantic
+  - pytest
   - pip:
     - python-dotenv
     - mkdocs
