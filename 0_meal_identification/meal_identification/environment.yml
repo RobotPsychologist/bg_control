@@ -26,4 +26,6 @@ dependencies:
   - pip:
     - python-dotenv
     - mkdocs
+    - skchange
     - -e .
+    - ipynb
