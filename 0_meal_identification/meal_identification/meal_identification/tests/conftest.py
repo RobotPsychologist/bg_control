@@ -23,6 +23,20 @@ def n_top_carb_meals():
     """Number of top carbohydrate meals to keep"""
     return 3
 
+@pytest.fixture
+def coerce_interval():
+    return pd.Timedelta(minutes=5)
+
+@pytest.fixture
+def df_to_coerce():
+    dates = pd.date_range(start='2024-01-01', periods=10, freq='3min')
+    return pd.DataFrame({
+        'date': dates,
+        'bgl':  list(range(10, 101, 10)),
+        'msg_type': ['', 'ANNOUNCE_MEAL', '', '', 'ANNOUNCE_MEAL', '', '', '', '', ''],
+        'food_g': [0, 50, 0, 0, 75, 0, 0, 0, 0, 0]
+    })
+
 def pytest_generate_tests(metafunc):
     '''
     Uses pytest hooks to generate tests for multiple values of min_carbs
