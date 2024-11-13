@@ -10,6 +10,8 @@ def main():
         layout="centered"
     )
 
+    # Streamlit allows to do markdown, which is awesome!
+
     st.title("Blood Glucose Control with WAT.ai and Gluroo Imaginations Inc")
     st.header("Background ")  # use green colour for 'AI'
     st.write("Diabetes requires a unique way of living. For most, to successfully manage the disease and avoid its long-term adverse effects, you must have detailed fitness and nutrition tracking, not unlike professional athletes or bodybuilders, but with the added complication of knowing how and when to administer insulin. Some can get away without detailed monitoring if they are highly habitual. For most, that’s an undesirable restriction, but where a Person with Diabetes (PWD) falls on that scale is a trade-off that depends on the individual. ")  # use green colour for 'AI'
