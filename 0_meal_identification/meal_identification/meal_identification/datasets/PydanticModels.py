@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, confloat
 from typing import List, Optional
 from datetime import datetime
 import pandas as pd
@@ -25,6 +25,27 @@ class MealRecord(BaseModel):
             raise ValueError('food_g must be non-negative')
         return v
 
+
+class RawMealRecord(BaseModel):
+    date: datetime
+    bgl: confloat(gt=0)
+    msg_type: str
+
+    @validator('msg_type')
+    def validate_msg_type(cls, v):
+        valid_types = {'ANNOUNCE_MEAL', 'DOSE_INSULIN', '', '0', }
+        if v not in valid_types:
+            raise ValueError(f'msg_type must be one of {valid_types}')
+        return v
+
+    @validator('bgl')
+    def validate_bgl(cls, v):
+        if v <= 0:
+            raise ValueError('Blood glucose level must be positive')
+        if v > 1000:
+            raise ValueError('Blood glucose level seems unreasonably high')
+        return v
+
 class DataFrameValidator:
     """A utility class for validating dataframe using a pydantic model for each row"""
     
@@ -48,15 +69,17 @@ class DataFrameValidator:
         print(self.model.model_fields)
         self.index_is_datetime = self.model.model_fields[self.index_field].annotation == datetime
 
-    def validate_df(self, df: pd.DataFrame) -> bool:
+    def validate_df(self, df: pd.DataFrame, is_raw: bool = False) -> bool:
         """Validate DataFrame structure and contents"""
         # Check required columns
         if not all(col in df.columns for col in self.required_columns):
             raise ValueError(f"DataFrame must contain columns: {self.required_columns}")
 
-        # Validate index is datetime if model field is datetime
-        if self.index_is_datetime and not isinstance(df.index, pd.DatetimeIndex):
-            raise ValueError("DataFrame must have DatetimeIndex")
+        # Raw data's index is not datetime
+        if not is_raw:
+            # Validate index is datetime if model field is datetime
+            if self.index_is_datetime and not isinstance(df.index, pd.DatetimeIndex):
+                raise ValueError("DataFrame must have DatetimeIndex")
 
         # Validate each row using model
         for idx, row in df.iterrows():

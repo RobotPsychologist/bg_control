@@ -15,8 +15,7 @@ def dataset_creator(
     raw_data_path='0_meal_identification/meal_identification/data/raw',
     output_dir='0_meal_identification/meal_identification/data/interim',
     use_auto_label=True,
-    keep_cols=['date', 'bgl', 'msg_type', 'affects_fob', 'affects_iob',
-               'dose_units', 'food_g', 'food_glycemic_index'],
+    keep_cols=None,
     day_start_index_change=True,
     day_start_time=pd.Timedelta(hours=4),
     min_carbs=10,
@@ -64,6 +63,10 @@ def dataset_creator(
     list of pd.DataFrame or None
         The processed DataFrames if `return_data` is True, else None.
     """
+    if keep_cols is None:
+        keep_cols = ['date', 'bgl', 'msg_type', 'affects_fob', 'affects_iob',
+                     'dose_units', 'food_g', 'food_glycemic_index']
+
     # Load data using DatasetTransformer
     patient_dfs_dict = load_data(raw_data_path=raw_data_path, keep_cols=keep_cols)
 
