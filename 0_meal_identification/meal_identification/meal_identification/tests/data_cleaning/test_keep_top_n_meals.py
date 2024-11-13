@@ -1,5 +1,3 @@
-import pytest
-import pandas as pd
 from meal_identification.datasets.dataset_cleaner import keep_top_n_carb_meals
 from meal_identification.datasets.PydanticModels import DataFrameValidator, MealRecord
 
