@@ -7,7 +7,7 @@ class TestCoerceTimeFn:
         result = coerce_time_fn(df_to_coerce.copy(), coerce_interval)
 
         assert isinstance(result, pd.DataFrame)
-        assert 'date' in result.columns
+        assert 'date' == result.index.name
         assert isinstance(result.index, pd.DatetimeIndex)
 
         # Check if the interval between timestamps is 5 minutes
@@ -30,6 +30,7 @@ class TestCoerceTimeFn:
 
         # Check food_g values are preserved for meals
         assert all(meal_rows['food_g'] > 0)
+        assert all(meal_rows['food_g_keep'] > 0)
 
     def test_meal_announcement_handling(self, df_to_coerce, coerce_interval):
         """Test proper handling of meal announcements"""
@@ -46,15 +47,19 @@ class TestCoerceTimeFn:
     def test_column_preservation(self, df_to_coerce, coerce_interval):
         """Test if essential columns are preserved"""
         result = coerce_time_fn(df_to_coerce.copy(), coerce_interval)
-        essential_columns = {'date', 'bgl', 'msg_type', 'food_g', 'food_g_keep'}
+        essential_columns = {'bgl', 'msg_type', 'food_g', 'food_g_keep'}
         assert essential_columns.issubset(set(result.columns))
 
-    @pytest.mark.parametrize("minutes", [3, 5, 7, 9, 10, 20])
-    def test_different_time_intervals(self, df_to_coerce, minutes):
+    @pytest.mark.parametrize("interval", [pd.Timedelta(minutes=3),
+                                          pd.Timedelta(minutes=5),
+                                          pd.Timedelta(minutes=7),
+                                          pd.Timedelta(seconds=30),
+                                          pd.Timedelta(seconds=45),
+                                          pd.Timedelta(hours=1)])
+    def test_different_time_intervals(self, df_to_coerce, interval):
         """Test with different time intervals"""
-        interval = pd.Timedelta(minutes=minutes)
         result = coerce_time_fn(df_to_coerce.copy(), interval)
 
         time_diffs = result.index.to_series().diff().dropna()
-        assert all(diff == pd.Timedelta(minutes=5) for diff in time_diffs), \
-            f"Expected 5-minute intervals but got different intervals when input was {minutes} minutes."
+        assert all(diff == interval for diff in time_diffs), \
+            f"Expected {interval} intervals but got different intervals."
