@@ -45,9 +45,12 @@ Developing ai algorithms for automatic meal detection from blood glucose concent
     │
     ├── config.py               <- Store useful variables and configuration
     │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
+    ├── datasets       
+    │   ├── dataset_cleaning.py         <- Scripts to clean raw data.
+    │   ├── dataset_generator.py        <- Scripts to take specify pre modeling dataset generation tasks.
+    │   ├── dataset_processing.py       <- Scripts that have data processing utilities like saving and loading.
+    │   ├── dataset_transformations.py  <- Scripts that build sktime transformation pipelines.
+    │   ├── features.py             <- Code to create features for modeling
     │
     ├── modeling                
     │   ├── __init__.py 

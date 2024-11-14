@@ -23,8 +23,11 @@ dependencies:
   - sktime[all_extras]
   - numba
   - seaborn
+  - pydantic
+  - pytest
   - pip:
     - python-dotenv
     - mkdocs
     - skchange
     - -e .
+    - ipynb
