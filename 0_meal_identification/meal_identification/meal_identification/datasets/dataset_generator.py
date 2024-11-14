@@ -20,29 +20,27 @@ def ensure_datetime_index(
 
     Parameters
     ----------
-    data (pd.DataFrame): Input DataFrame
+    data : pd.DataFrame
+        Input DataFrame that either has a datetime index or a 'date' column
+        that can be converted to datetime.
 
     Returns
     -------
-    pd.DataFrame: DataFrame with datetime index
+    pd.DataFrame
+        DataFrame with sorted datetime index.
 
-    Raises:
-    -------
-    ValueError: If datetime conversion fails or index column not found
+    Raises
+    ------
+    ValueError
+        If datetime conversion fails or if neither datetime index nor 'date' column exists.
+    KeyError
+        If 'date' column is not found in DataFrame.
     """
+    # Make a copy to avoid modifying the original
     df = data.copy()
 
-    # Convert 'date' to datetime if not already
-    if not pd.api.types.is_datetime64_any_dtype(df['date']):
-        df['date'] = pd.to_datetime(df['date'], errors='coerce')
-        df = df.dropna(subset=['date'])  # Drop rows where 'date' couldn't be parsed
-
-    # Set index if 'date' is still a column
-    if 'date' in df.columns:
-        df = df.set_index('date')
-
-    # Sort index and ensure name is 'date'
-    df = df.sort_index()
+    df = df.set_index('date').squeeze()
+    df.index = pd.DatetimeIndex(df.index)
 
     return df
 
@@ -54,7 +52,7 @@ def dataset_creator(
         keep_cols=None,
         day_start_index_change=True,
         day_start_time=pd.Timedelta(hours=4),
-        min_carbs=10,
+        min_carbs=5,
         n_top_carb_meals=3,
         meal_length=pd.Timedelta(hours=2),
         erase_meal_overlap=True,
@@ -114,6 +112,7 @@ def dataset_creator(
         patient_df = ensure_datetime_index(patient_df)
 
         # Coerce time intervals if required
+        # Original meal: 617 -> 585
         if coerce_time:
             patient_df = coerce_time_fn(data=patient_df, coerse_time_interval=coerse_time_interval)
 
@@ -165,3 +164,7 @@ def dataset_creator(
 
     print(f"\n\nAll data saved successfully in: {output_dir}")
     return patient_dfs_list
+
+
+
+dataset_creator()
