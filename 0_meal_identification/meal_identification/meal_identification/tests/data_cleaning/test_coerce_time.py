@@ -15,8 +15,9 @@ class TestCoerceTimeFn:
         assert all(diff == pd.Timedelta(minutes=5) for diff in time_diffs)
 
     def test_missing_date_column(self, df_to_coerce, coerce_interval):
-        """Test behavior when date column is missing"""
-        bad_data = df_to_coerce.copy().drop('date', axis=1)
+        """Test behavior when date column's index is not date"""
+        bad_data = df_to_coerce.copy()
+        bad_data = bad_data.set_index('bgl')
         with pytest.raises(KeyError):
             coerce_time_fn(bad_data, coerce_interval)
 
