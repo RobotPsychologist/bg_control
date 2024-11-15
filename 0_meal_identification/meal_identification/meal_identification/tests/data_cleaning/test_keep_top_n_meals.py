@@ -1,5 +1,5 @@
 from meal_identification.datasets.dataset_cleaner import keep_top_n_carb_meals
-from meal_identification.datasets.PydanticModels import DataFrameValidator, MealRecord
+from meal_identification.datasets.pydantic_test_models import DataFrameValidator, MealRecord
 
 class TestKeepTopNMeals:
     def test_validate_structure(self, sample_meal_df, n_top_carb_meals):

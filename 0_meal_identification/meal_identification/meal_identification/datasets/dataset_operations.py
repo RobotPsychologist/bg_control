@@ -149,7 +149,7 @@ def coerce_time_fn(data, coerse_time_interval):
     Parameters
     ----------
     data : pd.DataFrame
-        The input DataFrame with a 'date' column.
+        The input DataFrame with a 'date' index.
     coerse_time_interval : pd.Timedelta
         The interval for coarse time resampling.
 
@@ -159,30 +159,25 @@ def coerce_time_fn(data, coerse_time_interval):
         The coerced DataFrame with a DatetimeIndex.
     '''
     # Ensure 'date' column exists
-    if 'date' not in data.columns:
-        raise KeyError("'date' column not found in data.")
+    if 'date' != data.index.name:
+        raise KeyError(f"'date' column should be index, got {data.index.name} instead")
 
-    # Convert 'date' to datetime if not already
-    if not pd.api.types.is_datetime64_any_dtype(data['date']):
-        data['date'] = pd.to_datetime(data['date'], errors='coerce')
-        data = data.dropna(subset=['date'])  # Drop rows where 'date' couldn't be parsed
+    if not isinstance(coerse_time_interval, pd.Timedelta):
+        raise TypeError(
+            f"coerse_time_interval must be a pandas Timedelta object, got {type(coerse_time_interval)} instead")
 
-    # Set 'date' as the index without squeezing
-    data = data.set_index('date').sort_index()
-
-    # Define resample rule based on the provided timedelta
-    resample_rule = f'{int(coerse_time_interval.total_seconds() // 60)}min'  # e.g., '5min' for 5 minutes
-
-    # Resample the data
-    data_resampled = data.resample(resample_rule).first()
+    # Convert Timedelta directly to frequency string
+    freq = pd.tseries.frequencies.to_offset(coerse_time_interval)
 
     # Separate meal announcements and non-meal data
-    meal_announcements = data_resampled[data_resampled['msg_type'] == 'ANNOUNCE_MEAL'].copy()
-    non_meals = data_resampled[data_resampled['msg_type'] != 'ANNOUNCE_MEAL'].copy()
+    meal_announcements = data[data['msg_type'] == 'ANNOUNCE_MEAL'].copy()
+    non_meals = data[data['msg_type'] != 'ANNOUNCE_MEAL'].copy()
 
-    # Resample meal announcements separately
-    meal_announcements = meal_announcements.resample('5min').first()
-    non_meals = non_meals.resample('5min').first()
+    non_meals = non_meals.resample(freq).first()
+    start_time = non_meals.index.min()
+
+    # Resample meal announcements separately and align with non_meal
+    meal_announcements = meal_announcements.resample(freq, origin=start_time).first()
 
     # Join the two DataFrames
     data_resampled = non_meals.join(meal_announcements, how='left', rsuffix='_meal')
@@ -192,7 +187,6 @@ def coerce_time_fn(data, coerse_time_interval):
         meal_col = f"{col}_meal"
         if meal_col in data_resampled.columns:
             data_resampled[col] = data_resampled[col + '_meal'].combine_first(data_resampled[col])
-            data_resampled.drop(columns=[meal_col], inplace=True)
 
     # Retain 'food_g_keep' from meal announcements data_resampled = data.resample(resample_rule).first()
     data_resampled['food_g_keep'] = data_resampled.get('food_g_meal', 0)
@@ -202,9 +196,6 @@ def coerce_time_fn(data, coerse_time_interval):
 
     # Drop the identified columns
     data_resampled = data_resampled.drop(columns=columns_to_drop)
-
-    # At this point, 'date' is still the index. Do NOT reset the index.
-    data_resampled['date'] = data_resampled.index
 
     print("Columns after coercing time:", data_resampled.columns.tolist())
 

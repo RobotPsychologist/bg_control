@@ -11,20 +11,54 @@ from dataset_cleaner import (
     keep_top_n_carb_meals,
 )
 
+
+def ensure_datetime_index(
+        data: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Ensures DataFrame has a datetime index.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Input DataFrame that either has a datetime index or a 'date' column
+        that can be converted to datetime.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with sorted datetime index.
+
+    Raises
+    ------
+    ValueError
+        If datetime conversion fails or if neither datetime index nor 'date' column exists.
+    KeyError
+        If 'date' column is not found in DataFrame.
+    """
+    # Make a copy to avoid modifying the original
+    df = data.copy()
+
+    df = df.set_index('date').squeeze()
+    df.index = pd.DatetimeIndex(df.index)
+
+    return df
+
+
 def dataset_creator(
-    raw_data_path='0_meal_identification/meal_identification/data/raw',
-    output_dir='0_meal_identification/meal_identification/data/interim',
-    use_auto_label=True,
-    keep_cols=None,
-    day_start_index_change=True,
-    day_start_time=pd.Timedelta(hours=4),
-    min_carbs=10,
-    n_top_carb_meals=3,
-    meal_length=pd.Timedelta(hours=3),
-    erase_meal_overlap=True,
-    coerce_time=True,
-    coerse_time_interval=pd.Timedelta(minutes=5),
-    return_data=False,
+        raw_data_path='0_meal_identification/meal_identification/data/raw',
+        output_dir='0_meal_identification/meal_identification/data/interim',
+        use_auto_label=True,
+        keep_cols=None,
+        day_start_index_change=True,
+        day_start_time=pd.Timedelta(hours=4),
+        min_carbs=5,
+        n_top_carb_meals=3,
+        meal_length=pd.Timedelta(hours=2),
+        erase_meal_overlap=True,
+        coerce_time=True,
+        coerse_time_interval=pd.Timedelta(minutes=5),
+        return_data=False,
 ):
     """
     Create a dataset from the raw data by orchestrating data loading, cleaning, transformation, and saving.
@@ -75,13 +109,16 @@ def dataset_creator(
     for patient_key, patient_df in patient_dfs_dict.items():
         print(f"\n========================= \nProcessing: {patient_key[:6]}")
 
+        patient_df = ensure_datetime_index(patient_df)
+
         # Coerce time intervals if required
+        # Original meal: 617 -> 585
         if coerce_time:
             patient_df = coerce_time_fn(data=patient_df, coerse_time_interval=coerse_time_interval)
 
         # Adjust day start index
         if day_start_index_change:
-            patient_df['day_start_shift'] = (patient_df['date'] - day_start_time).dt.date
+            patient_df['day_start_shift'] = (patient_df.index - day_start_time).date
 
         # Erase meal overlaps
         if erase_meal_overlap:
@@ -127,3 +164,7 @@ def dataset_creator(
 
     print(f"\n\nAll data saved successfully in: {output_dir}")
     return patient_dfs_list
+
+
+
+dataset_creator()

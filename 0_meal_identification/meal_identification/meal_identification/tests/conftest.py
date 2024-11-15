@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 @pytest.fixture
 def sample_meal_df():
     """Create a sample DataFrame for testing"""
-    dates = pd.date_range(start='2024-01-01', periods=5, freq='H')
+    dates = pd.date_range(start='2024-01-01', periods=5, freq='h')
     data = {
         'msg_type': ['ANNOUNCE_MEAL', '', 'ANNOUNCE_MEAL', 'ANNOUNCE_MEAL', ''],
         'food_g': [50.0, 0.0, 30.0, 20.0, 0.0],
@@ -30,12 +30,14 @@ def coerce_interval():
 @pytest.fixture
 def df_to_coerce():
     dates = pd.date_range(start='2024-01-01', periods=10, freq='3min')
-    return pd.DataFrame({
+    df = pd.DataFrame({
         'date': dates,
         'bgl':  list(range(10, 101, 10)),
         'msg_type': ['', 'ANNOUNCE_MEAL', '', '', 'ANNOUNCE_MEAL', '', '', '', '', ''],
         'food_g': [0, 50, 0, 0, 75, 0, 0, 0, 0, 0]
     })
+    df.set_index('date', inplace=True)
+    return df
 
 def pytest_generate_tests(metafunc):
     '''
