@@ -1,4 +1,3 @@
-# environment.yml (for development)
 name: meal_identification
 channels:
   - conda-forge
