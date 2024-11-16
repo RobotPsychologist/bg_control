@@ -4,7 +4,7 @@ import os
 import tempfile
 import shutil
 import pandas as pd
-from meal_identification.datasets.PydanticModels import DataFrameValidator, RawMealRecord
+from meal_identification.datasets.pydantic_test_models import DataFrameValidator, RawMealRecord
 
 class TestLoadData(unittest.TestCase):
     def setUp(self):

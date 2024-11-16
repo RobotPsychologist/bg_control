@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator, confloat
+from pydantic import BaseModel, Field, validator, confloat, field_validator
 from typing import List, Optional
 from datetime import datetime
 import pandas as pd
@@ -12,14 +12,14 @@ class MealRecord(BaseModel):
     food_g: float
     day_start_shift: Optional[int] = None
 
-    @validator('msg_type')
+    @field_validator('msg_type')
     def validate_msg_type(cls, v):
-        valid_types = {'ANNOUNCE_MEAL', '', '0'}
+        valid_types = {'ANNOUNCE_MEAL', 'LOW_CARB_MEAL', '', '0'}
         if v not in valid_types:
             raise ValueError(f'msg_type must be one of {valid_types}')
         return v
 
-    @validator('food_g')
+    @field_validator('food_g')
     def validate_food_g(cls, v):
         if v < 0:
             raise ValueError('food_g must be non-negative')
@@ -31,18 +31,18 @@ class RawMealRecord(BaseModel):
     bgl: confloat(gt=0)
     msg_type: str
 
-    @validator('msg_type')
+    @field_validator('msg_type')
     def validate_msg_type(cls, v):
         valid_types = {'ANNOUNCE_MEAL', 'DOSE_INSULIN', '', '0', }
         if v not in valid_types:
             raise ValueError(f'msg_type must be one of {valid_types}')
         return v
 
-    @validator('bgl')
+    @field_validator('bgl')
     def validate_bgl(cls, v):
-        if v <= 0:
+        if v <= 20:
             raise ValueError('Blood glucose level must be positive')
-        if v > 1000:
+        if v > 600:
             raise ValueError('Blood glucose level seems unreasonably high')
         return v
 

@@ -24,6 +24,7 @@ def erase_meal_overlap_fn(patient_df, meal_length, min_carbs):
     for idx in announce_meal_indices:
         # Skip meals below the carbohydrate threshold
         if patient_df.at[idx, 'food_g'] <= min_carbs:
+            patient_df.at[idx, 'msg_type'] = 'LOW_CARB_MEAL'
             continue
 
         # Define the time window
@@ -75,7 +76,7 @@ def keep_top_n_carb_meals(patient_df, n_top_carb_meals):
     grouped = announce_meal_df.groupby('day_start_shift')
 
     # Identify top n meal indices per group
-    top_meal_indices = grouped.apply(lambda x: x.nlargest(n_top_carb_meals, 'food_g')).index.get_level_values(1)
+    top_meal_indices = grouped.apply(lambda x: x.nlargest(n_top_carb_meals, 'food_g'), include_groups=False).index.get_level_values(1)
 
     # Mask to identify meals to keep
     keep_mask = patient_df.index.isin(top_meal_indices) & (patient_df['msg_type'] == 'ANNOUNCE_MEAL')

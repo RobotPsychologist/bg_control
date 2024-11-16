@@ -66,6 +66,41 @@ def load_data(raw_data_path, keep_cols):
     print("Loaded DataFrames:", list(dataframes.keys()))
     return dataframes
 
+def find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True):
+    """
+    Find the directory with given output directory
+
+    Parameters
+    ----------
+    output_dir : str
+        The directory to save the data
+    data_label : str
+        The label for the data
+    patient_id : str
+        The patient ID
+    data_gen_date : str
+        The date the data was generated
+    include_gen_date_label : bool
+        Whether to include the data generation date in the label
+
+    Returns
+    -------
+   tuple[str, str]
+        A tuple containing (full_path, filename)
+        full_path: complete path to the file
+        filename: just the filename portion
+    """
+    project_root = get_root_dir()
+    full_out_path_dir = os.path.join(project_root, output_dir)
+    os.makedirs(full_out_path_dir, exist_ok=True)  # Ensure the output directory exists
+
+    if include_gen_date_label:
+        filename = f"{data_gen_date}_{patient_id}_{data_label}.csv"
+    else:
+        filename = f"{patient_id}_{data_label}.csv"
+
+    return os.path.join(full_out_path_dir, filename), filename
+
 def save_data(data, output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True):
     """
     Save the data to the output directory.
@@ -89,56 +124,72 @@ def save_data(data, output_dir, data_label, patient_id, data_gen_date, include_g
     -------
     None
     """
-    project_root = get_root_dir()
-    full_out_path_dir = os.path.join(project_root, output_dir)
-    os.makedirs(full_out_path_dir, exist_ok=True)  # Ensure the output directory exists
 
-    if include_gen_date_label:
-        filename = f"{data_gen_date}_{patient_id}_{data_label}.csv"
-    else:
-        filename = f"{patient_id}_{data_label}.csv"
-
-    file_path = os.path.join(full_out_path_dir, filename)
+    file_path, filename = find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True)
     data.to_csv(file_path, index=True)
     print(f"Data saved successfully in: {output_dir}")
     print(f"\n \t Dataset label: {filename}")
 
-def dataset_label_modifier_fn(base_label_modifier,
-                              coerce_time, coerce_time_label,
-                              day_start_index_change, day_start_time_label,
-                              erase_meal_overlap, erase_meal_label):
+
+def dataset_label_modifier_fn(
+        base_label_modifier='',
+        coerce_time=False,
+        coerce_time_interval=None,
+        day_start_index_change=False,
+        day_start_time=None,
+        erase_meal_overlap=False,
+        min_carbs=None,
+        meal_length=None,
+        n_top_carb_meals=None
+):
     """
     Modify the data label based on applied transformations.
 
     Parameters
     ----------
-    base_label_modifier : str
+    base_label_modifier : str, optional
         The base label modifier for the dataset
-    coerce_time : bool
+    coerce_time : bool, optional
         Whether to coerce the time interval of the data
-    coerce_time_label : str
-        The label modifier for the time interval coercion
-    day_start_index_change : bool
+    coerce_time_interval : timedelta, optional
+        Time interval for coercion
+    day_start_index_change : bool, optional
         Whether to create a day index starting at a specific time
-    day_start_time_label : str
-        The label modifier for the day start time
-    erase_meal_overlap : bool
+    day_start_time : time, optional
+        Time object specifying when the day starts
+    erase_meal_overlap : bool, optional
         Whether to erase overlapping meals
-    erase_meal_label : str
-        The label modifier for the meal overlap erasure
+    min_carbs : int, optional
+        Minimum carbs threshold for meal detection
+    meal_length : time, optional
+        Length of time for meal window
+    n_top_carb_meals : int, optional
+        Number of top carb meals to consider
 
     Returns
     -------
     str
         The modified data label
+        i: interval in minutes
+        d: day_start in hours
+        c: min_carbs in g
+        l: meal_length in minutes
+        n: n_top_carb_meals in g
     """
     data_label_modifier = base_label_modifier
-    if coerce_time:
-        data_label_modifier += coerce_time_label
-    if day_start_index_change:
-        data_label_modifier += day_start_time_label
-    if erase_meal_overlap:
-        data_label_modifier += erase_meal_label
+
+    if coerce_time and coerce_time_interval is not None:
+        minutes = int(coerce_time_interval.total_seconds() // 60)
+        data_label_modifier += f"i{minutes}mins_"
+
+    if day_start_index_change and day_start_time is not None:
+        data_label_modifier += f"d{day_start_time.components.hours}hrs_"
+
+    if erase_meal_overlap and min_carbs is not None and meal_length is not None:
+        data_label_modifier += f"c{min_carbs}g_l{meal_length.components.hours}hrs_"
+
+    if n_top_carb_meals is not None:
+        data_label_modifier += f"n{n_top_carb_meals}"
 
     return data_label_modifier
 
@@ -149,7 +200,7 @@ def coerce_time_fn(data, coerse_time_interval):
     Parameters
     ----------
     data : pd.DataFrame
-        The input DataFrame with a 'date' column.
+        The input DataFrame with a 'date' index.
     coerse_time_interval : pd.Timedelta
         The interval for coarse time resampling.
 
@@ -159,30 +210,25 @@ def coerce_time_fn(data, coerse_time_interval):
         The coerced DataFrame with a DatetimeIndex.
     '''
     # Ensure 'date' column exists
-    if 'date' not in data.columns:
-        raise KeyError("'date' column not found in data.")
+    if 'date' != data.index.name:
+        raise KeyError(f"'date' column should be index, got {data.index.name} instead")
 
-    # Convert 'date' to datetime if not already
-    if not pd.api.types.is_datetime64_any_dtype(data['date']):
-        data['date'] = pd.to_datetime(data['date'], errors='coerce')
-        data = data.dropna(subset=['date'])  # Drop rows where 'date' couldn't be parsed
+    if not isinstance(coerse_time_interval, pd.Timedelta):
+        raise TypeError(
+            f"coerse_time_interval must be a pandas Timedelta object, got {type(coerse_time_interval)} instead")
 
-    # Set 'date' as the index without squeezing
-    data = data.set_index('date').sort_index()
-
-    # Define resample rule based on the provided timedelta
-    resample_rule = f'{int(coerse_time_interval.total_seconds() // 60)}min'  # e.g., '5min' for 5 minutes
-
-    # Resample the data
-    data_resampled = data.resample(resample_rule).first()
+    # Convert Timedelta directly to frequency string
+    freq = pd.tseries.frequencies.to_offset(coerse_time_interval)
 
     # Separate meal announcements and non-meal data
-    meal_announcements = data_resampled[data_resampled['msg_type'] == 'ANNOUNCE_MEAL'].copy()
-    non_meals = data_resampled[data_resampled['msg_type'] != 'ANNOUNCE_MEAL'].copy()
+    meal_announcements = data[data['msg_type'] == 'ANNOUNCE_MEAL'].copy()
+    non_meals = data[data['msg_type'] != 'ANNOUNCE_MEAL'].copy()
 
-    # Resample meal announcements separately
-    meal_announcements = meal_announcements.resample('5min').first()
-    non_meals = non_meals.resample('5min').first()
+    non_meals = non_meals.resample(freq).first()
+    start_time = non_meals.index.min()
+
+    # Resample meal announcements separately and align with non_meal
+    meal_announcements = meal_announcements.resample(freq, origin=start_time).first()
 
     # Join the two DataFrames
     data_resampled = non_meals.join(meal_announcements, how='left', rsuffix='_meal')
@@ -192,7 +238,6 @@ def coerce_time_fn(data, coerse_time_interval):
         meal_col = f"{col}_meal"
         if meal_col in data_resampled.columns:
             data_resampled[col] = data_resampled[col + '_meal'].combine_first(data_resampled[col])
-            data_resampled.drop(columns=[meal_col], inplace=True)
 
     # Retain 'food_g_keep' from meal announcements data_resampled = data.resample(resample_rule).first()
     data_resampled['food_g_keep'] = data_resampled.get('food_g_meal', 0)
@@ -202,9 +247,6 @@ def coerce_time_fn(data, coerse_time_interval):
 
     # Drop the identified columns
     data_resampled = data_resampled.drop(columns=columns_to_drop)
-
-    # At this point, 'date' is still the index. Do NOT reset the index.
-    data_resampled['date'] = data_resampled.index
 
     print("Columns after coercing time:", data_resampled.columns.tolist())
 
