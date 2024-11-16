@@ -24,18 +24,14 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Setup Miniconda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        auto-update-conda: true
-        python-version: 3.12
-        conda-solver: classic  # Specify classic solver instead of libmamba
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
 
     - name: Install dependencies
-      shell: bash -l {0}  # Important: this activates conda environment
       run: |
         conda env update --file environment.yml --name base
-        conda install flake8 pytest
 
     - name: Lint with flake8
       run: |
