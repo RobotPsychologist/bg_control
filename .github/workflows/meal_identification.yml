@@ -1,8 +1,6 @@
 name: Meal Identification
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -20,13 +18,13 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         activate-environment: meal_identification_ci
-        environment-file: ./0_meal_identification/meal_identification/environment_ci.yml
+        environment-file: ./0_meal_identification/meal_identification/environment-ci.yml
         python-version: '3.12'
         auto-activate-base: false
-        conda-solver: classic    # Explicitly use classic solver to avoid libmamba issues
+        conda-solver: classic
 
     - name: Install dependencies
-      shell: bash -l {0}        # Needed for conda activation
+      shell: bash -l {0}
       run: |
         conda info
         conda list
