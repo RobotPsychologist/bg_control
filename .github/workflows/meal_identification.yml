@@ -2,7 +2,7 @@ name: Meal Identification
 on:
   push:
     paths:
-      - '0_meal_identification/**'  # Only trigger when files in this directory change
+      - '0_meal_identification/**'  # Only trigger when files in this directory change.
     branches: [ main ]
   pull_request:
     paths:
