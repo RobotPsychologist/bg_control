@@ -85,3 +85,18 @@ def keep_top_n_carb_meals(patient_df, n_top_carb_meals):
     patient_df.loc[~keep_mask & (patient_df['msg_type'] == 'ANNOUNCE_MEAL'), ['food_g', 'msg_type']] = [0, '0']
 
     return patient_df
+
+def erase_consecutive_nan_values(patient_df: pd.DataFrame, max_consecutive_nan_values_per_day: int):
+    """
+    1. If there are more than max_consecutive_nan_values_per_day consecutive NaN values in a given day, then delete that day from the dataframe.
+    2. If there are less than max_consecutive_nan_values_per_day consecutive NaN values in a given day, then delete the NaN values from that day.
+    ------
+    Parameters:
+        patient_df: pd.DataFrame
+            The input DataFrame with a datetime index.
+        max_consecutive_nan_values_per_day: int
+            The maximum number of consecutive NaN values allowed in a given day. If more than this number of consecutive NaN values are found in a day, then delete that day from the dataframe. Otherwise, delete the NaN values from that day.
+    Returns:
+        pd.DataFrame
+            The processed DataFrame with consecutive NaN values handled.
+    """
