@@ -1,5 +1,4 @@
 name: Meal Identification
-
 on:
   pull_request:
     branches: [ main ]
