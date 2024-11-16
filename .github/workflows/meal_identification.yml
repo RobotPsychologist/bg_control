@@ -13,8 +13,6 @@ jobs:
     defaults:
       run:
         working-directory: ./0_meal_identification/meal_identification
-    strategy:
-      max-parallel: 5
 
     steps:
     - uses: actions/checkout@v4
@@ -24,10 +22,13 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Add conda to system path
-      run: |
-        # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Setup Conda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: meal_identification_ci
+        environment-file: environment_ci.yml
+        python-version: '3.12'
+        auto-activate-base: false
 
     - name: Install dependencies
       run: |
