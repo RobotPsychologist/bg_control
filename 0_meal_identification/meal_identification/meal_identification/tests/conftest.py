@@ -61,7 +61,7 @@ def noisy_df():
             
             # Day 3 - Most NaNs
             np.nan, np.nan, np.nan, np.nan, np.nan, 40, np.nan, np.nan,
-            np.nan, np.nan, np.nan, np.nan, np.nan, 35, np.nan, np.nan,
+            np.nan, np.nan, np.nan, 35, np.nan, np.nan, np.nan, np.nan,
             np.nan, 30, np.nan, np.nan, np.nan, np.nan, np.nan, 45,
             
             # Day 4 - Medium NaNs

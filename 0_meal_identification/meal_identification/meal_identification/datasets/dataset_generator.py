@@ -7,6 +7,7 @@ from dataset_operations import (
     save_data,
 )
 from dataset_cleaner import (
+    erase_consecutive_nan_values,
     erase_meal_overlap_fn,
     keep_top_n_carb_meals,
 )
@@ -52,6 +53,7 @@ def dataset_creator(
         keep_cols=None,
         day_start_index_change=True,
         day_start_time=pd.Timedelta(hours=4),
+        max_consecutive_nan_values_per_day=-1,
         min_carbs=5,
         n_top_carb_meals=3,
         meal_length=pd.Timedelta(hours=2),
@@ -77,6 +79,9 @@ def dataset_creator(
         Whether to create a day index starting at a specific time.
     day_start_time : pd.Timedelta, optional
         The time of day to start the day index.
+    max_consecutive_nan_values_per_day : int, optional
+        Maximum number of consecutive NaN values allowed in a given day. If more than this number of consecutive NaN values are found in a day, then delete that day from the dataframe. Otherwise, delete the NaN values from that day.
+        Set to a negative number (eg: -1) to disable this feature.
     min_carbs : int, optional
         Minimum amount of carbohydrates to consider a meal.
     n_top_carb_meals : int, optional
@@ -119,6 +124,11 @@ def dataset_creator(
         # Adjust day start index
         if day_start_index_change:
             patient_df['day_start_shift'] = (patient_df.index - day_start_time).date
+
+        # Erase consecutive NaN values if max_consecutive_nan_values_per_day is set
+        if max_consecutive_nan_values_per_day != -1:
+            print(f"Erasing consecutive NaN values with max {max_consecutive_nan_values_per_day} per day")
+            patient_df = erase_consecutive_nan_values(patient_df, max_consecutive_nan_values_per_day)
 
         # Erase meal overlaps
         if erase_meal_overlap:
