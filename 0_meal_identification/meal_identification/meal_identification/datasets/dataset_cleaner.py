@@ -100,3 +100,4 @@ def erase_consecutive_nan_values(patient_df: pd.DataFrame, max_consecutive_nan_v
         pd.DataFrame
             The processed DataFrame with consecutive NaN values handled.
     """
+    return patient_df

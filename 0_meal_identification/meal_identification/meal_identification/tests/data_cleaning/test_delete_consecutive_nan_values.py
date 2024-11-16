@@ -1,49 +1,73 @@
 from meal_identification.datasets.dataset_cleaner import keep_top_n_carb_meals
 from meal_identification.datasets.pydantic_test_models import DataFrameValidator, MealRecord
+from meal_identification.datasets.dataset_cleaner import erase_consecutive_nan_values
 
-class TestKeepTopNMeals:
-    def test_validate_structure(self, sample_meal_df, n_top_carb_meals):
-        """
-        Test that the output DataFrame maintains valid structure via pydantic
-        """
-        result_df = keep_top_n_carb_meals(sample_meal_df, n_top_carb_meals)
-        assert DataFrameValidator(MealRecord).validate_df(result_df)
 
-    def test_top_n_carbs_kept(self, sample_meal_df, n_top_carb_meals):
+class TestDeleteConsecutiveNanValues:
+    
+    def validate_no_nan_values(self, noisy_df, max_consecutive_nan_values_per_day):
         """
-        Tests that the top n carbohydrate meals are kept in a particular day
+        Tests that the outputted DataFrame has no NaN values
         """
-        result_df = keep_top_n_carb_meals(sample_meal_df, n_top_carb_meals)
+        result_df = erase_consecutive_nan_values(noisy_df, max_consecutive_nan_values_per_day)
+        assert not result_df.isnull().any().any()
+
+    def test_more_than_max_consecutive_nan_values_per_day_deleted(self, noisy_df, max_consecutive_nan_values_per_day):
+        """
+        Tests that more than max_consecutive_nan_values_per_day consecutive NaN values are deleted
+        """
+        # Group data by day
+        noisy_df['day'] = noisy_df.index.date
+        grouped = noisy_df.groupby('day')
         
-        # Group meals by day
-        original_meals = sample_meal_df[sample_meal_df['msg_type'] == 'ANNOUNCE_MEAL']
-        grouped_original = original_meals.groupby('day_start_shift')
-        
-        # For each day, check that the kept meals are the top n by carbs
-        for day, day_meals in grouped_original:
-            top_n_carbs = day_meals.nlargest(n_top_carb_meals, 'food_g')['food_g'].values
-            kept_meals = result_df[
-                (result_df['day_start_shift'] == day) & 
-                (result_df['msg_type'] == 'ANNOUNCE_MEAL')
-            ]['food_g'].values
+        # For each day, count consecutive NaN values
+        days_with_too_many_nans = []
+        for day, day_data in grouped:
+            # Get boolean mask of NaN values
+            nan_mask = day_data['food_g'].isnull()
             
-            assert len(kept_meals) <= n_top_carb_meals
-            assert all(carb in top_n_carbs for carb in kept_meals)
+            # Count consecutive NaNs
+            consecutive_nans = 0
+            max_consecutive = 0
+            for is_nan in nan_mask:
+                if is_nan:
+                    consecutive_nans += 1
+                    max_consecutive = max(max_consecutive, consecutive_nans)
+                else:
+                    consecutive_nans = 0
+                    
+            if max_consecutive > max_consecutive_nan_values_per_day:
+                days_with_too_many_nans.append(day)
 
-    def test_top_carbs_meals_kept_in_order(self, sample_meal_df, n_top_carb_meals):
+        # then check that those days are deleted
+        result_df = erase_consecutive_nan_values(noisy_df, max_consecutive_nan_values_per_day)
+        # Just check that the days with too many consecutive NaNs are deleted
+        assert not any(day in days_with_too_many_nans for day in result_df.index.date)
+
+    def test_fewer_than_max_consecutive_nan_values_per_day_kept(self, noisy_df, max_consecutive_nan_values_per_day):
         """
-        Tests that in a day, the top N carb meals are kept in order
+        Tests that fewer than max_consecutive_nan_values_per_day consecutive NaN values are deleted
         """
-        result_df = keep_top_n_carb_meals(sample_meal_df, n_top_carb_meals)
-        
-        # Group meals by day
-        original_meals = sample_meal_df[sample_meal_df['msg_type'] == 'ANNOUNCE_MEAL']
-        grouped_original = original_meals.groupby('day_start_shift')
-        
-        # For each day, check that the kept meals are in order
-        for day, day_meals in grouped_original:
-            kept_meals = result_df[
-                (result_df['day_start_shift'] == day) & 
-                (result_df['msg_type'] == 'ANNOUNCE_MEAL')
-            ]['food_g'].values
-            assert all(kept_meals == day_meals.nlargest(n_top_carb_meals, 'food_g')['food_g'].values)
+        # First check which days have fewer than max_consecutive_nan_values_per_day consecutive NaN values
+        noisy_df['day'] = noisy_df.index.date
+        grouped = noisy_df.groupby('day')
+        days_under_max_nans = []
+        for day, day_data in grouped:
+            nan_mask = day_data['food_g'].isnull()
+            consecutive_nans = 0
+            max_consecutive = 0
+            for is_nan in nan_mask:
+                if is_nan:
+                    consecutive_nans += 1
+                    max_consecutive = max(max_consecutive, consecutive_nans)
+                else:
+                    consecutive_nans = 0
+                    
+            if max_consecutive <= max_consecutive_nan_values_per_day:
+                days_under_max_nans.append(day)
+
+        # then check that those days are deleted
+        result_df = erase_consecutive_nan_values(noisy_df, max_consecutive_nan_values_per_day)
+        # Just check that the days with too many consecutive NaNs are deleted
+        assert not any(day in days_under_max_nans for day in result_df.index.date)
+
