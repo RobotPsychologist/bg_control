@@ -100,4 +100,39 @@ def erase_consecutive_nan_values(patient_df: pd.DataFrame, max_consecutive_nan_v
         pd.DataFrame
             The processed DataFrame with consecutive NaN values handled.
     """
-    return patient_df
+    # Create a copy to avoid modifying original
+    df = patient_df.copy()
+    
+    # Add day column for grouping
+    df['day'] = df.index.date
+    
+    # Process each day
+    days_to_keep = []
+    for day, day_data in df.groupby('day'):
+        # Get boolean mask of NaN values
+        nan_mask = day_data['food_g'].isnull()
+        
+        # Count consecutive NaNs
+        consecutive_nans = 0
+        max_consecutive = 0
+        for is_nan in nan_mask:
+            if is_nan:
+                consecutive_nans += 1
+                max_consecutive = max(max_consecutive, consecutive_nans)
+            else:
+                consecutive_nans = 0
+                
+        # Keep day if max consecutive NaNs is within limit
+        if max_consecutive <= max_consecutive_nan_values_per_day:
+            days_to_keep.append(day)
+    
+    # Filter to keep only valid days
+    result_df = df[df['day'].isin(days_to_keep)].copy()
+    
+    # Drop the temporary day column
+    result_df.drop('day', axis=1, inplace=True)
+    
+    # Drop remaining NaN values since they consecutively dont form a long enough chain
+    result_df = result_df.dropna(subset=['food_g'])
+    
+    return result_df

@@ -66,8 +66,11 @@ class TestDeleteConsecutiveNanValues:
             if max_consecutive <= max_consecutive_nan_values_per_day:
                 days_under_max_nans.append(day)
 
+        print(days_under_max_nans)
+        print(max_consecutive_nan_values_per_day)
+        print("=========under max==========")
         # then check that those days are deleted
         result_df = erase_consecutive_nan_values(noisy_df, max_consecutive_nan_values_per_day)
-        # Just check that the days with too many consecutive NaNs are deleted
-        assert not any(day in days_under_max_nans for day in result_df.index.date)
+        # Just check that all days in the resulting df has fewer than max_consecutive_nan_values_per_day consecutive NaN values
+        assert all(day in days_under_max_nans for day in result_df.index.date)
 
