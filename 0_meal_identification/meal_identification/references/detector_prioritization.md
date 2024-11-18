@@ -40,7 +40,7 @@
 | Metric Type | Description | Math Description |
 | - | - | --- |
 | Annotation error | Difference between the predicted  number of cps and actual cps | $\Delta_{AE}(\mathcal{T}^{*},\hat{\mathcal{T}}):=\|\hat{K} - K^{*}\|$ |
-| Hausdorff error | the greatest temporal distance between a chance point and its prediction | $\Delta_{HA}(\mathcal{T}^{*},\hat{\mathcal{T}}):= \max{\{\max_{\hat{t}\in\hat{\mathcal{T}}} \min_{t^{*}\in\mathcal{T}}^{*} \|\hat{t}-t^{*}\|,\max_{t^{*}\in \mathcal{T}^{*}} \min_{\hat{t}\in\hat{\mathcal{T}}}\|\hat{t}-t^{*}\|\}}$ |
+| Hausdorff error | the greatest temporal distance between a change point and its prediction | $\Delta_{HA}(\mathcal{T}^{*},\hat{\mathcal{T}}):= \max{\{\max_{\hat{t}\in\hat{\mathcal{T}}} \min_{t^{*}\in\mathcal{T}^{*}} \|\hat{t}-t^{*}\|,\max_{t^{*}\in \mathcal{T}^{*}} \min_{\hat{t}\in\hat{\mathcal{T}}}\|\hat{t}-t^{*}\|\}}$ |
 | Rand index | |  |
 | F1-Score | |  |
 |  | |  |
