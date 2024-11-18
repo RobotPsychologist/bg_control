@@ -1,0 +1,4 @@
+import streamlit as st
+
+st.title("Phase 2 - Prandial Interventions and Counterfactuals")
+st.write("Prandial Interventions and Counterfactuals develop and explore various causal machine learning techniques for estimating the effects of and suggesting pre/postprandial interventions to improve meal scores (uplift modeling, intervention estimations). Develop the ability to provide hindsight (counterfactuals) to PWD, providing interactive experimentation abilities to diabetic care practitioners. This helps PWDs find their personalized best call of action to get intended health results and helps them experiment with different strategies and their direct effects. This is seen in counterfactual estimations as recommendations for better T1D management. E.g. if a user did X during that meal, the glucose response curve would have looked like Y")
