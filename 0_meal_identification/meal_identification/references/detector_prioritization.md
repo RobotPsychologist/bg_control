@@ -8,10 +8,10 @@
 
 
 ## Abstract Typing
-| Algorithm | Detection Type | Score? | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Time Series scitype |
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-|  |  |  |  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |  |  |  |
+| Algorithm | Detection Type | Score? | Cost Function | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+|  |  |  |  |  |  |  |  |  |  |  |  |  |
+|  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 
 
@@ -32,13 +32,23 @@
     * Also called *signal segmentation*
     * Also referred to as *retrospective* or *a posteriori*
 * **time series scitype**: single time series, panel/collection, hierarchical, multiple of these, something else.
+* **Constraint Type**: which category of change point detection does the model fall under:
+  * **Problem 1**: known number of changes
+  * **Problem 2**: unknown number of changes
 
 ## Metrics
+| Metric Type | Description | Math Description |
+| - | - | --- |
+| Annotation error | Difference between the predicted  number of cps and actual cps | $\Delta_{AE}(\mathcal{T}^{*},\hat{\mathcal{T}}):=\|\hat{K} - K^{*}\|$ |
+| Hausdorff error | the greatest temporal distance between a chance point and its prediction | $\Delta_{HA}(\mathcal{T}^{*},\hat{\mathcal{T}}):= \max{\{\max_{\hat{t}\in\hat{\mathcal{T}}} \min_{t^{*}\in\mathcal{T}}^{*} \|\hat{t}-t^{*}\|,\max_{t^{*}\in \mathcal{T}^{*}} \min_{\hat{t}\in\hat{\mathcal{T}}}\|\hat{t}-t^{*}\|\}}$ |
+| Rand index | |  |
+| F1-Score | |  |
+|  | |  |
 
 
 
 ## Implementation Libraries
-| Authors | Repo URL | pypi name | Code Status Language | License Type | Maintenance Status | Governance Model |
+| Authors | Repo URL | pypi name | Code Status Language | License Type | Maintained | Governance Model |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| C. Truong, L. Oudre, N. Vayatis  | https://centre-borelli.github.io/ruptures-docs/ |  |  | BSD 2-Clause License |  |  |
+| C. Truong, L. Oudre, N. Vayatis  | https://centre-borelli.github.io/ruptures-docs/ | [ruptures](https://pypi.org/project/ruptures/)  | python  | [BSD 2-Clause License](https://centre-borelli.github.io/ruptures-docs/#license) | yes |  |
 |  |  |  |  |  |  |  |
