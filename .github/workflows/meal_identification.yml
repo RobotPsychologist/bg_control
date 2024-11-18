@@ -5,13 +5,19 @@ on:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./0_meal_identification/meal_identification
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Cache conda env
+      uses: actions/cache@v3
+      with:
+        path: /usr/share/miniconda/envs/meal_identification_ci
+        key: conda-${{ runner.os }}-${{ hashFiles('./0_meal_identification/meal_identification/environment-ci.yml') }}
 
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
