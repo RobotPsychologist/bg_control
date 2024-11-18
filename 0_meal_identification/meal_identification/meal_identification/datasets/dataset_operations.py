@@ -101,7 +101,7 @@ def find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen
 
     return os.path.join(full_out_path_dir, filename), filename
 
-def save_data(data, output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True):
+def save_data(data, output_dir, data_label, patient_id, data_gen_date):
     """
     Save the data to the output directory.
 
@@ -117,8 +117,6 @@ def save_data(data, output_dir, data_label, patient_id, data_gen_date, include_g
         The patient ID
     data_gen_date : str
         The date the data was generated
-    include_gen_date_label : bool
-        Whether to include the data generation date in the label
 
     Returns
     -------

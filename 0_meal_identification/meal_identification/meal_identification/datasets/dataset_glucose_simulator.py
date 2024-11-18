@@ -184,6 +184,7 @@ def generate_simulated_data(
     """
     Run a glucose simulation with specified parameters and output to data/raw.
     Animate and parallel can not be set to True at the same time for Mac. Not sure about Windows and Linux
+    General data flow: Sim -> Raw
 
     Parameters
     ----------
