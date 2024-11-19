@@ -42,7 +42,15 @@ def ensure_datetime_index(
     # Make a copy to avoid modifying the original
     df = data.copy()
 
-    df = df.set_index('date').squeeze()
+    # Check if the index is already a DatetimeIndex
+    if not isinstance(df.index, pd.DatetimeIndex):
+        # If not, set 'date' column as index and convert to DatetimeIndex
+        if 'date' in df.columns:
+            df = df.set_index('date')
+        else:
+            raise KeyError("DataFrame must have either a 'date' column or a DatetimeIndex.")
+
+    # Ensure the index is a DatetimeIndex
     df.index = pd.DatetimeIndex(df.index)
 
     return df
