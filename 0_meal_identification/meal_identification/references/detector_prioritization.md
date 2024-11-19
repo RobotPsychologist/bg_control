@@ -8,21 +8,27 @@
 
 
 ## Abstract Typing
+Below is a table of cost functions that can be used for change point detection.
+Cost functions $c(y_{t_{k}.t_{k+1}})$ measure the goodness-of-fit of a subsignal $y_{t_{k}.t_{k+1}} = \{y_{t}\}$ [(C. Truong et.al 2020, Sec.2)](https://www.sciencedirect.com/science/article/pii/S0165168419303494).
+The quantitative criterion $V(\mathcal{T},y)$ must be minimized and is the sum of these cost functions:
+
+$$V(\mathcal{T},y) := \sum_{k=0}^{K} c(y_{t_{k}.t_{k+1}})$$
+
 | Cost Function | Algorithm/Model Subtype | Detection Type | Parametric/Non-parametric | Score? | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------- |
-| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  | offline  |  |  |
+| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  | offline  |  |  |
+| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  | offline  |  |  |
+| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  | offline |  |  |
+| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  | offline |  |  |
 | |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 
