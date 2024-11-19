@@ -1,30 +1,68 @@
 import pandas as pd
 from datetime import datetime
+from itertools import product
 from dataset_operations import (
     load_data,
     coerce_time_fn,
     dataset_label_modifier_fn,
     save_data,
+    find_file_loc
 )
 from dataset_cleaner import (
     erase_meal_overlap_fn,
     keep_top_n_carb_meals,
 )
+import os
+
+
+def ensure_datetime_index(
+        data: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Ensures DataFrame has a datetime index.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Input DataFrame that either has a datetime index or a 'date' column
+        that can be converted to datetime.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with sorted datetime index.
+
+    Raises
+    ------
+    ValueError
+        If datetime conversion fails or if neither datetime index nor 'date' column exists.
+    KeyError
+        If 'date' column is not found in DataFrame.
+    """
+    # Make a copy to avoid modifying the original
+    df = data.copy()
+
+    df = df.set_index('date').squeeze()
+    df.index = pd.DatetimeIndex(df.index)
+
+    return df
+
 
 def dataset_creator(
-    raw_data_path='0_meal_identification/meal_identification/data/raw',
-    output_dir='0_meal_identification/meal_identification/data/interim',
-    use_auto_label=True,
-    keep_cols=None,
-    day_start_index_change=True,
-    day_start_time=pd.Timedelta(hours=4),
-    min_carbs=10,
-    n_top_carb_meals=3,
-    meal_length=pd.Timedelta(hours=3),
-    erase_meal_overlap=True,
-    coerce_time=True,
-    coerse_time_interval=pd.Timedelta(minutes=5),
-    return_data=False,
+        raw_data_path='0_meal_identification/meal_identification/data/raw',
+        output_dir='0_meal_identification/meal_identification/data/interim',
+        use_auto_label=True,
+        keep_cols=None,
+        day_start_index_change=True,
+        day_start_time=pd.Timedelta(hours=4),
+        min_carbs=5,
+        n_top_carb_meals=3,
+        meal_length=pd.Timedelta(hours=2),
+        erase_meal_overlap=True,
+        coerce_time=True,
+        coerse_time_interval=pd.Timedelta(minutes=5),
+        return_data=False,
+        over_write=False,
 ):
     """
     Create a dataset from the raw data by orchestrating data loading, cleaning, transformation, and saving.
@@ -57,6 +95,8 @@ def dataset_creator(
         Interval for coarse time.
     return_data : bool, optional
         Whether to return the processed data.
+    over_write : False: bool, optional
+        Whether to overwrite the processed dataset matching label already exists in the data/interim folder.
 
     Returns
     -------
@@ -74,6 +114,32 @@ def dataset_creator(
 
     for patient_key, patient_df in patient_dfs_dict.items():
         print(f"\n========================= \nProcessing: {patient_key[:6]}")
+        label = dataset_label_modifier_fn(
+            base_label_modifier="",
+            coerce_time=True,
+            coerce_time_interval=coerse_time_interval,
+            day_start_index_change=True,
+            day_start_time=day_start_time,
+            erase_meal_overlap=True,
+            min_carbs=min_carbs,
+            meal_length=meal_length,
+            n_top_carb_meals=n_top_carb_meals
+        )
+        time_stamp = datetime.today().strftime('%Y-%m-%d')
+
+        if not over_write:
+            filepath, filename = find_file_loc(
+                output_dir=output_dir,
+                data_label=label,
+                patient_id=patient_key[:7],
+                data_gen_date=time_stamp,
+                include_gen_date_label=use_auto_label
+            )
+            if os.path.exists(filepath):
+                print(f"File already exists at {filepath}, skipping save")
+                continue
+
+        patient_df = ensure_datetime_index(patient_df)
 
         # Coerce time intervals if required
         if coerce_time:
@@ -81,7 +147,7 @@ def dataset_creator(
 
         # Adjust day start index
         if day_start_index_change:
-            patient_df['day_start_shift'] = (patient_df['date'] - day_start_time).dt.date
+            patient_df['day_start_shift'] = (patient_df.index - day_start_time).date
 
         # Erase meal overlaps
         if erase_meal_overlap:
@@ -93,33 +159,14 @@ def dataset_creator(
             patient_df = keep_top_n_carb_meals(patient_df, n_top_carb_meals=n_top_carb_meals)
 
         # Save data with labeling
-        if use_auto_label:
-            label = dataset_label_modifier_fn(
-                base_label_modifier='',
-                coerce_time=coerce_time,
-                coerce_time_label=f"timeInter{int(coerse_time_interval.total_seconds() // 60)}mins_",
-                day_start_index_change=day_start_index_change,
-                day_start_time_label=f"dayStart{day_start_time.components.hours}hrs_",
-                erase_meal_overlap=erase_meal_overlap,
-                erase_meal_label=f"minCarb{min_carbs}g_{meal_length.components.hours}hrMealW"
-            )
-            save_data(
-                data=patient_df,
-                output_dir=output_dir,
-                data_label=label,
-                patient_id=patient_key[:7],
-                data_gen_date=datetime.today().strftime('%Y-%m-%d'),
-                include_gen_date_label=True
-            )
-        else:
-            save_data(
-                data=patient_df,
-                output_dir=output_dir,
-                data_label='dataLabelUnspecified_',
-                patient_id=patient_key[:7],
-                data_gen_date=datetime.today().strftime('%Y-%m-%d'),
-                include_gen_date_label=False
-            )
+        save_data(
+            data=patient_df,
+            output_dir=output_dir,
+            data_label=label if use_auto_label else 'dataLabelUnspecified_',
+            patient_id=patient_key[:7],
+            data_gen_date=time_stamp,
+            include_gen_date_label=use_auto_label
+        )
 
         # Append to return list if required
         if return_data:
@@ -127,3 +174,59 @@ def dataset_creator(
 
     print(f"\n\nAll data saved successfully in: {output_dir}")
     return patient_dfs_list
+
+
+# This function is meant for generating new dataset only
+def run_dataset_combinations(
+    raw_data_path='0_meal_identification/meal_identification/data/raw',
+    output_dir='0_meal_identification/meal_identification/data/interim',
+    over_write=False
+):
+    """
+    Run dataset_creator with different combinations of parameters
+    """
+    # Define parameter combinations
+    min_carbs_options = [5, 10]
+    meal_length_options = [2, 3, 5]  # hours
+    n_top_meals_options = [3, 4]
+
+    # Convert meal lengths to Timedelta
+    meal_length_timedeltas = [pd.Timedelta(hours=h) for h in meal_length_options]
+
+    # Create all combinations
+    combinations = list(product(
+        min_carbs_options,
+        meal_length_timedeltas,
+        n_top_meals_options
+    ))
+
+    # Run for each combination
+    for min_carbs, meal_length, n_top_meals in combinations:
+        print(f"\nProcessing combination:")
+        print(f"- min_carbs: {min_carbs}g")
+        print(f"- meal_length: {meal_length.components.hours}hrs")
+        print(f"- n_top_meals: {n_top_meals}")
+
+        try:
+            dataset_creator(
+                raw_data_path=raw_data_path,
+                output_dir=output_dir,
+                use_auto_label=True,
+                day_start_index_change=True,
+                day_start_time=pd.Timedelta(hours=4),
+                min_carbs=min_carbs,
+                n_top_carb_meals=n_top_meals,
+                meal_length=meal_length,
+                erase_meal_overlap=True,
+                coerce_time=True,
+                coerse_time_interval=pd.Timedelta(minutes=5),
+                return_data=False,
+                over_write=over_write
+            )
+            print("✓ Successfully processed combination")
+
+        except Exception as e:
+            print(f"✗ Error processing combination: {str(e)}")
+            continue
+
+    print("\nCompleted all combinations!")

@@ -8,10 +8,22 @@
 
 
 ## Abstract Typing
-| Algorithm | Detection Type | Score? | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Time Series scitype |
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-|  |  |  |  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |  |  |  |
+| Cost Function | Algorithm/Model Subtype | Detection Type | Parametric/Non-parametric | Score? | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------- |
+| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 
 
@@ -20,7 +32,9 @@
     * if segments, can they overlap
     * are labels deterministic, or probabilistic (probability of segment)
 * **type of label meaning**: outlier/anomaly, changepoint, mixed/multiple, something else
+* **Parametric/Non-parametric**: Is the model a parametric or non-parametric
 * **Score**: does the algorithm also return a score, e.g., anomaly score
+* **Cost Function**:
 * **label annotation present?**: If yes: categorical, numerical
 * **learning type**: supervised, unsupervised, semi-supervised
 * **learning mode**: stream, batch, both
@@ -32,13 +46,24 @@
     * Also called *signal segmentation*
     * Also referred to as *retrospective* or *a posteriori*
 * **time series scitype**: single time series, panel/collection, hierarchical, multiple of these, something else.
+* **Constraint Type**: which category of change point detection does the model fall under:
+  * **Problem 1**: known number of changes
+  * **Problem 2**: unknown number of changes
 
 ## Metrics
+| Metric Type | Description | Math Description | Source |
+| - | - | --- | - |
+| Annotation error | Difference between the predicted  number of cps and actual cps | $\Delta_{AE}(\mathcal{T}^{*},\hat{\mathcal{T}}):=\|\hat{K} - K^{*}\|$ | [(C. Truong 2020, Sec.3)](https://www.sciencedirect.com/science/article/pii/S0165168419303494)|
+| Hausdorff error | The greatest temporal distance between a change point and its prediction | $\Delta_{HA}(\mathcal{T}^{*},\hat{\mathcal{T}}):= \max{\{\max_{\hat{t}\in\hat{\mathcal{T}}} \min_{t^{*}\in\mathcal{T}^{*}} \|\hat{t}-t^{*}\|,\max_{t^{*}\in \mathcal{T}^{*}} \min_{\hat{t}\in\hat{\mathcal{T}}}\|\hat{t}-t^{*}\|\}}$ | [(C. Truong 2020, Sec.3)](https://www.sciencedirect.com/science/article/pii/S0165168419303494) |
+| Rand index | The average similarity between the predicted breakpoint set $\hat{\mathcal{T}}$ and the ground truth $\mathcal{T}^{*}$. An agreement is when a pair of indexes are in the same segment. | $\Delta_{RI}(\mathcal{T}^{*}, \hat{\mathcal{T}}):=\frac{\|gr(\hat{\Tau}) \cap gr(\mathcal{T}^{*}) \| + \|ngr(\hat{\Tau}) \cap ngr(\mathcal{T}^{*}) \|}{T(T-1)}$ | [(C. Truong 2020, Sec.3)](https://www.sciencedirect.com/science/article/pii/S0165168419303494) |
+| F1-Score | Precision is the proportion of predicted change points that are true change points. Recall is the proportion of true change points that are well predicted.  | $\Delta_{F1}(\mathcal{T}^{*},\hat{\mathcal{T}}):=2\times\frac{PREC(\mathcal{T}^{*},\hat{\mathcal{T}}) \times REC(\mathcal{T}^{*},\hat{\mathcal{T}})}{PREC(\mathcal{T}^{*},\hat{\mathcal{T}}) + REC(\mathcal{T}^{*},\hat{\mathcal{T}})}$ | [(C. Truong 2020, Sec.3)](https://www.sciencedirect.com/science/article/pii/S0165168419303494) |
+|  | |  | |
+
 
 
 
 ## Implementation Libraries
-| Authors | Repo URL | pypi name | Code Status Language | License Type | Maintenance Status | Governance Model |
+| Authors | Repo URL | pypi name | Code Status Language | License Type | Maintained | Governance Model |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| C. Truong, L. Oudre, N. Vayatis  | https://centre-borelli.github.io/ruptures-docs/ |  |  | BSD 2-Clause License |  |  |
+| C. Truong, L. Oudre, N. Vayatis  | https://centre-borelli.github.io/ruptures-docs/ | [ruptures](https://pypi.org/project/ruptures/)  | python  | [BSD 2-Clause License](https://centre-borelli.github.io/ruptures-docs/#license) | yes |  |
 |  |  |  |  |  |  |  |
