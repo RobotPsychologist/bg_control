@@ -4,7 +4,7 @@ from loguru import logger
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
-from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error, mean_absolute_percentage_error
 from sktime.performance_metrics.forecasting import MeanAbsolutePercentageError, MeanSquaredError, MeanAbsoluteError
 
 
@@ -43,8 +43,8 @@ def main(
 
         Parameters
         ----------
-        X : pd.DataFrame    
-            Features.
+        X : pd.Series    
+            BGL data.
         Y : pd.Series
             Labels.
         validation_split : float, optional
@@ -111,46 +111,46 @@ def main(
                                 verbose=verbose)
 
         if supervised:
-            print("Training supervised " + model + "...")
+            logger.info("Training supervised " + model + "...")
             model.fit(X_train, Y_train)
-            print("Modeling training complete.")
+            logger.info("Modeling training complete.")
         else:
-            print("Training unsupervised " + model + "...")
+            logger.info("Training unsupervised " + model + "...")
             model.fit(X_train)
-            print("Modeling training complete.")
+            logger.info("Modeling training complete.")
 
         hidden_states_train = model.predict(X_train)
         hidden_states_test = model.predict(X_val)
 
         train_mae = mean_absolute_error(hidden_states_train, Y_train)
-        train_mse = mean_squared_error(hidden_states_train, Y_train)
-        train_rmse = mean_squared_error(hidden_states_train, Y_train, squared=False)  # squared=False returns RMSE
+        train_mse = root_mean_squared_error(hidden_states_train, Y_train)
+        train_rmse = root_mean_squared_error(hidden_states_train, Y_train, squared=False)  # squared=False returns RMSE
         train_mape = mean_absolute_percentage_error(hidden_states_train, Y_train)
 
         test_mae = mean_absolute_error(hidden_states_test, Y_val)
-        test_mse = mean_squared_error(hidden_states_test, Y_val)
-        test_rmse = mean_squared_error(hidden_states_test, Y_val, squared=False)  # squared=False returns RMSE
+        test_mse = root_mean_squared_error(hidden_states_test, Y_val)
+        test_rmse = root_mean_squared_error(hidden_states_test, Y_val, squared=False)  # squared=False returns RMSE
         test_mape = mean_absolute_percentage_error(hidden_states_test, Y_val)
 
-        print(f"MAE for training data: {train_mae}")
-        print(f"MSE for training data: {train_mse}")
-        print(f"RMSE for training data: {train_rmse}")
-        print(f"MAPE for training data: {train_mape}")
+        logger.info(f"MAE for training data: {train_mae}")
+        logger.info(f"MSE for training data: {train_mse}")
+        logger.info(f"RMSE for training data: {train_rmse}")
+        logger.info(f"MAPE for training data: {train_mape}")
 
-        print(f"MAE for test data: {test_mae}")
-        print(f"MSE for test data: {test_mse}")
-        print(f"RMSE for test data: {test_rmse}")
-        print(f"MAPE for test data: {test_mape}")
+        logger.info(f"MAE for test data: {test_mae}")
+        logger.info(f"MSE for test data: {test_mse}")
+        logger.info(f"RMSE for test data: {test_rmse}")
+        logger.info(f"MAPE for test data: {test_mape}")
 
 
         return model
 
 
-        logger.info("Training some model...")
-        for i in tqdm(range(10), total=10):
-            if i == 5:
-                logger.info("Something happened for iteration 5.")
-        logger.success("Modeling training complete.")
+    logger.info("Training some model...")
+    for i in tqdm(range(10), total=10):
+        if i == 5:
+            logger.info("Something happened for iteration 5.")
+    logger.success("Modeling training complete.")
     # -----------------------------------------
 
 
