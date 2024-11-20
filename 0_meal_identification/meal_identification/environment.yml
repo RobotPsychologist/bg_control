@@ -25,6 +25,7 @@ dependencies:
   - seaborn
   - pydantic
   - pytest
+  - pytest-mock
   - pip:
       - python-dotenv
       - mkdocs
