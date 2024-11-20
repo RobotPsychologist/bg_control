@@ -29,6 +29,6 @@ dependencies:
       - python-dotenv
       - mkdocs
       - skchange
-      - e .
       - ipynb
       - pyyaml
+      - ruamel.yaml

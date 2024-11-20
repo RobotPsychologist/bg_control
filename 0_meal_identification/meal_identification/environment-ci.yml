@@ -19,6 +19,7 @@ dependencies:
   - numba
   - pydantic
   - pip:
-    - python-dotenv
-    - skchange
-    - pyyaml
+      - python-dotenv
+      - skchange
+      - pyyaml
+      - ruamel.yaml
