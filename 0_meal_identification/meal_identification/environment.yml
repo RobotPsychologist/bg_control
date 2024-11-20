@@ -26,8 +26,9 @@ dependencies:
   - pydantic
   - pytest
   - pip:
-    - python-dotenv
-    - mkdocs
-    - skchange
-    - -e .
-    - ipynb
+      - python-dotenv
+      - mkdocs
+      - skchange
+      - e .
+      - ipynb
+      - pyyaml
