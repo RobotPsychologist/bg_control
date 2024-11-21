@@ -32,14 +32,59 @@ def main(
     model_path: Path = MODELS_DIR / "model.pkl",
     # -----------------------------------------
 ):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
+    
+    def transform_data(data, transformer):
+        """
+        Transform the data using the given transformer.
 
-    def train_model_instance(X, Y, transformer = None, model="model", supervised=False, 
-                             validation_split = 0.2, n_iter = 100, 
-                             n_components = 3, n_mix = 3, covariance_type = 'full', 
-                             verbose = True,
-                             period_length = 10, n_cps = 2, n_neighbors = 36,
-                             window_size = 288, init_params="s", random_state=None):
+        Parameters
+        ----------
+        data : pd.Series
+            Data to transform.
+        transformer : sktime transformer
+            Transformer to use.
+
+        Returns
+        -------
+        pd.Series
+            Transformed data.
+        """
+        transformed_data = transformer.fit_transform(data)
+        
+        # Save the transformed data to the specified directory
+        output_path = Path("0_meal_identification/meal_identification/data/processed/transformed_data.csv")
+        transformed_data.to_csv(output_path, index=False)
+        
+        return transformed_data
+    
+    def xy_split(data, supervised=False):
+        """
+        Split the data into features and labels.
+
+        Parameters
+        ----------
+        data : pd.DataFrame
+            Data to split.
+
+        Returns
+        -------
+        pd.Series
+            Features.
+        pd.Series
+            Labels.
+        """
+        X = data(columns=["bgl"])
+        if supervised:
+            Y = data["msg_type"]
+        
+        return X, Y
+
+    def train_model_instance(X, Y=None, model="model", supervised=False, 
+                             validation_split=0.2, n_iter=100, 
+                             n_components=3, n_mix=3, covariance_type='full', 
+                             verbose=True, period_length=10, n_cps=2, 
+                             n_neighbors=36, window_size=288, init_params="s", 
+                             random_state=None, transformer=None):
         """
         Train a model on the given data.
 
