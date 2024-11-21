@@ -2,10 +2,12 @@ from pathlib import Path
 import typer
 from loguru import logger
 from tqdm import tqdm
+import pandas as pd
+import os
 from sklearn.model_selection import train_test_split
 from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, mean_absolute_percentage_error
-from sktime.performance_metrics.forecasting import MeanAbsolutePercentageError, MeanSquaredError, MeanAbsoluteError
+from sktime.performance_metrics.forecasting import count_error, hausdorff_error, prediction_ratio
 
 
 # Model Imports
@@ -32,7 +34,7 @@ def main(
 ):
     # ---- REPLACE THIS WITH YOUR OWN CODE ----
 
-    def train_model_instance(X, Y, model="model", supervised=False, 
+    def train_model_instance(X, Y, transformer = None, model="model", supervised=False, 
                              validation_split = 0.2, n_iter = 100, 
                              n_components = 3, n_mix = 3, covariance_type = 'full', 
                              verbose = True,
@@ -43,10 +45,14 @@ def main(
 
         Parameters
         ----------
-        X : pd.Series    
+        X : csv file path
             BGL data.
-        Y : pd.Series
+        Y : csv file path
             Labels.
+        transformer : callable, optional
+            A function or transformer that preprocesses the data.
+        supervised : bool, optional
+            Indicates whether the model is supervised.
         validation_split : float, optional
             Fraction of the data to use for validation, by default 0.2
         model : str, optional
@@ -60,14 +66,28 @@ def main(
             PoissonHMM: n_components, n_iter, init_params, random_state, verbose
             GaussianHMM: n_components, covariance_type, n_iter, init_params, random_state, verbose
 
-
-
         Returns
         -------
         model
-            Trained model. And logs the training process.
+            Trained model
+
+        Notes
+        -----
+        Training logs are saved to the 'models/training_logs' directory.
         """
 
+        log_dir = 'models/training_logs'
+        os.makedirs(log_dir, exist_ok=True)
+        log_file = os.path.join(log_dir, f'{model}_training.log')
+
+        logger.add(log_file)
+
+        # Load the data
+        X = pd.read_csv(X)
+        Y = pd.read_csv(Y)
+        # Apply the transformer to the data
+        X = transformer.fit_transform(X)
+        Y = transformer.transform(Y)
         # Split the data into training and validation sets
         X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=validation_split, shuffle=False)
 
@@ -110,14 +130,13 @@ def main(
                                 random_state=random_state,
                                 verbose=verbose)
 
-        if supervised:
-            logger.info("Training supervised " + model + "...")
-            model.fit(X_train, Y_train)
-            logger.info("Modeling training complete.")
-        else:
-            logger.info("Training unsupervised " + model + "...")
-            model.fit(X_train)
-            logger.info("Modeling training complete.")
+        logger.info(f"Training {'supervised' if supervised else 'unsupervised'} model: {model}...")
+        try:
+            model.fit(X_train, Y_train) if supervised else model.fit(X_train)
+        except Exception as e:
+            logger.error(f"Error during model fitting: {e}")
+            return None
+        logger.info("Modeling training complete.")
 
         hidden_states_train = model.predict(X_train)
         hidden_states_test = model.predict(X_val)
