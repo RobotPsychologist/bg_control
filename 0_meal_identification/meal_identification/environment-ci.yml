@@ -6,6 +6,7 @@ dependencies:
   - pip
   - flake8
   - pytest
+  - pytest-mock
   - typer
   - loguru
   - tqdm
@@ -21,4 +22,3 @@ dependencies:
   - pip:
     - python-dotenv
     - skchange
-    - .
