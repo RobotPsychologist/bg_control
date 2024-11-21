@@ -8,8 +8,8 @@ from loguru import logger
 
 gen = PipelineGenerator()
 
-gen.load_data(["2024-11-14_500030__timeInter5mins_dayStart4hrs_minCarb5g_3hrMealW.csv",
-               "2024-11-14_500030__timeInter5mins_dayStart4hrs_minCarb10g_3hrMealW.csv"])
+gen.load_data(["2024-11-15_679372__i5mins_d4hrs_c10g_l5hrs_n4.csv",
+               "2024-11-15_679372__i5mins_d4hrs_c10g_l5hrs_n3.csv"])
 
 gen.generate_pipeline([
     CosineTransformer(),
@@ -21,4 +21,4 @@ gen.generate_pipeline([
 gen.fit_transform()
 
 processed_data = gen.save_output()
-print(processed_data)
+print(processed_data["2024-11-15_679372__i5mins_d4hrs_c10g_l5hrs_n4.csv"].head())

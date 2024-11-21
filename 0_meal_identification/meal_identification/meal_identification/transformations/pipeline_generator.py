@@ -88,7 +88,7 @@ class PipelineGenerator():
         # load pipeline from past runs
         if run:
             pipeline_path = os.path.join(self.processed_dir_path, f"run_{run}", "pipelines")
-
+            # does load_from_path actually work?
             for file in os.scandir(pipeline_path): # this is junky, refractor
                 pipe = TransformerPipeline.load_from_path(os.path.join(pipeline_path, file))
                 break
@@ -149,7 +149,7 @@ class PipelineGenerator():
 
     def save_output(
             self,
-            output_dir = "0_meal_identification/meal_identification/data/processed"
+            output_dir=None
     ):
         '''
         Applies fit and transform in sequence
@@ -163,8 +163,8 @@ class PipelineGenerator():
         processed_data: dictionary of pandas DataFrames
             Data supplied to the PipelineGenerator after transformations
         '''
-
-        output_dir = self.processed_dir_path 
+        if(output_dir is None):
+            output_dir = self.processed_dir_path 
 
         # figure out which run is the last one
         runs = []
