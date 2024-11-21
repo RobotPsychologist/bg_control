@@ -80,7 +80,7 @@ def main(
                          covariance_type=covariance_type, 
                          n_iter=n_iter, 
                          init_params=init_params,
-                        random_state=random_state,
+                         random_state=random_state,
                          verbose=verbose)
 
             # Use metrics made by sktime team when they come out
