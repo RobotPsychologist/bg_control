@@ -67,3 +67,11 @@
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 | C. Truong, L. Oudre, N. Vayatis  | https://centre-borelli.github.io/ruptures-docs/ | [ruptures](https://pypi.org/project/ruptures/)  | python  | [BSD 2-Clause License](https://centre-borelli.github.io/ruptures-docs/#license) | yes |  |
 |  |  |  |  |  |  |  |
+
+
+## Papers to Review Prioritization:
+1. [An Evaluation of Change Point Detection Algorithms](https://arxiv.org/pdf/2003.06222)
+2. [Selective review of offline change point detection methods](https://doi.org/10.1016/j.sigpro.2019.107299)
+3. [Papers with Code - Change Point Detection](https://paperswithcode.com/task/change-point-detection)
+4. [A survey of methods for time series change point detection](https://link.springer.com/article/10.1007/s10115-016-0987-z)
+5. [Semi-supervised Sequence Classification through Change Point Detection](https://ojs.aaai.org/index.php/AAAI/article/view/16814)
