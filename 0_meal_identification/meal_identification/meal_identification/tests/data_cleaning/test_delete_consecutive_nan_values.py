@@ -24,7 +24,7 @@ class TestDeleteConsecutiveNanValues:
         days_with_too_many_nans = []
         for day, day_data in grouped:
             # Get boolean mask of NaN values
-            nan_mask = day_data['food_g'].isnull()
+            nan_mask = day_data['bgl'].isnull()
             
             # Count consecutive NaNs
             consecutive_nans = 0
@@ -53,7 +53,7 @@ class TestDeleteConsecutiveNanValues:
         grouped = noisy_df.groupby('day')
         days_under_max_nans = []
         for day, day_data in grouped:
-            nan_mask = day_data['food_g'].isnull()
+            nan_mask = day_data['bgl'].isnull()
             consecutive_nans = 0
             max_consecutive = 0
             for is_nan in nan_mask:

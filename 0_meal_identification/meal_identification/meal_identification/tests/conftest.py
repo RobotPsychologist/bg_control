@@ -49,7 +49,7 @@ def noisy_df():
     dates = pd.date_range(start='2024-01-01', periods=96, freq='h')  # 4 days * 24 hours
     data = {
         'date': dates,
-        'food_g': [
+        'bgl': [
             # Day 1 - Few NaNs
             50, np.nan, 30, 20, 45, 50, np.nan, 30, 20, 35, 40, 25,
             30, np.nan, 40, 35, 45, 50, 30, 25, 40, np.nan, 35, 30,
