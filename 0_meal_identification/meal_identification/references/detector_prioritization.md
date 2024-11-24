@@ -3,29 +3,11 @@
 ## Meta Data
 | Algorithm | Literature | Hyperparameters |
 | ----------- | ----------- | ----------- |
-|  |  |
-|  |  |
-
-
-## Abstract Typing
-| Cost Function | Algorithm/Model Subtype | Detection Type | Parametric/Non-parametric | Score? | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------- |
-| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| |  |  |  |  |  |  |  |  |  |  |  |  |  |
-
-
+| Binary Segmentation  |  |
+| Fused Lasso |  |
+| Opt |  |
+| Pelt |  |
+| Window |  |
 
 * **Detection Type**: points, segments, both, something else
     * segment = (start time stamp, end time stamp)
@@ -50,6 +32,26 @@
   * **Problem 1**: known number of changes
   * **Problem 2**: unknown number of changes
 
+
+## Cost Functions
+| Cost Function | Algorithm/Model Subtype | Detection Type | Parametric/Non-parametric | Score? | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------- |
+| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| |  |  |  |  |  |  |  |  |  |  |  |  |  |
+
+
 ## Metrics
 | Metric Type | Description | Math Description | Source |
 | - | - | --- | - |
@@ -58,7 +60,6 @@
 | Rand index | The average similarity between the predicted breakpoint set $\hat{\mathcal{T}}$ and the ground truth $\mathcal{T}^{*}$. An agreement is when a pair of indexes are in the same segment. | $\Delta_{RI}(\mathcal{T}^{*}, \hat{\mathcal{T}}):=\frac{\|gr(\hat{\Tau}) \cap gr(\mathcal{T}^{*}) \| + \|ngr(\hat{\Tau}) \cap ngr(\mathcal{T}^{*}) \|}{T(T-1)}$ | [(C. Truong 2020, Sec.3)](https://www.sciencedirect.com/science/article/pii/S0165168419303494) |
 | F1-Score | Precision is the proportion of predicted change points that are true change points. Recall is the proportion of true change points that are well predicted.  | $\Delta_{F1}(\mathcal{T}^{*},\hat{\mathcal{T}}):=2\times\frac{PREC(\mathcal{T}^{*},\hat{\mathcal{T}}) \times REC(\mathcal{T}^{*},\hat{\mathcal{T}})}{PREC(\mathcal{T}^{*},\hat{\mathcal{T}}) + REC(\mathcal{T}^{*},\hat{\mathcal{T}})}$ | [(C. Truong 2020, Sec.3)](https://www.sciencedirect.com/science/article/pii/S0165168419303494) |
 |  | |  | |
-
 
 
 
