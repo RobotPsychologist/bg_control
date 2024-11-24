@@ -8,7 +8,6 @@ from sklearn.model_selection import train_test_split
 from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
 from sktime.performance_metrics.forecasting import count_error, hausdorff_error, prediction_ratio
 
-
 # Model Imports
 from sktime.annotation.hmm_learn import GMMHMM 
 from sktime.annotation.clasp import ClaSPSegmentation, find_dominant_window_sizes
@@ -16,12 +15,53 @@ from sktime.classification.interval_based import TimeSeriesForestClassifier
 from pyod.models.knn import KNN
 from sktime.annotation.adapters import PyODAnnotator
 from sktime.annotation.lof import SubLOF
-from hmmlearn import hmm # CategoricalHMM and GaussianHMM uses hmm module
+from hmmlearn import hmm  # CategoricalHMM and GaussianHMM use hmm module
 from sktime.annotation.hmm_learn import PoissonHMM 
-from sktime.annotation.hmm_learn import GaussianHMM 
+from sktime.annotation.hmm_learn import GaussianHMM
+import joblib  # Added import for joblib
 
 app = typer.Typer()
 
+# Function to save a model
+def save_model(model, model_path: Path):
+    """
+    Save the trained model to the specified file path.
+
+    Parameters
+    ----------
+    model : object
+        The model to save.
+    model_path : Path
+        The path where the model will be saved.
+    """
+    try:
+        joblib.dump(model, model_path)
+        logger.info(f"Model saved to {model_path}")
+    except Exception as e:
+        logger.error(f"Error saving model: {e}")
+
+# Function to load a model
+def load_model(model_path: Path):
+    """
+    Load a model from the specified file path.
+
+    Parameters
+    ----------
+    model_path : Path
+        The path from which the model will be loaded.
+
+    Returns
+    -------
+    model : object
+        The loaded model.
+    """
+    try:
+        model = joblib.load(model_path)
+        logger.info(f"Model loaded from {model_path}")
+        return model
+    except Exception as e:
+        logger.error(f"Error loading model: {e}")
+        return None
 
 @app.command()
 def main(
@@ -31,7 +71,6 @@ def main(
     model_path: Path = MODELS_DIR / "model.pkl",
     # -----------------------------------------
 ):
-    
     def transform_data(data, transformer):
         """
         Transform the data using the given transformer.
@@ -82,7 +121,7 @@ def main(
                              n_components=3, n_mix=3, covariance_type='full', 
                              verbose=True, period_length=10, n_cps=2, 
                              n_neighbors=36, window_size=288, init_params="s", 
-                             random_state=None, transformer=None):
+                             random_state=None, transformer=None, model_path=None):
         """
         Train a model on the given data.
 
@@ -134,7 +173,6 @@ def main(
         X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=validation_split, shuffle=False)
 
         if model == "GMMHMM":
-
             model = GMMHMM(n_components=n_components, 
                          n_mix = n_mix, 
                          covariance_type=covariance_type, 
@@ -142,26 +180,18 @@ def main(
                          init_params=init_params,
                          random_state=random_state,
                          verbose=verbose)
-
         elif model == "ClaSPSegmentation":
-
             model = ClaSPSegmentation(period_length=period_length, 
                                       n_cps=n_cps)
-        
         elif model == "SubLOF":
-
             model = SubLOF(n_neighbors=n_neighbors, window_size=window_size)
-
         elif model == "PoissonHMM":
-            
             model = PoissonHMM(n_components=n_components,   
                                 n_iter=n_iter,
                                 init_params=init_params,
                                 random_state=random_state,
                                 verbose=verbose)
-        
         elif model == "GaussianHMM":
-
             model = GaussianHMM(n_components=n_components, 
                                 covariance_type=covariance_type,
                                 n_iter=n_iter,
@@ -175,7 +205,7 @@ def main(
         except Exception as e:
             logger.error(f"Error during model fitting: {e}")
             return None
-        logger.info("Modeling training complete.")
+        logger.info("Model training complete.")
 
         hidden_states_train = model.predict(X_train)
         hidden_states_test = model.predict(X_val)
@@ -196,9 +226,10 @@ def main(
         logger.info(f"hausdorff error for test data: {test_hausdorff_error}")
         logger.info(f"prediction ratio for test data: {test_prediction_ratio}")
 
+        if model_path:  # Add this condition to save the model after training
+            save_model(model, model_path)
 
         return model
-
 
     logger.info("Training some model...")
     for i in tqdm(range(10), total=10):
@@ -206,7 +237,6 @@ def main(
             logger.info("Something happened for iteration 5.")
     logger.success("Modeling training complete.")
     # -----------------------------------------
-
 
 if __name__ == "__main__":
     app()
