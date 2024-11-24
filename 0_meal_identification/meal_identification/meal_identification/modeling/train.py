@@ -5,7 +5,6 @@ from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
 from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
-from sktime.performance_metrics.forecasting import MeanAbsolutePercentageError, MeanSquaredError, MeanAbsoluteError
 
 
 # Model Imports
