@@ -21,6 +21,8 @@ You can find these modules under `0_meal_identification/meal_identification/meal
 
 This module provides functions to clean and preprocess the raw meal data.
 
+
+
 #### `erase_meal_overlap_fn`
 
 **Purpose**: Handles overlapping meal events by merging them within a specified time window and applying carbohydrate thresholds.
@@ -43,9 +45,28 @@ This module provides functions to clean and preprocess the raw meal data.
    - Otherwise, sums up `food_g` within the `meal_length` window and adds it to the original meal.
    - Erases overlapping events within the window by setting `'food_g'` to `0` and `'msg_type'` to an empty string.
 
-**Notes**:
+#### `remove_num_meal`
 
-- **Docstring Accuracy**: The docstring accurately describes the function's behavior.
+**Purpose**: Removes all days that contain a specific number of meals (`ANNOUNCE_MEAL` events).
+
+**Parameters**:
+
+- `patient_df` (`pd.DataFrame`): The input DataFrame containing at least `'msg_type'`, `'food_g'`, and a datetime index.
+- `num_meal` (`int`): The specific number of meals in a day to identify and remove.
+
+**Returns**:
+
+- `pd.DataFrame`: The processed DataFrame with days containing the specified number of meals removed.
+
+**Behavior**:
+
+1. Extracts the date part of the datetime index and adds it as a temporary `'day'` column.
+2. Filters to include only `'ANNOUNCE_MEAL'` events.
+3. Groups the data by day and counts the number of meals per day.
+4. Identifies days where the count of meals matches the specified `num_meal`.
+5. Removes rows from the DataFrame corresponding to these identified days.
+6. Drops the temporary `'day'` column.
+
 
 #### `keep_top_n_carb_meals`
 
@@ -67,9 +88,6 @@ This module provides functions to clean and preprocess the raw meal data.
 3. Groups meals by `'day_start_shift'` and selects the top N meals based on `'food_g'`.
 4. Sets `'food_g'` to `0` and `'msg_type'` to `'0'` for meals not in the top N.
 
-**Notes**:
-
-- **Docstring Accuracy**: The docstring correctly represents the function's functionality.
 
 #### `erase_consecutive_nan_values`
 
@@ -92,10 +110,6 @@ This module provides functions to clean and preprocess the raw meal data.
    - If the maximum is within the allowed limit, retains the day; otherwise, excludes it.
 3. Drops the temporary `'day'` column.
 4. Removes remaining `NaN` values that do not form a long enough consecutive chain.
-
-**Notes**:
-
-- **Docstring Accuracy**: The docstring accurately describes the function's behavior.
 
 ### Dataset Generator
 
@@ -189,10 +203,6 @@ This module orchestrates the dataset creation process, integrating loading, clea
 3. **Error Handling**: Catches and logs any exceptions during processing, allowing the loop to continue with remaining combinations.
 4. **Completion Message**: Prints a message upon completing all combinations.
 
-**Notes**:
-
-- **Docstring Accuracy**: The docstring accurately describes the function's purpose and behavior.
-
 ### Dataset Operations
 
 Core functions responsible for data loading, saving, labeling, and time coercion.
@@ -216,9 +226,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 3. Checks for the presence of the `unique_dir` (default `.github`) to identify the root.
 4. Raises a `FileNotFoundError` if the root directory isn't found.
 
-**Notes**:
-
-- **Docstring Accuracy**: The docstring correctly describes the function's behavior.
 
 #### `load_data`
 
@@ -241,9 +248,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 4. Handles and logs any errors encountered during file loading.
 5. Returns a dictionary of loaded DataFrames.
 
-**Notes**:
-
-- **Docstring Accuracy**: The docstring accurately reflects the function's functionality.
 
 #### `find_file_loc`
 
@@ -269,10 +273,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
    - If `False`: `"{patient_id}_{data_label}.csv"`
 3. Returns the full file path and the filename.
 
-**Notes**:
-
-- **Docstring Accuracy**: The docstring correctly describes the function's behavior.
-
 #### `save_data`
 
 **Purpose**: Saves the processed DataFrame to a CSV file in the specified directory with appropriate labeling.
@@ -295,10 +295,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 1. Calls `find_file_loc` to determine the full file path and filename.
 2. Saves the DataFrame to the specified path using `to_csv`, including the datetime index.
 3. Logs a success message with the file location and dataset label.
-
-**Notes**:
-
-- **Docstring Accuracy**: The docstring accurately reflects the function's purpose and behavior.
 
 #### `dataset_label_modifier_fn`
 
@@ -330,15 +326,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
    - Top N carbohydrate meals (`n{n_top_carb_meals}`)
 3. Returns the concatenated label string.
 
-**Notes**:
-
-- **Docstring Accuracy**: There is a discrepancy in the docstring:
-
-  - **Parameter Description Mismatch**:
-    - `meal_length`: The docstring describes it as a `time` object, but the code uses `pd.Timedelta`.
-    - `day_start_time`: The docstring mentions it as a `time` object, but it's used as a `pd.Timedelta` in the code.
-
-  **Recommendation**: Update the docstring to reflect that `meal_length` and `day_start_time` are `pd.Timedelta` objects.
 
 #### `coerce_time_fn`
 
@@ -363,14 +350,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 6. Combines the two DataFrames, ensuring meal announcements are retained.
 7. Drops temporary columns used for merging.
 
-**Notes**:
-
-- **Docstring Accuracy**: There is a mismatch in the docstring:
-
-  - **Index vs. Column**: The docstring mentions ensuring a `'date'` column exists, but the code checks if the index is named `'date'`.
-
-  **Recommendation**: Update the docstring to specify that the DataFrame must have a datetime index named `'date'`.
-
 ### Utilities
 
 #### `get_path`
@@ -394,9 +373,6 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 4. If the file doesn't exist, appends the suffix to the path.
 5. Returns the resolved path as a string.
 
-**Notes**:
-
-- **Docstring Accuracy**: The docstring accurately describes the function's behavior.
 
 ### Plots
 
@@ -425,52 +401,3 @@ Core functions responsible for data loading, saving, labeling, and time coercion
      - Plots a histogram with hourly bins (24 bins for 24 hours).
 4. Configures plot aesthetics (labels, title, grid, layout).
 5. Displays the histogram.
-
-**Notes**:
-
-- **Docstring Accuracy**: The docstring accurately describes the function's purpose and parameters.
-
-## Contributing
-
-Contributions are welcome! To contribute:
-
-1. **Fork the Repository**
-
-   Click the "Fork" button at the top-right corner of the repository page.
-
-2. **Clone Your Fork**
-
-   ```bash
-   git clone https://github.com/yourusername/meal-identification-toolkit.git
-   cd meal-identification-toolkit
-   ```
-
-3. **Create a New Branch**
-
-   ```bash
-   git checkout -b feature/YourFeatureName
-   ```
-
-4. **Make Your Changes**
-
-   Implement your feature or bug fix. Ensure that your code adheres to the project's coding standards.
-
-5. **Commit Your Changes**
-
-   ```bash
-   git commit -m "Add feature: YourFeatureName"
-   ```
-
-6. **Push to Your Fork**
-
-   ```bash
-   git push origin feature/YourFeatureName
-   ```
-
-7. **Open a Pull Request**
-
-   Navigate to the original repository and open a pull request from your fork's feature branch.
-
----
-
-**Note**: If you encounter discrepancies between the docstrings and the actual code behaviour, please refer to the specific sections above where mismatches were identified. Updating docstrings to accurately reflect code functionality is essential for maintaining clarity and usability.
