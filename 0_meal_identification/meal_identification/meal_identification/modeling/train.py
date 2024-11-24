@@ -95,6 +95,29 @@ def main(
         
         return transformed_data
     
+    def load_data(csv_path: Path):
+        """
+        Load data from a CSV file into a DataFrame.
+
+        Parameters
+        ----------
+        csv_path : Path
+            The path to the CSV file.
+
+        Returns
+        -------
+        pd.DataFrame
+            The loaded DataFrame.
+        """
+        try:
+            data = pd.read_csv(csv_path)
+            logger.info(f"Data loaded from {csv_path}")
+            return data
+        except Exception as e:
+            logger.error(f"Error loading data from {csv_path}: {e}")
+            return None
+
+    
     def xy_split(data):
         """
         Split the data into features and labels.
@@ -116,7 +139,7 @@ def main(
         
         return X, Y
 
-    def train_model_instance(data, model="model", supervised=False, 
+    def train_model_instance(data_path, model="model", supervised=False, 
                              validation_split=0.2, n_iter=100, 
                              n_components=3, n_mix=3, covariance_type='full', 
                              verbose=True, period_length=10, n_cps=2, 
@@ -165,7 +188,7 @@ def main(
         logger.add(log_file)
 
         # Load the data
-        data = pd.read_csv(data)
+        data = load_data(data_path)
         X, Y = xy_split(data)
         # Apply the transformer to the data
         X = transform_data(data = X, transformer=transformer)
