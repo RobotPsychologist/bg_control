@@ -1,34 +1,24 @@
-name: meal_identification
+name: meal_identification_ci
 channels:
   - conda-forge
 dependencies:
   - python=3.12
-  - black
-  - flake8
-  - isort
   - pip
+  - flake8
+  - pytest
+  - pytest-mock
   - typer
   - loguru
   - tqdm
-  - ipython
-  - jupyterlab
-  - matplotlib
-  - notebook
   - numpy
   - pandas
   - scikit-learn
   - pytorch
   - pytorch-lightning
   - pytorch-forecasting
-  - sktime[all_extras]
+  - sktime
   - numba
-  - seaborn
   - pydantic
-  - pytest
-  - pytest-mock
   - pip:
     - python-dotenv
-    - mkdocs
     - skchange
-    - -e .
-    - ipynb
