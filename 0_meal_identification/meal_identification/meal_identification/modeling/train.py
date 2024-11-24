@@ -19,6 +19,12 @@ from sktime.annotation.lof import SubLOF
 from hmmlearn import hmm  # CategoricalHMM and GaussianHMM use hmm module
 from sktime.annotation.hmm_learn import PoissonHMM 
 from sktime.annotation.hmm_learn import GaussianHMM
+from sktime.annotation.igts import InformationGainSegmentation 
+from sktime.annotation.stray import STRAY
+from sktime.annotation.cluster import ClusterSegmenter
+from sktime.annotation.eagglo import EAgglo
+from sktime.annotation.ggs import GreedyGaussianSegmentation
+from sktime.annotation.hmm import HMM
 import joblib  # Added import for joblib
 
 app = typer.Typer()
@@ -167,7 +173,12 @@ def main(
                              validation_split=0.2, n_iter=100, 
                              n_components=2, n_mix=3, covariance_type='full', 
                              verbose=True, period_length=10, n_cps=2, 
-                             n_neighbors=36, window_size=288, init_params="s", 
+                             n_neighbors=36, window_size=288, init_params="s",
+                             k_max = 3, step = 5, alpha=0.01, k=15, knn_algorithm='ball_tree', 
+                             outlier_tail='both', clusterer = None,
+                             member=None, penalty=None, max_shuffles = 250,
+                             lamb = 1.0, emission_funcs = None, transition_prob_mat = None,
+                             initial_probs = None,
                              random_state=None, transformer=None, model_path=None):
         """
         Train a model on the given data.
@@ -247,6 +258,32 @@ def main(
                                 init_params=init_params,
                                 random_state=random_state,
                                 verbose=verbose)
+        elif model == "InformationGainSegmentation":
+            model = InformationGainSegmentation(k_max = k_max, step = step)
+        elif model == "STRAY":
+            model = STRAY(
+                alpha=alpha,
+                k=k,
+                knn_algorithm=knn_algorithm,
+                outlier_tail=outlier_tail
+            )
+        elif model == "ClusterSegmenter":
+            model = ClusterSegmenter(clusterer=clusterer)
+        elif model == "EAgglo":
+            model = EAgglo(member=member, alpha=alpha, penalty=penalty)
+        elif model == "GreedyGaussianSegmentation":
+            model = GreedyGaussianSegmentation(
+                k_max= k_max, 
+                lamb= lamb, 
+                max_shuffles = max_shuffles, 
+                random_state = random_state,
+                verbose=verbose
+            )
+        elif model == "HMM":
+            model = HMM(emission_funcs = emission_funcs, 
+                        transition_prob_mat = transition_prob_mat, 
+                        initial_probs = initial_probs
+            )
 
         logger.info(f"Training {'supervised' if supervised else 'unsupervised'} model: {model}...")
         try:
