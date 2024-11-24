@@ -6,7 +6,6 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
-from sklearn.metrics import mean_absolute_error, root_mean_squared_error, mean_absolute_percentage_error
 from sktime.performance_metrics.forecasting import count_error, hausdorff_error, prediction_ratio
 
 
@@ -57,7 +56,7 @@ def main(
         
         return transformed_data
     
-    def xy_split(data, supervised=False):
+    def xy_split(data):
         """
         Split the data into features and labels.
 
@@ -74,12 +73,11 @@ def main(
             Labels.
         """
         X = data(columns=["bgl"])
-        if supervised:
-            Y = data["msg_type"]
+        Y = data["msg_type"]
         
         return X, Y
 
-    def train_model_instance(X, Y=None, model="model", supervised=False, 
+    def train_model_instance(data, model="model", supervised=False, 
                              validation_split=0.2, n_iter=100, 
                              n_components=3, n_mix=3, covariance_type='full', 
                              verbose=True, period_length=10, n_cps=2, 
@@ -128,17 +126,14 @@ def main(
         logger.add(log_file)
 
         # Load the data
-        X = pd.read_csv(X)
-        Y = pd.read_csv(Y)
+        data = pd.read_csv(data)
+        X, Y = xy_split(data)
         # Apply the transformer to the data
-        X = transformer.fit_transform(X)
-        Y = transformer.transform(Y)
+        X = transform_data(data = X, transformer=transformer)
         # Split the data into training and validation sets
         X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=validation_split, shuffle=False)
 
         if model == "GMMHMM":
-
-            # Implement starprob, covars_prior, means_prior
 
             model = GMMHMM(n_components=n_components, 
                          n_mix = n_mix, 
@@ -147,8 +142,6 @@ def main(
                          init_params=init_params,
                          random_state=random_state,
                          verbose=verbose)
-
-            # Use metrics made by sktime team when they come out
 
         elif model == "ClaSPSegmentation":
 
@@ -160,6 +153,7 @@ def main(
             model = SubLOF(n_neighbors=n_neighbors, window_size=window_size)
 
         elif model == "PoissonHMM":
+            
             model = PoissonHMM(n_components=n_components,   
                                 n_iter=n_iter,
                                 init_params=init_params,
@@ -186,25 +180,21 @@ def main(
         hidden_states_train = model.predict(X_train)
         hidden_states_test = model.predict(X_val)
 
-        train_mae = mean_absolute_error(hidden_states_train, Y_train)
-        train_mse = root_mean_squared_error(hidden_states_train, Y_train)
-        train_rmse = root_mean_squared_error(hidden_states_train, Y_train, squared=False)  # squared=False returns RMSE
-        train_mape = mean_absolute_percentage_error(hidden_states_train, Y_train)
+        train_count_error = count_error(Y_train, hidden_states_train)
+        train_hausdorff_error = hausdorff_error(Y_train, hidden_states_train)
+        train_prediction_ratio = prediction_ratio(Y_train, hidden_states_train)
 
-        test_mae = mean_absolute_error(hidden_states_test, Y_val)
-        test_mse = root_mean_squared_error(hidden_states_test, Y_val)
-        test_rmse = root_mean_squared_error(hidden_states_test, Y_val, squared=False)  # squared=False returns RMSE
-        test_mape = mean_absolute_percentage_error(hidden_states_test, Y_val)
+        test_count_error = count_error(Y_val, hidden_states_test)
+        test_hausdorff_error = hausdorff_error(Y_val, hidden_states_test)
+        test_prediction_ratio = prediction_ratio(Y_val, hidden_states_test)
 
-        logger.info(f"MAE for training data: {train_mae}")
-        logger.info(f"MSE for training data: {train_mse}")
-        logger.info(f"RMSE for training data: {train_rmse}")
-        logger.info(f"MAPE for training data: {train_mape}")
+        logger.info(f"count error for training data: {train_count_error}")
+        logger.info(f"hausdorff error for training data: {train_hausdorff_error}")
+        logger.info(f"prediction ratio for training data: {train_prediction_ratio}")
 
-        logger.info(f"MAE for test data: {test_mae}")
-        logger.info(f"MSE for test data: {test_mse}")
-        logger.info(f"RMSE for test data: {test_rmse}")
-        logger.info(f"MAPE for test data: {test_mape}")
+        logger.info(f"count error for test data: {test_count_error}")
+        logger.info(f"hausdorff error for test data: {test_hausdorff_error}")
+        logger.info(f"prediction ratio for test data: {test_prediction_ratio}")
 
 
         return model
