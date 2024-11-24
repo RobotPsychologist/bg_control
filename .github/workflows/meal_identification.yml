@@ -1,0 +1,68 @@
+name: Meal Identification
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+ CACHE_NUMBER: 0
+
+jobs:
+ build:
+   strategy:
+     matrix:
+       include:
+         - os: ubuntu-latest
+           label: linux-64
+           prefix: /usr/share/miniconda3/envs/meal_identification_ci
+   name: ${{ matrix.label }}
+   runs-on: ${{ matrix.os }}
+   defaults:
+     run:
+       working-directory: ./0_meal_identification/meal_identification
+
+   steps:
+     - uses: actions/checkout@v4
+     - name: Setup Mambaforge
+       uses: conda-incubator/setup-miniconda@v3
+       with:
+         miniforge-variant: Miniforge3
+         miniforge-version: latest
+         activate-environment: meal_identification_ci
+         use-mamba: true
+
+     - name: Set cache date
+       run: echo "DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
+     - uses: actions/cache@v3
+       with:
+         path: ${{ matrix.prefix }}
+         key: ${{ matrix.label }}-conda-${{ hashFiles('./0_meal_identification/meal_identification/environment-ci.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
+       id: cache
+
+     - name: Update environment
+       run: mamba env update -n meal_identification_ci -f environment-ci.yml
+       if: steps.cache.outputs.cache-hit != 'true'
+
+     - name: Install dependencies
+       shell: bash -l {0}
+       run: |
+         conda info
+         conda list
+
+     - name: Lint with flake8
+       shell: bash -l {0}
+       run: |
+         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+     - name: Test with pytest
+       shell: bash -l {0}
+       run: |
+         pytest -v --color=yes
+
+     - name: Package Installation Test
+       shell: bash -l {0}
+       run: |
+         pip install -e .
