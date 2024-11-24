@@ -4,6 +4,7 @@ from loguru import logger
 from tqdm import tqdm
 import pandas as pd
 import os
+import pickle
 from sklearn.model_selection import train_test_split
 from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
 from sktime.performance_metrics.forecasting import count_error, hausdorff_error, prediction_ratio
@@ -35,7 +36,7 @@ def save_model(model, model_path: Path):
         The path where the model will be saved.
     """
     try:
-        joblib.dump(model, model_path)
+        model.save(model_path, serialization_format='pickle')
         logger.info(f"Model saved to {model_path}")
     except Exception as e:
         logger.error(f"Error saving model: {e}")
@@ -56,7 +57,8 @@ def load_model(model_path: Path):
         The loaded model.
     """
     try:
-        model = joblib.load(model_path)
+        with open(model_path, 'rb') as model:
+            model= pickle.load(model)
         logger.info(f"Model loaded from {model_path}")
         return model
     except Exception as e:
@@ -138,10 +140,32 @@ def main(
         Y = data["msg_type"]
         
         return X, Y
+    
+    def process_labels(Y):
+        """
+        Process labels with None = 0, ANNOUNCE_MEAL = 1
+
+        Parameters
+        ----------
+        Y : pd.Series
+            Labels to process
+
+        Returns
+        -------
+        pd.Series
+            Labels
+        """
+
+        Y = [
+            1 if i == 'ANNOUNCE_MEAL' else 0 for i in Y
+        ]
+
+        return Y
+
 
     def train_model_instance(data_path, model="model", supervised=False, 
                              validation_split=0.2, n_iter=100, 
-                             n_components=3, n_mix=3, covariance_type='full', 
+                             n_components=2, n_mix=3, covariance_type='full', 
                              verbose=True, period_length=10, n_cps=2, 
                              n_neighbors=36, window_size=288, init_params="s", 
                              random_state=None, transformer=None, model_path=None):
@@ -192,6 +216,8 @@ def main(
         X, Y = xy_split(data)
         # Apply the transformer to the data
         X = transform_data(data = X, transformer=transformer)
+        # Process labels:
+        Y = process_labels(Y = Y)
         # Split the data into training and validation sets
         X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=validation_split, shuffle=False)
 
