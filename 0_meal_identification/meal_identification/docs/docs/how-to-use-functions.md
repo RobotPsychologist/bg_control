@@ -14,27 +14,6 @@ The project is organized into several modules, each responsible for specific tas
 
 You can find these modules under `0_meal_identification/meal_identification/meal_identification/datasets`.
 
-## Installation
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/yourusername/meal-identification-toolkit.git
-   cd meal-identification-toolkit
-   ```
-
-2. **Create a Virtual Environment**
-
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install Dependencies**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 ## Usage
 
