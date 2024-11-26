@@ -329,7 +329,7 @@ def plot_chart(file_name='', meal_length=6 , n_step=1, bgl_bins=50, rate_bins=40
 
 plot_chart(
     file_name='2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv',
-    meal_length=15,
+    meal_length=30,
     n_step=1,
     bgl_bins=50,
     rate_bins=40,
