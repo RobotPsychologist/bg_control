@@ -25,9 +25,11 @@ dependencies:
   - seaborn
   - pydantic
   - pytest
+  - pytest-mock
   - pip:
-    - python-dotenv
-    - mkdocs
-    - skchange
-    - -e .
-    - ipynb
+      - python-dotenv
+      - mkdocs
+      - skchange
+      - ipynb
+      - pyyaml
+      - ruamel.yaml

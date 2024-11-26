@@ -6,6 +6,7 @@ dependencies:
   - pip
   - flake8
   - pytest
+  - pytest-mock
   - typer
   - loguru
   - tqdm
@@ -19,5 +20,7 @@ dependencies:
   - numba
   - pydantic
   - pip:
-    - python-dotenv
-    - skchange
+      - python-dotenv
+      - skchange
+      - pyyaml
+      - ruamel.yaml

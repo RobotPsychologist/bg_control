@@ -27,7 +27,7 @@ jobs:
      - name: Setup Mambaforge
        uses: conda-incubator/setup-miniconda@v3
        with:
-         miniforge-variant: Mambaforge
+         miniforge-variant: Miniforge3
          miniforge-version: latest
          activate-environment: meal_identification_ci
          use-mamba: true

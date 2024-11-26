@@ -85,3 +85,54 @@ def keep_top_n_carb_meals(patient_df, n_top_carb_meals):
     patient_df.loc[~keep_mask & (patient_df['msg_type'] == 'ANNOUNCE_MEAL'), ['food_g', 'msg_type']] = [0, '0']
 
     return patient_df
+
+def erase_consecutive_nan_values(patient_df: pd.DataFrame, max_consecutive_nan_values_per_day: int):
+    """
+    1. If there are more than max_consecutive_nan_values_per_day consecutive NaN values in a given day, then delete that day from the dataframe.
+    2. If there are less than max_consecutive_nan_values_per_day consecutive NaN values in a given day, then delete the NaN values from that day.
+    ------
+    Parameters:
+        patient_df: pd.DataFrame
+            The input DataFrame with a datetime index.
+        max_consecutive_nan_values_per_day: int
+            The maximum number of consecutive NaN values allowed in a given day. If more than this number of consecutive NaN values are found in a day, then delete that day from the dataframe. Otherwise, delete the NaN values from that day.
+    Returns:
+        pd.DataFrame
+            The processed DataFrame with consecutive NaN values handled.
+    """
+    # Create a copy to avoid modifying original
+    df = patient_df.copy()
+    
+    # Add day column for grouping
+    df['day'] = df.index.date
+    
+    # Process each day
+    days_to_keep = []
+    for day, day_data in df.groupby('day'):
+        # Get boolean mask of NaN values
+        nan_mask = day_data['bgl'].isnull()
+        
+        # Count consecutive NaNs
+        consecutive_nans = 0
+        max_consecutive = 0
+        for is_nan in nan_mask:
+            if is_nan:
+                consecutive_nans += 1
+                max_consecutive = max(max_consecutive, consecutive_nans)
+            else:
+                consecutive_nans = 0
+                
+        # Keep day if max consecutive NaNs is within limit
+        if max_consecutive <= max_consecutive_nan_values_per_day:
+            days_to_keep.append(day)
+    
+    # Filter to keep only valid days
+    result_df = df[df['day'].isin(days_to_keep)].copy()
+    
+    # Drop the temporary day column
+    result_df.drop('day', axis=1, inplace=True)
+    
+    # Drop remaining NaN values since they consecutively dont form a long enough chain
+    result_df = result_df.dropna(subset=['bgl'])
+    
+    return result_df
