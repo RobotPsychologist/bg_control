@@ -261,7 +261,7 @@ def plot_fan_chart(chunks: list[pd.DataFrame], column='bgl'):
     percentile_data_non_meal = np.nanpercentile(non_meal_plot, percentiles, axis=0)
 
     fig, ax = plt.subplots(figsize=(15, 6))
-    plt.title(f"Prandial vs Non-Prandial Glucose DynamicsChunks {column.upper()} (Orange = Meal, Blue = Non-meal)")
+    plt.title(f"Prandial vs Non-Prandial Glucose DynamicsChunks {column.upper()} in {chunk_length*5} mins (Orange = Meal, Blue = Non-meal)")
     plt.xlabel('Minutes After Meal')
     plt.ylabel('Normalized Blood Glucose Level')
     plt.grid(True, alpha=0.3)
