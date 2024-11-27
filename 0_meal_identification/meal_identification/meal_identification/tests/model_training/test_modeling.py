@@ -1,5 +1,5 @@
 
-""" python -m unittest 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
+""" python -m unittest meal_identification.tests.model_training.test_modeling
 """
 from unittest.mock import patch
 import pandas as pd
