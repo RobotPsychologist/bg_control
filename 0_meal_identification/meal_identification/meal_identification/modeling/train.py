@@ -7,6 +7,7 @@ import os
 import pickle
 import sktime as sktime
 from sklearn.model_selection import train_test_split
+from sktime.utils import mlflow_sktime  
 # from meal_identification.meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
 from sktime.performance_metrics.annotation.metrics import count_error # needed changing in the documentation in the website
 from sktime.performance_metrics.annotation.metrics import hausdorff_error
@@ -55,9 +56,9 @@ def main(
         model_path : Path
             The path where the model will be saved.
         """
-        model_path = "C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/models/model.pkl"
+        model_path = f"C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/models/model"
         try:
-            model.save(model_path, serialization_format='pickle')
+            mlflow_sktime.save_model(sktime_model = model, path = model_path, serialization_format='pickle')
             logger.info(f"Model saved to {model_path}")
         except Exception as e:
             logger.error(f"Error saving model: {e}")
@@ -78,8 +79,7 @@ def main(
             The loaded model.
         """
         try:
-            with open(model_path, 'rb') as model:
-                model= pickle.load(model)
+            model = mlflow_sktime.load_model(model_uri = model_path)
             logger.info(f"Model loaded from {model_path}")
             return model
         except Exception as e:
