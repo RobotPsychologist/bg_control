@@ -44,7 +44,6 @@ def main(
     model_path: Path = MODELS_DIR / "model.pkl",
     # -----------------------------------------
 ):
-
     # Function to save a model
     def save_model(model, model_path: Path):
         """
