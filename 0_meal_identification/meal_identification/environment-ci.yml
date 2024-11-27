@@ -1,0 +1,26 @@
+name: meal_identification_ci
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - flake8
+  - pytest
+  - pytest-mock
+  - typer
+  - loguru
+  - tqdm
+  - numpy
+  - pandas
+  - scikit-learn
+  - pytorch
+  - pytorch-lightning
+  - pytorch-forecasting
+  - sktime
+  - numba
+  - pydantic
+  - pip:
+      - python-dotenv
+      - skchange
+      - pyyaml
+      - ruamel.yaml

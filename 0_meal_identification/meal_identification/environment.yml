@@ -23,7 +23,13 @@ dependencies:
   - sktime[all_extras]
   - numba
   - seaborn
+  - pydantic
+  - pytest
+  - pytest-mock
   - pip:
-    - python-dotenv
-    - mkdocs
-    - -e .
+      - python-dotenv
+      - mkdocs
+      - skchange
+      - ipynb
+      - pyyaml
+      - ruamel.yaml
