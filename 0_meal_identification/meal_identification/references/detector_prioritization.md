@@ -3,29 +3,11 @@
 ## Meta Data
 | Algorithm | Literature | Hyperparameters |
 | ----------- | ----------- | ----------- |
-|  |  |
-|  |  |
-
-
-## Abstract Typing
-| Cost Function | Algorithm/Model Subtype | Detection Type | Parametric/Non-parametric | Score? | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------- |
-| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
-| |  |  |  |  |  |  |  |  |  |  |  |  |  |
-
-
+| Binary Segmentation  |  |
+| Fused Lasso |  |
+| Opt |  |
+| Pelt |  |
+| Window |  |
 
 * **Detection Type**: points, segments, both, something else
     * segment = (start time stamp, end time stamp)
@@ -50,6 +32,26 @@
   * **Problem 1**: known number of changes
   * **Problem 2**: unknown number of changes
 
+
+## Cost Functions
+| Cost Function | Algorithm/Model Subtype | Detection Type | Parametric/Non-parametric | Score? | Search Method | Label Annotation Present? | Learning Type | Learning Mode | Univariate | Multivariate | Online/Offline | Problem Type | Time Series scitype |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------- |
+| $c_{i.i.d.}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{L_{2}}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\Sigma}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{Poisson}(y_{a.b})$ | maximum likelihood estimation | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{linear}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{linear,L_{1}}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{AR}(y_{a.b})$ | piecewise linear regression | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{M}(y_{a.b})$| Mahalanobis-type metric | change point | parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\hat{F}}(y_{a.b})$ | non-parametric maximum likelihood estimation | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{rank}(y_{a.b})$ | rank-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{kernel}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{rbf}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| $c_{\mathcal{H},M}(y_{a.b})$ | kernel-based | change point | non-parametric |  |  |  |  |  |  |  |  |  |  |  |
+| |  |  |  |  |  |  |  |  |  |  |  |  |  |
+
+
 ## Metrics
 | Metric Type | Description | Math Description | Source |
 | - | - | --- | - |
@@ -61,9 +63,16 @@
 
 
 
-
 ## Implementation Libraries
 | Authors | Repo URL | pypi name | Code Status Language | License Type | Maintained | Governance Model |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 | C. Truong, L. Oudre, N. Vayatis  | https://centre-borelli.github.io/ruptures-docs/ | [ruptures](https://pypi.org/project/ruptures/)  | python  | [BSD 2-Clause License](https://centre-borelli.github.io/ruptures-docs/#license) | yes |  |
 |  |  |  |  |  |  |  |
+
+
+## Papers to Review Prioritization:
+1. [An Evaluation of Change Point Detection Algorithms](https://arxiv.org/pdf/2003.06222)
+2. [Selective review of offline change point detection methods](https://doi.org/10.1016/j.sigpro.2019.107299)
+3. [Papers with Code - Change Point Detection](https://paperswithcode.com/task/change-point-detection)
+4. [A survey of methods for time series change point detection](https://link.springer.com/article/10.1007/s10115-016-0987-z)
+5. [Semi-supervised Sequence Classification through Change Point Detection](https://ojs.aaai.org/index.php/AAAI/article/view/16814)
