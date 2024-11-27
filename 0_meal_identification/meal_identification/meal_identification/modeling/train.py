@@ -74,7 +74,7 @@ def load_model(model_path: Path):
         The loaded model.
     """
     try:
-        model = mlflow_sktime.load_model(model_uri = str(model_path)    )
+        model = mlflow_sktime.load_model(model_uri = str(model_path))
         logger.info(f"Model loaded from {model_path}")
         return model
     except Exception as e:
@@ -396,16 +396,34 @@ def main(
     # Sample training:
     logger.info("Training some model... test")
 
-    # data_filename = "2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv"
-    # data_path = INTERIM_DATA_DIR / data_filename
-    # current_model_path = MODELS_DIR / "model.pkl"
+    data_filename = "2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv"
+    data_path = INTERIM_DATA_DIR / data_filename
+    current_model_path = MODELS_DIR / "PoissonHMM_model"
 
-    # train_model_instance(
-    #     model = "GMMHMM", 
-    #     data_path=data_path,    
-    #     model_path=current_model_path,  
-    #     transformer=ScaledLogitTransformer())
-    # logger.success("Modeling training complete.")
+    train_model_instance(
+        model = "PoissonHMM", 
+        data_path=data_path,    
+        model_path=current_model_path,  
+        transformer=ScaledLogitTransformer())
+    logger.success("Modeling training complete.")
+
+    current_model_path = MODELS_DIR / "GaussianHMM_model"
+
+    train_model_instance(
+        model = "GaussianHMM", 
+        data_path=data_path,    
+        model_path=current_model_path,  
+        transformer=ScaledLogitTransformer())
+    logger.success("Modeling training complete.")
+
+    current_model_path = MODELS_DIR / "GreedyGaussianSegmentation"
+
+    train_model_instance(
+        model = "GreedyGaussianSegmentation", 
+        data_path=data_path,    
+        model_path=current_model_path,  
+        transformer=ScaledLogitTransformer())
+    logger.success("Modeling training complete.")
 
 if __name__ == "__main__":
     app()

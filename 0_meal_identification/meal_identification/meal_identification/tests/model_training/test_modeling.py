@@ -1,6 +1,6 @@
 
 """
-python -m unittest meal_identification\tests\model_training\test_modeling.py
+python -m unittest meal_identification/tests/model_training/test_modeling.py
 """
 import unittest
 from unittest.mock import patch
