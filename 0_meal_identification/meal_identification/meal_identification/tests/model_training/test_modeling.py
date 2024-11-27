@@ -1,6 +1,8 @@
 
-""" python -m unittest 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
 """
+python -m unittest meal_identification/tests/model_training/test_modeling.py
+"""
+import unittest
 from unittest.mock import patch
 import pandas as pd
 from pathlib import Path
@@ -72,3 +74,6 @@ def test_model_training(mock_paths):
 
     # Check that the model file exists after training
     assert model_path.exists()
+
+if __name__ == "__main__":
+    unittest.main()
