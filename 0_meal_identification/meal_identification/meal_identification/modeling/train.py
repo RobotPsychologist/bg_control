@@ -4,23 +4,17 @@ from loguru import logger
 from tqdm import tqdm
 import pandas as pd
 import os
-import pickle
 import sktime as sktime
 from sklearn.model_selection import train_test_split
 from sktime.utils import mlflow_sktime  
-# from meal_identification.meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
 from sktime.performance_metrics.annotation.metrics import count_error # needed changing in the documentation in the website
 from sktime.performance_metrics.annotation.metrics import hausdorff_error
 from sktime.performance_metrics.annotation.metrics import prediction_ratio
 
 # Model Imports
 from sktime.annotation.hmm_learn import GMMHMM 
-from sktime.annotation.clasp import ClaSPSegmentation, find_dominant_window_sizes
-from sktime.classification.interval_based import TimeSeriesForestClassifier
-from pyod.models.knn import KNN
-from sktime.annotation.adapters import PyODAnnotator
+from sktime.annotation.clasp import ClaSPSegmentation
 from sktime.annotation.lof import SubLOF
-from hmmlearn import hmm  # CategoricalHMM and GaussianHMM use hmm module
 from sktime.annotation.hmm_learn import PoissonHMM 
 from sktime.annotation.hmm_learn import GaussianHMM
 from sktime.annotation.igts import InformationGainSegmentation 
@@ -33,19 +27,26 @@ from sktime.annotation.hmm import HMM
 # Transformer Imports
 from sktime.transformations.series.scaledlogit import ScaledLogitTransformer
 
+# Paths
+from meal_identification.config import (
+    MODELS_DIR, 
+    PROCESSED_DATA_DIR,
+    INTERIM_DATA_DIR
+)
+
 app = typer.Typer()
 
 @app.command()
-def main(
+def main(       
     # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    # features_path: Path = PROCESSED_DATA_DIR / "features.csv",
-    # labels_path: Path = PROCESSED_DATA_DIR / "labels.csv",
-    # model_path: Path = MODELS_DIR / "model.pkl",
+    features_path: Path = PROCESSED_DATA_DIR / "features.csv",
+    labels_path: Path = PROCESSED_DATA_DIR / "labels.csv",
+    model_path: Path = MODELS_DIR / "model.pkl",
     # -----------------------------------------
 ):
 
     # Function to save a model
-    def save_model(model):
+    def save_model(model, model_path: Path):
         """
         Save the trained model to the specified file path.
 
@@ -56,9 +57,12 @@ def main(
         model_path : Path
             The path where the model will be saved.
         """
-        model_path = f"C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/models/model"
         try:
-            mlflow_sktime.save_model(sktime_model = model, path = model_path, serialization_format='pickle')
+            mlflow_sktime.save_model(
+                sktime_model = model,
+                path = str(model_path),
+                serialization_format='pickle'
+                )
             logger.info(f"Model saved to {model_path}")
         except Exception as e:
             logger.error(f"Error saving model: {e}")
@@ -79,7 +83,7 @@ def main(
             The loaded model.
         """
         try:
-            model = mlflow_sktime.load_model(model_uri = model_path)
+            model = mlflow_sktime.load_model(model_uri = str(model_path)    )
             logger.info(f"Model loaded from {model_path}")
             return model
         except Exception as e:
@@ -107,13 +111,9 @@ def main(
 
         transformed_data = transformer.fit_transform(X = data)
         
-        # Save the transformed data to the specified directory
-        output_path = Path("C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/data/processed/transformed_data.csv")
-        transformed_data.to_csv(output_path, index=False)
-        
         return transformed_data
     
-    def load_data(csv_path: Path):
+    def load_data(csv_path: Path) -> pd.DataFrame:
         """
         Load data from a CSV file into a DataFrame.
 
@@ -136,7 +136,7 @@ def main(
             return None
 
     
-    def xy_split(data):
+    def xy_split(data: pd.DataFrame ):
         """
         Split the data into features and labels.
 
@@ -157,19 +157,19 @@ def main(
         
         return X, Y
     
-    def process_labels(Y):
+    def process_labels(Y: pd.DataFrame) -> pd.DataFrame:
         """
         Process labels with None = 0, ANNOUNCE_MEAL = 1
 
         Parameters
         ----------
-        Y : pd.Series
+        Y : pd.DataFrame
             Labels to process
 
         Returns
         -------
-        pd.Series
-            Labels
+        pd.DataFrame
+            Processed labels
         """
 
         Y["msg_type"] = [
@@ -179,7 +179,7 @@ def main(
         return Y
 
 
-    def train_model_instance(data_path, model="model", supervised=False, 
+    def train_model_instance(data_path: Path, model_path: Path, model="GMMHMM", supervised=False, 
                              validation_split=0.2, n_iter=100, 
                              n_components=2, n_mix=3, covariance_type='full', 
                              verbose=True, period_length=10, n_cps=2, 
@@ -195,18 +195,18 @@ def main(
 
         Parameters
         ----------
-        X : csv file path
-            BGL data.
-        Y : csv file path
-            Labels.
-        transformer : callable, optional
-            A function or transformer that preprocesses the data.
+        data_path : Path
+            Path to the data CSV file.
+        model_path : Path
+            Path to save the trained model.
+        model_type : str, optional
+            Model to train, by default "GMMHMM"
         supervised : bool, optional
             Indicates whether the model is supervised.
         validation_split : float, optional
             Fraction of the data to use for validation, by default 0.2
-        model : str, optional
-            Model to train, by default "model"
+        transformer : callable, optional
+            A transformer that preprocesses the data.
 
         hyperparameters :
             Hyperparameters for the model
@@ -226,23 +226,24 @@ def main(
         Training logs are saved to the 'models/training_logs' directory.
         """
 
-        log_dir = 'models/training_logs'
+        log_dir = MODELS_DIR / 'training_logs'
         os.makedirs(log_dir, exist_ok=True)
         log_file = os.path.join(log_dir, f'{model}_training.log')
 
+        logger.remove()
         logger.add(log_file)
 
         # Load the data
         data = load_data(data_path)
+        if data is None:
+            logger.error("Data loading failed. Exiting training.")
+            return None
         X, Y = xy_split(data)
         # Apply the transformer to the data
         X = transform_data(data = X, transformer=transformer)
         # Process labels:
-        print(Y)
         Y = process_labels(Y = Y)
         # Split the data into training and validation sets
-        print(X)
-        print(Y)
         X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=validation_split, shuffle=False)
 
         if model == "GMMHMM":
@@ -297,6 +298,9 @@ def main(
                         transition_prob_mat = transition_prob_mat, 
                         initial_probs = initial_probs
             )
+        else:
+            logger.error(f"Unknown model type: {model}")
+            return None
 
         logger.info(f"Training {'supervised' if supervised else 'unsupervised'} model: {model}...")
         try:
@@ -325,9 +329,8 @@ def main(
         logger.info(f"hausdorff error for test data: {test_hausdorff_error}")
         logger.info(f"prediction ratio for test data: {test_prediction_ratio}")
 
-        # Add this condition to save the model after training
         try:
-            save_model(model)
+            save_model(model, model_path=model_path)
             logger.info("Model saved to 0_meal_identification/meal_identification/models")
         except Exception as e:
             logger.error(f"Error saving model: {e}")
@@ -335,11 +338,16 @@ def main(
         return model
 
     logger.info("Training some model...")
-    for i in tqdm(range(10), total=10):
-        logger.info("On iteration {i}.")
-        train_model_instance(model = "GMMHMM", 
-                             data_path = "C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/data/interim/2024-10-30_500030__timeInter5mins_dayStart4hrs_minCarb10g_3hrMealW.csv", 
-                             transformer = ScaledLogitTransformer())
+
+    data_filename = "2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv"
+    data_path = INTERIM_DATA_DIR / data_filename
+    current_model_path = MODELS_DIR / "model.pkl"
+
+    train_model_instance(
+        model = "GMMHMM", 
+        data_path=data_path,    
+        model_path=current_model_path,  
+        transformer=ScaledLogitTransformer())
     logger.success("Modeling training complete.")
     # -----------------------------------------
 
