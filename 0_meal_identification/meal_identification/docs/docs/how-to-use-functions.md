@@ -37,7 +37,7 @@ This module provides functions to clean and preprocess the raw meal data.
 
 - `pd.DataFrame`: Processed DataFrame with meal overlaps handled.
 
-**Behavior**:
+**Behaviour**:
 
 1. Identifies all `'ANNOUNCE_MEAL'` events.
 2. For each meal:
@@ -58,7 +58,7 @@ This module provides functions to clean and preprocess the raw meal data.
 
 - `pd.DataFrame`: The processed DataFrame with days containing the specified number of meals removed.
 
-**Behavior**:
+**Behaviour**:
 
 1. Extracts the date part of the datetime index and adds it as a temporary `'day'` column.
 2. Filters to include only `'ANNOUNCE_MEAL'` events.
@@ -81,7 +81,7 @@ This module provides functions to clean and preprocess the raw meal data.
 
 - `pd.DataFrame`: Processed DataFrame with only the top N carbohydrate meals per day retained.
 
-**Behavior**:
+**Behaviour**:
 
 1. Verifies the existence of the `'day_start_shift'` column; raises a `KeyError` if absent.
 2. Filters DataFrame to include only `'ANNOUNCE_MEAL'` events.
@@ -102,7 +102,7 @@ This module provides functions to clean and preprocess the raw meal data.
 
 - `pd.DataFrame`: Processed DataFrame with consecutive `NaN` values handled as per the threshold.
 
-**Behavior**:
+**Behaviour**:
 
 1. Adds a temporary `'day'` column based on the date part of the datetime index.
 2. Iterates through each day:
@@ -127,7 +127,7 @@ This module orchestrates the dataset creation process, integrating loading, clea
 
 - `pd.DataFrame`: DataFrame with a sorted datetime index.
 
-**Behavior**:
+**Behaviour**:
 
 1. Checks if the DataFrame's index is a `DatetimeIndex`.
 2. If not, attempts to set the `'date'` column as the index.
@@ -164,7 +164,7 @@ This module orchestrates the dataset creation process, integrating loading, clea
 
 - `list` of `pd.DataFrame` or `None`: List of processed DataFrames if `return_data` is `True`; otherwise, `None`.
 
-**Behavior**:
+**Behaviour**:
 
 1. **Data Loading**: Utilizes `load_data` to read raw CSV files from `raw_data_path`, retaining only specified columns.
 2. **Processing Each Patient's Data**:
@@ -180,7 +180,7 @@ This module orchestrates the dataset creation process, integrating loading, clea
 
 **Notes**:
 
-- **Docstring Accuracy**: The docstring mostly aligns with the function's behavior. However, there is a typo in the parameter description: `"over_write : False: bool, optional"` should be `"over_write : bool, optional"`.
+- **Docstring Accuracy**: The docstring mostly aligns with the function's Behaviour. However, there is a typo in the parameter description: `"over_write : False: bool, optional"` should be `"over_write : bool, optional"`.
 
 #### `run_dataset_combinations`
 
@@ -196,7 +196,7 @@ This module orchestrates the dataset creation process, integrating loading, clea
 
 - `None`
 
-**Behavior**:
+**Behaviour**:
 
 1. **Parameter Combinations**: Defines ranges for `min_carbs` (5, 10), `meal_length` (2, 3, 5 hours), and `n_top_meals` (3, 4).
 2. **Iteration**: For each combination, calls `dataset_creator` with the respective parameters.
@@ -219,7 +219,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `str`: Absolute path to the project root directory.
 
-**Behavior**:
+**Behaviour**:
 
 1. Starts from `current_dir` or the current working directory.
 2. Iteratively moves up the directory hierarchy.
@@ -240,7 +240,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `dict`: Dictionary mapping filenames to their corresponding `pd.DataFrame` objects.
 
-**Behavior**:
+**Behaviour**:
 
 1. Determines the full path to `raw_data_path` relative to the project root.
 2. Validates the existence of the directory and the presence of CSV files.
@@ -265,7 +265,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `tuple[str, str]`: Tuple containing the full file path and the filename.
 
-**Behavior**:
+**Behaviour**:
 
 1. Determines the full path to `output_dir` relative to the project root and ensures the directory exists.
 2. Constructs the filename based on whether `include_gen_date_label` is `True`:
@@ -290,7 +290,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `None`
 
-**Behavior**:
+**Behaviour**:
 
 1. Calls `find_file_loc` to determine the full file path and filename.
 2. Saves the DataFrame to the specified path using `to_csv`, including the datetime index.
@@ -316,7 +316,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `str`: Modified dataset label reflecting the applied transformations.
 
-**Behavior**:
+**Behaviour**:
 
 1. Starts with `base_label_modifier`.
 2. Appends specific labels based on which transformations were applied:
@@ -340,7 +340,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `pd.DataFrame`: Coerced DataFrame with resampled time intervals.
 
-**Behavior**:
+**Behaviour**:
 
 1. Validates that the DataFrame's index is named `'date'`; raises a `KeyError` if not.
 2. Converts `coerse_time_interval` to a frequency string.
@@ -365,7 +365,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `str`: Resolved file path with the appropriate suffix.
 
-**Behavior**:
+**Behaviour**:
 
 1. Converts `path` to an absolute `Path` object.
 2. Checks if the path has the specified suffix.
@@ -389,7 +389,7 @@ Core functions responsible for data loading, saving, labeling, and time coercion
 
 - `None`
 
-**Behavior**:
+**Behaviour**:
 
 1. Filters the DataFrame to include only `'ANNOUNCE_MEAL'` events.
 2. Extracts the hour and minute from each meal event's timestamp.
