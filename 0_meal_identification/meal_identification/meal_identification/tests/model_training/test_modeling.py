@@ -1,5 +1,6 @@
 import pytest
-# pytest test_modeling.py
+""" pytest 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
+"""
 from unittest.mock import patch
 import pandas as pd
 from pathlib import Path
