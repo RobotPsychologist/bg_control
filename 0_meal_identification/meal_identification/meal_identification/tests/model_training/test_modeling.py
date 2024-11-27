@@ -3,7 +3,7 @@ import pytest
 from unittest.mock import patch
 import pandas as pd
 from pathlib import Path
-from meal_identification.meal_identification.modeling.train import ScaledLogitTransformer, GMMHMM, train_model_instance, load_data, xy_split, process_labels
+from meal_identification.modeling.train import ScaledLogitTransformer, GMMHMM, train_model_instance, load_data, xy_split, process_labels
 
 
 @pytest.fixture
