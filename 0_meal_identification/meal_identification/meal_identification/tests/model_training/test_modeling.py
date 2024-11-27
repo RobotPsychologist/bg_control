@@ -1,12 +1,11 @@
-import pytest
-# pytest test_modeling.py
+
+""" python -m unittest 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
+"""
 from unittest.mock import patch
 import pandas as pd
 from pathlib import Path
 from meal_identification.modeling.train import ScaledLogitTransformer, GMMHMM, train_model_instance, load_data, xy_split, process_labels
 
-
-@pytest.fixture
 def mock_paths():
     """Fixture for mock paths of data and model."""
     data_path = Path("0_meal_identification/meal_identification/data/interim/2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv")
@@ -14,7 +13,6 @@ def mock_paths():
     return data_path, model_path
 
 
-@pytest.fixture
 def sample_data(mock_paths):
     """Load sample data from CSV for testing."""
     data_path, _ = mock_paths
