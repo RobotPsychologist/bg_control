@@ -96,14 +96,14 @@ def main(
 
         Parameters
         ----------
-        data : pd.Series
+        data : pd.DataFrame
             Data to transform.
         transformer : sktime transformer
             Transformer to use.
 
         Returns
         -------
-        pd.Series
+        pd.DataFrame
             Transformed data.
         """
                    
@@ -147,9 +147,9 @@ def main(
 
         Returns
         -------
-        pd.Series
+        pd.DataFrame
             Features.
-        pd.Series
+        pd.DataFrame
             Labels.
         """
         X = data[["bgl"]]
@@ -199,27 +199,83 @@ def main(
             Path to the data CSV file.
         model_path : Path
             Path to save the trained model.
-        model_type : str, optional
-            Model to train, by default "GMMHMM"
+        model : str, optional
+            Model to train, by default "GMMHMM".
         supervised : bool, optional
             Indicates whether the model is supervised.
         validation_split : float, optional
-            Fraction of the data to use for validation, by default 0.2
-        transformer : callable, optional
-            A transformer that preprocesses the data.
+            Fraction of the data to use for validation, by default 0.2.
+        n_iter : int, optional
+            Number of iterations for models that require it, by default 100.
+        n_components : int, optional
+            Number of components for applicable models, by default 2.
+        n_mix : int, optional
+            Number of mixtures for applicable models, by default 3.
+        covariance_type : str, optional
+            Type of covariance for applicable models, by default 'full'.
+        verbose : bool, optional
+            Verbosity flag, by default True.
+        period_length : int, optional
+            Period length for segmentation models, by default 10.
+        n_cps : int, optional
+            Number of change points for segmentation models, by default 2.
+        n_neighbors : int, optional
+            Number of neighbors for outlier detection models, by default 36.
+        window_size : int, optional
+            Window size for outlier detection models, by default 288.
+        init_params : str, optional
+            Initialization parameters for HMM models, by default "s".
+        k_max : int, optional
+            Maximum number of splits for segmentation models, by default 3.
+        step : int, optional
+            Step size for segmentation models, by default 5.
+        alpha : float, optional
+            Alpha value for outlier detection models, by default 0.01.
+        k : int, optional
+            Number of neighbors for STRAY model, by default 15.
+        knn_algorithm : str, optional
+            KNN algorithm for STRAY model, by default 'ball_tree'.
+        outlier_tail : str, optional
+            Tail type for STRAY model, by default 'both'.
+        clusterer : object, optional
+            Clusterer for ClusterSegmenter model, by default None.
+        member : object, optional
+            Member function for EAgglo model, by default None.
+        penalty : object, optional
+            Penalty function for EAgglo model, by default None.
+        max_shuffles : int, optional
+            Maximum shuffles for GreedyGaussianSegmentation model, by default 250.
+        lamb : float, optional
+            Lambda value for GreedyGaussianSegmentation model, by default 1.0.
+        emission_funcs : list or None, optional
+            Emission functions for HMM model, by default None.
+        transition_prob_mat : array-like or None, optional
+            Transition probability matrix for HMM model, by default None.
+        initial_probs : array-like or None, optional
+            Initial probabilities for HMM model, by default None.
+        random_state : int or None, optional
+            Random state for reproducibility, by default None.
+        transformer : sktime transformer or None, optional
+            A transformer that preprocesses the data, by default None.
 
         hyperparameters :
-            Hyperparameters for the model
-            GMMHMM: n_components, n_mix, covariance_type
-            ClaSPSegmentation: period_length, n_cps
-            SubLOF: n_neighbors, window_size
-            PoissonHMM: n_components, n_iter, init_params, random_state, verbose
-            GaussianHMM: n_components, covariance_type, n_iter, init_params, random_state, verbose
+            Hyperparameters for each model type:
+            - GMMHMM: n_components, n_mix, covariance_type, n_iter, init_params, random_state, verbose
+            - ClaSPSegmentation: period_length, n_cps
+            - SubLOF: n_neighbors, window_size
+            - PoissonHMM: n_components, n_iter, init_params, random_state, verbose
+            - GaussianHMM: n_components, covariance_type, n_iter, init_params, random_state, verbose
+            - InformationGainSegmentation: k_max, step
+            - STRAY: alpha, k, knn_algorithm, outlier_tail
+            - ClusterSegmenter: clusterer
+            - EAgglo: member, alpha, penalty
+            - GreedyGaussianSegmentation: k_max, lamb, max_shuffles, random_state, verbose
+            - HMM: emission_funcs, transition_prob_mat, initial_probs
 
         Returns
         -------
         model
-            Trained model
+            Trained model.
 
         Notes
         -----
