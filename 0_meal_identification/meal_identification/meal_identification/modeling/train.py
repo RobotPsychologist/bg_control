@@ -5,9 +5,12 @@ from tqdm import tqdm
 import pandas as pd
 import os
 import pickle
+import sktime as sktime
 from sklearn.model_selection import train_test_split
-from meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
-from sktime.performance_metrics.forecasting import count_error, hausdorff_error, prediction_ratio
+# from meal_identification.meal_identification.config import MODELS_DIR, PROCESSED_DATA_DIR
+from sktime.performance_metrics.annotation.metrics import count_error # needed changing in the documentation in the website
+from sktime.performance_metrics.annotation.metrics import hausdorff_error
+from sktime.performance_metrics.annotation.metrics import prediction_ratio
 
 # Model Imports
 from sktime.annotation.hmm_learn import GMMHMM 
@@ -21,64 +24,68 @@ from sktime.annotation.hmm_learn import PoissonHMM
 from sktime.annotation.hmm_learn import GaussianHMM
 from sktime.annotation.igts import InformationGainSegmentation 
 from sktime.annotation.stray import STRAY
-from sktime.annotation.cluster import ClusterSegmenter
+from sktime.annotation.clust import ClusterSegmenter # needed changing in documentation
 from sktime.annotation.eagglo import EAgglo
 from sktime.annotation.ggs import GreedyGaussianSegmentation
 from sktime.annotation.hmm import HMM
-import joblib  # Added import for joblib
+
+# Transformer Imports
+from sktime.transformations.series.scaledlogit import ScaledLogitTransformer
 
 app = typer.Typer()
-
-# Function to save a model
-def save_model(model, model_path: Path):
-    """
-    Save the trained model to the specified file path.
-
-    Parameters
-    ----------
-    model : object
-        The model to save.
-    model_path : Path
-        The path where the model will be saved.
-    """
-    try:
-        model.save(model_path, serialization_format='pickle')
-        logger.info(f"Model saved to {model_path}")
-    except Exception as e:
-        logger.error(f"Error saving model: {e}")
-
-# Function to load a model
-def load_model(model_path: Path):
-    """
-    Load a model from the specified file path.
-
-    Parameters
-    ----------
-    model_path : Path
-        The path from which the model will be loaded.
-
-    Returns
-    -------
-    model : object
-        The loaded model.
-    """
-    try:
-        with open(model_path, 'rb') as model:
-            model= pickle.load(model)
-        logger.info(f"Model loaded from {model_path}")
-        return model
-    except Exception as e:
-        logger.error(f"Error loading model: {e}")
-        return None
 
 @app.command()
 def main(
     # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    features_path: Path = PROCESSED_DATA_DIR / "features.csv",
-    labels_path: Path = PROCESSED_DATA_DIR / "labels.csv",
-    model_path: Path = MODELS_DIR / "model.pkl",
+    # features_path: Path = PROCESSED_DATA_DIR / "features.csv",
+    # labels_path: Path = PROCESSED_DATA_DIR / "labels.csv",
+    # model_path: Path = MODELS_DIR / "model.pkl",
     # -----------------------------------------
 ):
+
+    # Function to save a model
+    def save_model(model):
+        """
+        Save the trained model to the specified file path.
+
+        Parameters
+        ----------
+        model : object
+            The model to save.
+        model_path : Path
+            The path where the model will be saved.
+        """
+        model_path = "C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/models/model.pkl"
+        try:
+            model.save(model_path, serialization_format='pickle')
+            logger.info(f"Model saved to {model_path}")
+        except Exception as e:
+            logger.error(f"Error saving model: {e}")
+
+    # Function to load a model
+    def load_model(model_path: Path):
+        """
+        Load a model from the specified file path.
+
+        Parameters
+        ----------
+        model_path : Path
+            The path from which the model will be loaded.
+
+        Returns
+        -------
+        model : object
+            The loaded model.
+        """
+        try:
+            with open(model_path, 'rb') as model:
+                model= pickle.load(model)
+            logger.info(f"Model loaded from {model_path}")
+            return model
+        except Exception as e:
+            logger.error(f"Error loading model: {e}")
+            return None
+
     def transform_data(data, transformer):
         """
         Transform the data using the given transformer.
@@ -95,10 +102,13 @@ def main(
         pd.Series
             Transformed data.
         """
-        transformed_data = transformer.fit_transform(data)
+                   
+        data['bgl'] = data['bgl'].fillna(method='ffill')
+
+        transformed_data = transformer.fit_transform(X = data)
         
         # Save the transformed data to the specified directory
-        output_path = Path("0_meal_identification/meal_identification/data/processed/transformed_data.csv")
+        output_path = Path("C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/data/processed/transformed_data.csv")
         transformed_data.to_csv(output_path, index=False)
         
         return transformed_data
@@ -142,8 +152,8 @@ def main(
         pd.Series
             Labels.
         """
-        X = data(columns=["bgl"])
-        Y = data["msg_type"]
+        X = data[["bgl"]]
+        Y = data[["msg_type"]]
         
         return X, Y
     
@@ -162,8 +172,8 @@ def main(
             Labels
         """
 
-        Y = [
-            1 if i == 'ANNOUNCE_MEAL' else 0 for i in Y
+        Y["msg_type"] = [
+            1 if i == 'ANNOUNCE_MEAL' else 0 for i in Y["msg_type"]
         ]
 
         return Y
@@ -179,7 +189,7 @@ def main(
                              member=None, penalty=None, max_shuffles = 250,
                              lamb = 1.0, emission_funcs = None, transition_prob_mat = None,
                              initial_probs = None,
-                             random_state=None, transformer=None, model_path=None):
+                             random_state=None, transformer=None):
         """
         Train a model on the given data.
 
@@ -228,8 +238,11 @@ def main(
         # Apply the transformer to the data
         X = transform_data(data = X, transformer=transformer)
         # Process labels:
+        print(Y)
         Y = process_labels(Y = Y)
         # Split the data into training and validation sets
+        print(X)
+        print(Y)
         X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=validation_split, shuffle=False)
 
         if model == "GMMHMM":
@@ -312,15 +325,21 @@ def main(
         logger.info(f"hausdorff error for test data: {test_hausdorff_error}")
         logger.info(f"prediction ratio for test data: {test_prediction_ratio}")
 
-        if model_path:  # Add this condition to save the model after training
-            save_model(model, model_path)
+        # Add this condition to save the model after training
+        try:
+            save_model(model)
+            logger.info("Model saved to 0_meal_identification/meal_identification/models")
+        except Exception as e:
+            logger.error(f"Error saving model: {e}")
 
         return model
 
     logger.info("Training some model...")
     for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
+        logger.info("On iteration {i}.")
+        train_model_instance(model = "GMMHMM", 
+                             data_path = "C:/Users/jonat/Documents/Code/WAT.ai/bg_control-1/0_meal_identification/meal_identification/data/interim/2024-10-30_500030__timeInter5mins_dayStart4hrs_minCarb10g_3hrMealW.csv", 
+                             transformer = ScaledLogitTransformer())
     logger.success("Modeling training complete.")
     # -----------------------------------------
 
