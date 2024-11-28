@@ -183,7 +183,6 @@ def dataset_creator(
             data_label=label if use_auto_label else 'dataLabelUnspecified_',
             patient_id=patient_key[:7],
             data_gen_date=time_stamp,
-            include_gen_date_label=use_auto_label
         )
 
         # Append to return list if required
