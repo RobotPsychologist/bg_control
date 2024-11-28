@@ -153,13 +153,13 @@ def dataset_label_modifier_fn(
         Time interval for coercion
     day_start_index_change : bool, optional
         Whether to create a day index starting at a specific time
-    day_start_time : time, optional
+    day_start_time : pd.Timedelta, optional
         Time object specifying when the day starts
     erase_meal_overlap : bool, optional
         Whether to erase overlapping meals
     min_carbs : int, optional
         Minimum carbs threshold for meal detection
-    meal_length : time, optional
+    meal_length : pd.Timedelta, optional
         Length of time for meal window
     n_top_carb_meals : int, optional
         Number of top carb meals to consider
