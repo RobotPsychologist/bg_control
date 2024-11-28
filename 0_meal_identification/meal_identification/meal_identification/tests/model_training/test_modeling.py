@@ -1,13 +1,21 @@
 
+""" 
+python -m unittest 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
 """
-python -m unittest meal_identification\tests\model_training\test_modeling.py
+"""
+sample data not found
+mockpaths not found
 """
 import unittest
 from unittest.mock import patch
 import pandas as pd
 from pathlib import Path
+import sys
+import os
+# sys.path.append(R"C:\Users\Nathan\Documents\GitHub\jo_bg_control\0_meal_identification\meal_identification\meal_identification\modeling")
 from meal_identification.modeling.train import ScaledLogitTransformer, GMMHMM, train_model_instance, load_data, xy_split, process_labels
-
+# 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
+# 0_meal_identification\meal_identification\meal_identification\modeling\train.py
 def mock_paths():
     """Fixture for mock paths of data and model."""
     data_path = Path("0_meal_identification/meal_identification/data/interim/2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv")
