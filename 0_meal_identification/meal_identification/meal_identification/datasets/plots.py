@@ -156,13 +156,13 @@ def to_chunk(df: pd.DataFrame, meal_length: int) -> list[pd.DataFrame]:
         if df.iloc[i]['msg_type'] == 'ANNOUNCE_MEAL':
             # Extract chunk starting from meal announcement
             if i + meal_length <= len(df):
-                chunk = df.iloc[i: (i + meal_length)].copy()
+                chunk = df.iloc[i: (i+meal_length)].copy()
                 chunks.append(chunk)
             i += meal_length
         else:
             # For non-meal periods, check if the next meal_length rows contain any ANNOUNCE_MEAL
             if i + meal_length <= len(df):
-                potential_chunk = df.iloc[i: i + meal_length]
+                potential_chunk = df.iloc[i: i+meal_length]
                 # Check if there's a meal announcement in this potential chunk
                 meal_indices = potential_chunk.index[potential_chunk['msg_type'] == 'ANNOUNCE_MEAL']
 
@@ -241,26 +241,30 @@ def plot_histograms(df: pd.DataFrame, file, bgl_bins=30, rate_bins=20):
     print(f"\nNumber of meal rows: {len(meal_df)}")
     print(f"Number of non-meal rows: {len(non_meal_df)}")
 
-def plot_fan_chart(chunks: list[pd.DataFrame], column='bgl'):
+def plot_fan_chart(chunks: list[pd.DataFrame], ylim: tuple[float, float], column='bgl'):
     meal_plot = []
     non_meal_plot = []
     chunk_length = len(chunks[0])
     for chunk in chunks:
-        meal_plot.append(chunk[column]) if 'ANNOUNCE_MEAL' in chunk['msg_type'].values else non_meal_plot.append(
-            chunk['bgl'])
+        meal_plot.append(chunk[column]) if 'ANNOUNCE_MEAL' in chunk['msg_type'].values else non_meal_plot.append(chunk[column])
 
     meal_plot = np.array(meal_plot)
     non_meal_plot = np.array(non_meal_plot)
 
     # Define the percentiles to plot
     percentiles = [5, 25, 50, 75, 95]
+    print("---------------------------")
+    print(f"Number of meal windows: {len(meal_plot)} ({(100 * len(meal_plot) / len(chunks)):.2f}%)")
+    print(f"Number of non_meal windows: {len(non_meal_plot)} ({(100 * len(non_meal_plot) / len(chunks)):.2f}%)")
+    print("---------------------------")
+
 
     # Calculate the percentiles for each timestep
     percentile_data_meal = np.nanpercentile(meal_plot, percentiles, axis=0)
     percentile_data_non_meal = np.nanpercentile(non_meal_plot, percentiles, axis=0)
 
     fig, ax = plt.subplots(figsize=(15, 6))
-    plt.title(f"Prandial vs Non-Prandial Glucose DynamicsChunks {column.upper()} in {chunk_length*5} mins (Orange = Meal, Blue = Non-meal)")
+    plt.title(f"Prandial vs Non-Prandial Glucose DynamicsChunks {column.upper()} (Orange = Meal, Blue = Non-meal)")
     plt.xlabel('Minutes After Meal')
     plt.ylabel('Normalized Blood Glucose Level')
     plt.grid(True, alpha=0.3)
@@ -269,26 +273,22 @@ def plot_fan_chart(chunks: list[pd.DataFrame], column='bgl'):
     alpha_values = [0.33, 0.66, 1, 0.66, 0.33]
 
     for i, percentile in enumerate(percentiles):
-        ax.plot(range(chunk_length), percentile_data_meal[i, :], label=f'meal: {percentile}th percentile',
-                color='orange', alpha=alpha_values[i])
+        ax.plot(range(chunk_length), percentile_data_meal[i, :], label=f'meal: {percentile}th percentile', color='orange', alpha=alpha_values[i])
 
     for i, percentile in enumerate(percentiles):
-        ax.plot(range(chunk_length), percentile_data_non_meal[i, :], label=f'non-meal: {percentile}th percentile',
-                color='blue', alpha=alpha_values[i])
+        ax.plot(range(chunk_length), percentile_data_non_meal[i, :], label=f'non-meal: {percentile}th percentile', color='blue', alpha=alpha_values[i])
 
-    ax.fill_between(range(chunk_length), percentile_data_meal[0, :], percentile_data_meal[-1, :], color='orange',
-                    alpha=0.2)
-    ax.fill_between(range(chunk_length), percentile_data_meal[1, :], percentile_data_meal[-2, :], color='orange',
-                    alpha=0.4)
-    ax.fill_between(range(chunk_length), percentile_data_meal[2, :], percentile_data_meal[2, :], color='orange',
-                    alpha=0.6)
+    ax.fill_between(range(chunk_length), percentile_data_meal[0, :], percentile_data_meal[-1, :], color='orange', alpha=0.2)
+    ax.fill_between(range(chunk_length), percentile_data_meal[1, :], percentile_data_meal[-2, :], color='orange', alpha=0.4)
+    ax.fill_between(range(chunk_length), percentile_data_meal[2, :], percentile_data_meal[2, :], color='orange', alpha=0.6)
 
     # Set the x-tick labels to be multiplied by 5
     xticks = np.arange(0, chunk_length, step=1)
     ax.set_xticks(xticks)
     ax.set_xticklabels(xticks * 5)
     ax.set_facecolor('white')
-
+    ax.set_ylim(ylim)
+    ax.grid(True, linestyle='--', alpha=0.3)
     ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 
     # Adjust layout to make room for the legend
@@ -320,8 +320,8 @@ def plot_chart(file_name='', meal_length=6 , n_step=1, bgl_bins=50, rate_bins=40
 
     # use only one because graphs are quite expensive to generate
     if use_fan_chart:
-        plot_fan_chart(chunks, column='bgl')
-        plot_fan_chart(chunks, column='bgl_rate')
+        plot_fan_chart(chunks, ylim=(-2.5, 2.5), column='bgl')
+        plot_fan_chart(chunks, ylim=(-3, 3), column='bgl_rate')
     else:
         plot_histograms(normalized_df, file_name, bgl_bins=bgl_bins, rate_bins=rate_bins)
 
