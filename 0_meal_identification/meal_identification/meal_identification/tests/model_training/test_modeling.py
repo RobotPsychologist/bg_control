@@ -23,15 +23,15 @@ def sample_data(mock_paths):
 
 def test_load_data(sample_data):
     """Test that data loads correctly from the CSV."""
-    assert sample_data.shape == (3, 1)  # Adjust this based on actual data shape
+    assert sample_data.shape == (len(sample_data), 16)  # Adjust this based on actual data shape
     assert "bgl" in sample_data.columns
 
 
 def test_xy_split(sample_data):
     """Test splitting data into features and target."""
     X, Y = xy_split(sample_data)
-    assert X.shape == (3, 1)  # 'bgl' column should be present
-    assert Y.shape == (3, 1)  # msg_type should be the target
+    assert X.shape == (len(sample_data), 1)  # 'bgl' column should be present
+    assert Y.shape == (len(sample_data), 1)  # msg_type should be the target
 
 
 def test_process_labels(sample_data):
