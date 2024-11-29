@@ -4,7 +4,7 @@ from simglucose.simulation.user_interface import simulate
 from simglucose.simulation.scenario import CustomScenario
 from simglucose.simulation.scenario_gen import RandomScenario
 from simglucose.controller.basal_bolus_ctrller import BBController
-from dataset_operations import get_root_dir
+from meal_identification.datasets.dataset_operations import get_root_dir
 from datetime import datetime, timedelta
 
 
@@ -109,7 +109,7 @@ def run_glucose_simulation(
     return result_dir
 
 
-def process_sim_data(simulation_days):
+def process_sim_data(simulation_days, naming):
     """
     Process all patient CSV files in the sim directory and output them to data/raw.
 
@@ -149,7 +149,7 @@ def process_sim_data(simulation_days):
             to = timestamp + timedelta(days=simulation_days)
             start_date = timestamp.strftime('%Y-%m-%d')
             end_date = to.strftime('%Y-%m-%d')
-            file = f"{short_name}_{start_date}_{end_date}.csv"
+            file = f"{short_name}_{naming['cgm_name']}_{naming['insulin_pump_name']}_{start_date}_{end_date}.csv"
 
             # Store in dictionary
             processed_data[file] = processed_df
@@ -193,7 +193,6 @@ def generate_simulated_data(
     scenario_type (str, optional): Type of scenario
          - 'random' | 'custom'. Defaults to 'random'.
     custom_meal_schedule (list, optional): List of tuples (hour, carbs) for custom scenario.
-    patient_names (list, optional): List of patient IDs to simulate. Each patient's data will look different.
     cgm_name (str, optional): Name of the cgm device.
          - "Dexcom" | "GuardianRT" | "Navigator". Defaults to "Dexcom".
     insulin_pump_name (str, optional): Name of the insulin pump device.
@@ -202,7 +201,7 @@ def generate_simulated_data(
     animate (bool, optional): Whether to animate the simulation. Defaults to False.
     parallel (bool, optional): Whether to run simulations in parallel. Defaults to True.
     patient_names (list, optional): List of patient IDs to simulate.
-         - patient_names can be from adult#001 ~ adult#009 and child#001 ~ child#009. Default to ["adult#001"].
+         - patient_names can be from adult#001 ~ adult#010, adolescent#001 ~ adolescent#010 and child#001 ~ child#010. Default to ["adult#001"].
 
     Returns
     -------
@@ -220,10 +219,11 @@ def generate_simulated_data(
         animate=animate,
         parallel=parallel,
     )
-    process_sim_data(simulation_days=simulation_days)
+    process_sim_data(simulation_days=simulation_days, naming={'cgm_name': cgm_name, 'insulin_pump_name': insulin_pump_name})
 
-
-default_patient_names = ['adult#001', 'adult#003']
-generate_simulated_data(
-    patient_names=default_patient_names
-)
+if __name__ == '__main__':
+    # Example usage
+    default_patient_names = ['adult#001', 'adult#003']
+    generate_simulated_data(
+        patient_names=default_patient_names
+    )
