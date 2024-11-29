@@ -19,8 +19,9 @@ dependencies:
   - sktime
   - numba
   - pydantic
+  - python-dotenv
   - pip:
-      - python-dotenv
       - skchange
       - pyyaml
       - ruamel.yaml
+      - loguru
