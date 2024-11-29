@@ -253,11 +253,11 @@ def plot_fan_chart(chunks: list[pd.DataFrame], ylim: tuple[float, float], column
 
     # Define the percentiles to plot
     percentiles = [5, 25, 50, 75, 95]
+
     print("---------------------------")
     print(f"Number of meal windows: {len(meal_plot)} ({(100 * len(meal_plot) / len(chunks)):.2f}%)")
     print(f"Number of non_meal windows: {len(non_meal_plot)} ({(100 * len(non_meal_plot) / len(chunks)):.2f}%)")
     print("---------------------------")
-
 
     # Calculate the percentiles for each timestep
     percentile_data_meal = np.nanpercentile(meal_plot, percentiles, axis=0)

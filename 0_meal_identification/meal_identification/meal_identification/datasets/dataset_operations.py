@@ -101,7 +101,7 @@ def find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen
 
     return os.path.join(full_out_path_dir, filename), filename
 
-def save_data(data, output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True):
+def save_data(data, output_dir, data_label, patient_id, data_gen_date):
     """
     Save the data to the output directory.
 
@@ -117,8 +117,6 @@ def save_data(data, output_dir, data_label, patient_id, data_gen_date, include_g
         The patient ID
     data_gen_date : str
         The date the data was generated
-    include_gen_date_label : bool
-        Whether to include the data generation date in the label
 
     Returns
     -------
@@ -155,13 +153,13 @@ def dataset_label_modifier_fn(
         Time interval for coercion
     day_start_index_change : bool, optional
         Whether to create a day index starting at a specific time
-    day_start_time : time, optional
+    day_start_time : pd.Timedelta, optional
         Time object specifying when the day starts
     erase_meal_overlap : bool, optional
         Whether to erase overlapping meals
     min_carbs : int, optional
         Minimum carbs threshold for meal detection
-    meal_length : time, optional
+    meal_length : pd.Timedelta, optional
         Length of time for meal window
     n_top_carb_meals : int, optional
         Number of top carb meals to consider
