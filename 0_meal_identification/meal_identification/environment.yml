@@ -26,8 +26,9 @@ dependencies:
   - pydantic
   - pytest
   - pytest-mock
+  - python-dotenv
   - pip:
-      - python-dotenv
+      - loguru
       - mkdocs
       - skchange
       - ipynb

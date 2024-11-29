@@ -1,0 +1,9 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.12.6
+- pip<=24.3.1
+- pip:
+  - mlflow==2.18.0
+  - sktime==0.33.1
+name: mlflow-env

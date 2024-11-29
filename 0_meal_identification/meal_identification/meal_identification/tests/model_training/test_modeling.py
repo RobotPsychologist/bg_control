@@ -1,25 +1,9 @@
-
-""" 
-python -m unittest 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
-"""
-"""
-sample data not found
-mockpaths not found
-"""
 import unittest
-from unittest.mock import patch
-import pandas as pd
-from pathlib import Path
-import sys
-import os
-# sys.path.append(R"C:\Users\Nathan\Documents\GitHub\jo_bg_control\0_meal_identification\meal_identification\meal_identification\modeling")
-from meal_identification.modeling.train import ScaledLogitTransformer, GMMHMM, train_model_instance, load_data, xy_split, process_labels, load_model, save_model
-# 0_meal_identification\meal_identification\meal_identification\tests\model_training\test_modeling.py
-# 0_meal_identification\meal_identification\meal_identification\modeling\train.py
+
+from meal_identification.modeling.train import ScaledLogitTransformer, train_model_instance, load_data, xy_split, process_labels, load_model, save_model
 
 from meal_identification.config import (
     MODELS_DIR, 
-    PROCESSED_DATA_DIR,
     INTERIM_DATA_DIR
 )
 
@@ -28,7 +12,7 @@ class TestTrainingScript(unittest.TestCase):
     def setUpClass(cls):
         """Fixture for mock paths of data and model."""
         cls.data_path = INTERIM_DATA_DIR / "2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv"
-        cls.model_path = MODELS_DIR / "GaussianHMM_model"
+        cls.model_path = MODELS_DIR / "GMMHMM_model"
         cls.sample_data = load_data(cls.data_path)
         cls.sample_model = load_model(cls.model_path)
 
@@ -81,6 +65,3 @@ class TestTrainingScript(unittest.TestCase):
 
         # Check that the model file exists after training
         assert self.model_path.exists()
-
-if __name__ == "__main__":
-    unittest.main()
