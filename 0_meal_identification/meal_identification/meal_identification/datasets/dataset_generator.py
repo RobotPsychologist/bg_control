@@ -246,5 +246,3 @@ def run_dataset_combinations(
             continue
 
     print("\nCompleted all combinations!")
-
-run_dataset_combinations()
