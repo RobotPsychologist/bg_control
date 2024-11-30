@@ -11,7 +11,7 @@ class TestTrainingScript(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Fixture for mock paths of data and model."""
-        cls.data_path = INTERIM_DATA_DIR / "2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv"
+        cls.data_path = INTERIM_DATA_DIR / "2024-11-29/i5mins_d4hrs_c5g_l2hrs_n3/500030.csv"
         cls.model_path = MODELS_DIR / "GMMHMM_model"
         cls.sample_data = load_data(cls.data_path)
         cls.sample_model = load_model(cls.model_path)

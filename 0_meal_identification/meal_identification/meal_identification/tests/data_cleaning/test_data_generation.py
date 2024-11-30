@@ -134,12 +134,17 @@ def mock_keep_top_n_carb_meals(mocker):
 def mock_os_path_exists(mocker):
     return mocker.patch('os.path.exists')
 
+@pytest.fixture
+def mock_os_path_makedirs(mocker):
+    return mocker.patch('os.makedirs')
+
 def test_dataset_creator_successful(
     mocker,
     mock_load_data,
     mock_dataset_label_modifier_fn,
     mock_find_file_loc,
     mock_os_path_exists,
+    mock_os_path_makedirs,
     mock_save_data,
     mock_coerce_time_fn,
     mock_erase_meal_overlap_fn,
@@ -178,6 +183,7 @@ def test_dataset_creator_successful(
     mock_dataset_label_modifier_fn.return_value = 'test_label'
     mock_find_file_loc.return_value = ('/fake/path', 'fake_filename.csv')
     mock_os_path_exists.return_value = False
+    mock_os_path_makedirs.return_value = False
     mock_coerce_time_fn.side_effect = lambda data, coerse_time_interval: data  # No-op
     mock_erase_meal_overlap_fn.side_effect = lambda data, length, carbs: data
     mock_keep_top_n_carb_meals.side_effect = lambda data, n_top_carb_meals: data
@@ -194,7 +200,8 @@ def test_dataset_creator_successful(
     mock_load_data.assert_called_once_with(raw_data_path='fake/raw/path', keep_cols=ANY)
     mock_dataset_label_modifier_fn.assert_called_once()
     mock_find_file_loc.assert_called_once()
-    mock_os_path_exists.assert_called_once_with('/fake/path')
+    assert mock_os_path_exists.call_count == 2 # Should get called twice, one checks folder, the checks files
+    assert mock_os_path_exists.call_args_list[1] == mocker.call('/fake/path')
     mock_coerce_time_fn.assert_called_once()
     mock_erase_meal_overlap_fn.assert_called_once()
     mock_keep_top_n_carb_meals.assert_called_once()
@@ -251,6 +258,7 @@ def test_dataset_creator_return_data_true(
     mock_dataset_label_modifier_fn,
     mock_find_file_loc,
     mock_os_path_exists,
+    mock_os_path_makedirs,
     mock_save_data,
     mock_coerce_time_fn,
     mock_erase_meal_overlap_fn,
@@ -281,6 +289,7 @@ def test_dataset_creator_return_data_true(
     mock_dataset_label_modifier_fn.return_value = 'test_label'
     mock_find_file_loc.return_value = ('/fake/path', 'fake_filename.csv')
     mock_os_path_exists.return_value = False
+    mock_os_path_makedirs.return_value = False
     mock_coerce_time_fn.side_effect = lambda data, coerse_time_interval: data
     mock_erase_meal_overlap_fn.side_effect = lambda data, length, carbs: data
     mock_keep_top_n_carb_meals.side_effect = lambda data, n_top_carb_meals: data
@@ -371,7 +380,6 @@ def test_run_dataset_combinations_success(mocker):
         mock_dataset_creator.assert_any_call(
             raw_data_path='fake/raw/path',
             output_dir='fake/output/dir',
-            use_auto_label=True,
             day_start_index_change=True,
             day_start_time=pd.Timedelta(hours=4),
             min_carbs=min_carbs,

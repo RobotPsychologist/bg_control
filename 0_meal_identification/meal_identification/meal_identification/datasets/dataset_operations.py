@@ -66,7 +66,7 @@ def load_data(raw_data_path, keep_cols):
     print("Loaded DataFrames:", list(dataframes.keys()))
     return dataframes
 
-def find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True):
+def find_file_loc(output_dir, patient_id):
     """
     Find the directory with given output directory
 
@@ -74,14 +74,8 @@ def find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen
     ----------
     output_dir : str
         The directory to save the data
-    data_label : str
-        The label for the data
     patient_id : str
         The patient ID
-    data_gen_date : str
-        The date the data was generated
-    include_gen_date_label : bool
-        Whether to include the data generation date in the label
 
     Returns
     -------
@@ -94,14 +88,11 @@ def find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen
     full_out_path_dir = os.path.join(project_root, output_dir)
     os.makedirs(full_out_path_dir, exist_ok=True)  # Ensure the output directory exists
 
-    if include_gen_date_label:
-        filename = f"{data_gen_date}_{patient_id}_{data_label}.csv"
-    else:
-        filename = f"{patient_id}_{data_label}.csv"
+    filename = f"{patient_id}.csv"
 
     return os.path.join(full_out_path_dir, filename), filename
 
-def save_data(data, output_dir, data_label, patient_id, data_gen_date):
+def save_data(data, output_dir, patient_id):
     """
     Save the data to the output directory.
 
@@ -111,19 +102,15 @@ def save_data(data, output_dir, data_label, patient_id, data_gen_date):
         The data to save
     output_dir : str
         The directory to save the data
-    data_label : str
-        The label for the data
     patient_id : str
         The patient ID
-    data_gen_date : str
-        The date the data was generated
 
     Returns
     -------
     None
     """
 
-    file_path, filename = find_file_loc(output_dir, data_label, patient_id, data_gen_date, include_gen_date_label=True)
+    file_path, filename = find_file_loc(output_dir, patient_id)
     data.to_csv(file_path, index=True)
     print(f"Data saved successfully in: {output_dir}")
     print(f"\n \t Dataset label: {filename}")
