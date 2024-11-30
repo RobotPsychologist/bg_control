@@ -60,7 +60,6 @@ def ensure_datetime_index(
 def dataset_creator(
         raw_data_path='0_meal_identification/meal_identification/data/raw',
         output_dir='0_meal_identification/meal_identification/data/interim',
-        use_auto_label=True,
         keep_cols=None,
         day_start_index_change=True,
         day_start_time=pd.Timedelta(hours=4),
@@ -76,6 +75,7 @@ def dataset_creator(
 ):
     """
     Create a dataset from the raw data by orchestrating data loading, cleaning, transformation, and saving.
+    One set of parameters corresponds to one folder under data/interim
 
     Parameters
     ----------
@@ -83,8 +83,6 @@ def dataset_creator(
         Path to the directory containing raw data files (default is 'data/raw').
     output_dir : str, optional
         Directory to save the processed dataset (default is 'data/interim').
-    use_auto_label : bool, optional
-        Whether to use the auto label for the dataset (default is True).
     keep_cols : list of str, optional
         List of columns to keep from the raw data.
     day_start_index_change : bool, optional
@@ -138,15 +136,19 @@ def dataset_creator(
             meal_length=meal_length,
             n_top_carb_meals=n_top_carb_meals
         )
-        time_stamp = datetime.today().strftime('%Y-%m-%d')
 
+        time_stamp = datetime.today().strftime('%Y-%m-%d')
+        new_folder_dir = os.path.join(output_dir, time_stamp, label)
+
+        # Create a new dir with {interim/date/label} as its name
+        if not os.path.exists(new_folder_dir):
+            os.makedirs(new_folder_dir)
+
+        # Check if the patient name already exists under the dir
         if not over_write:
-            filepath, filename = find_file_loc(
-                output_dir=output_dir,
-                data_label=label,
-                patient_id=patient_key[:7],
-                data_gen_date=time_stamp,
-                include_gen_date_label=use_auto_label
+            filepath, _ = find_file_loc(
+                output_dir=new_folder_dir,
+                patient_id=patient_key[:6],
             )
             if os.path.exists(filepath):
                 print(f"File already exists at {filepath}, skipping save")
@@ -179,10 +181,8 @@ def dataset_creator(
         # Save data with labeling
         save_data(
             data=patient_df,
-            output_dir=output_dir,
-            data_label=label if use_auto_label else 'dataLabelUnspecified_',
-            patient_id=patient_key[:7],
-            data_gen_date=time_stamp,
+            output_dir=new_folder_dir,
+            patient_id=patient_key[:6],
         )
 
         # Append to return list if required
@@ -228,7 +228,6 @@ def run_dataset_combinations(
             dataset_creator(
                 raw_data_path=raw_data_path,
                 output_dir=output_dir,
-                use_auto_label=True,
                 day_start_index_change=True,
                 day_start_time=pd.Timedelta(hours=4),
                 min_carbs=min_carbs,
@@ -247,3 +246,5 @@ def run_dataset_combinations(
             continue
 
     print("\nCompleted all combinations!")
+
+run_dataset_combinations()
