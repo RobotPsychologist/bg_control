@@ -64,7 +64,7 @@ def load_data(file='2024-11-15_500030__i5mins_d4hrs_c5g_l2hrs_n3.csv') -> pd.Dat
     file_path = os.path.join(full_raw_loc_path, file)
     return pd.read_csv(file_path, usecols=['date', 'bgl', 'msg_type', 'day_start_shift'], parse_dates=['date'])
 
-def generate_meal_periods(df: pd.DataFrame, meal_length=6, n_steps=1) -> pd.DataFrame:
+def generate_meal_periods(df: pd.DataFrame, meal_length=6, n_steps=1, to_normalized=True)-> pd.DataFrame:
     """
     Add meal time "meal_length" after each ANNOUNCE_MEAL and calculate derivative. 1 meal length is one time step
     Basically, we wanted to create a period of meal time.
@@ -74,9 +74,7 @@ def generate_meal_periods(df: pd.DataFrame, meal_length=6, n_steps=1) -> pd.Data
         df: DataFrame containing the BGL data
         meal_length: Number of rows to label as ANNOUNCE_MEAL after each ANNOUNCE_MEAL
         n_steps: Number of time steps (time delta) for second derivative calculation
-    Returns
-    -------
-        DataFrame with processed and smoothed data
+        to_normalized: Whether to normalize the data or not
     """
     copied_df = df.copy()
 
@@ -90,8 +88,9 @@ def generate_meal_periods(df: pd.DataFrame, meal_length=6, n_steps=1) -> pd.Data
 
     copied_df['bgl_rate'] = copied_df['bgl'].diff(periods=n_steps) / (
                 5.0 * n_steps)  # divide by total minutes to get rate
-    normalized_df = normalize_df(copied_df)
-    return normalized_df
+
+    return normalize_df(copied_df) if to_normalized else copied_df
+
 
 def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -264,7 +263,7 @@ def plot_fan_chart(chunks: list[pd.DataFrame], ylim: tuple[float, float], column
     percentile_data_non_meal = np.nanpercentile(non_meal_plot, percentiles, axis=0)
 
     fig, ax = plt.subplots(figsize=(15, 6))
-    plt.title(f"Prandial vs Non-Prandial Glucose DynamicsChunks {column.upper()} (Orange = Meal, Blue = Non-meal)")
+    plt.title(f"Prandial vs Non-prandial Glucose Dynamics Windows {column.upper()} (Orange = Meal, Blue = Non-meal)")
     plt.xlabel('Minutes After Meal')
     plt.ylabel('Normalized Blood Glucose Level')
     plt.grid(True, alpha=0.3)
@@ -296,41 +295,50 @@ def plot_fan_chart(chunks: list[pd.DataFrame], ylim: tuple[float, float], column
 
     plt.show()
 
-def plot_chart(file_name='', meal_length=6 , n_step=1, bgl_bins=50, rate_bins=40, use_fan_chart=True):
+def plot_chart(file_path='', meal_length=6, n_step=1, bgl_bins=50, rate_bins=40, use_fan_chart=True, to_normalized=True):
     """
     Parameters
     ----------
     meal_length: Number of rows to label as ANNOUNCE_MEAL after each ANNOUNCE_MEAL. Each row is 5 mins. Default to 6 rows (30 mins)
-    file_name: Name of the file you want to plot in data/interim
+    file_path: Path of the file you want to plot in data/interim relative to data/interim
     n_step: Number of time steps (time delta) for second derivative calculation
     bgl_bins: Number of bins for bgl (only used in histogram)
     rate_bins: Number of bins of derivative (only used in histogram)
     use_fan_chart: Set false to use histogram chart. Default to fan chart
+    to_normalized: Whether to normalize input data
 
     Returns
     -------
     """
     csv_files = [f for f in os.listdir('../../data/interim') if f.endswith('.csv')]
     print("csv files: ", csv_files)
-    print(f"File selected: {file_name}")
-    df = load_data(file_name)
+    print(f"File selected: {file_path}")
+    df = load_data(file_path)
 
-    normalized_df = generate_meal_periods(df, meal_length=meal_length, n_steps=n_step)
-    chunks = to_chunk(normalized_df, meal_length=meal_length)
+    df = generate_meal_periods(df, meal_length=meal_length, n_steps=n_step, to_normalized=to_normalized)
 
     # use only one because graphs are quite expensive to generate
     if use_fan_chart:
-        plot_fan_chart(chunks, ylim=(-2.5, 2.5), column='bgl')
-        plot_fan_chart(chunks, ylim=(-3, 3), column='bgl_rate')
+        chunks = to_chunk(df, meal_length=meal_length)
+
+        ylim_bgl = (-2.5, 2.5) if to_normalized else (0, 300)
+        plot_fan_chart(chunks, ylim=ylim_bgl, column='bgl')
+
+        ylim_bgl_rate = (-3, 3) if to_normalized else (-4, 4)
+        plot_fan_chart(chunks, ylim=ylim_bgl_rate, column='bgl_rate')
     else:
-        plot_histograms(normalized_df, file_name, bgl_bins=bgl_bins, rate_bins=rate_bins)
+        plot_histograms(df, file_path, bgl_bins=bgl_bins, rate_bins=rate_bins)
 
 
-plot_chart(
-    file_name='2024-11-15_679372__i5mins_d4hrs_c10g_l3hrs_n4.csv',
-    meal_length=30,
-    n_step=1,
-    bgl_bins=50,
-    rate_bins=40,
-    use_fan_chart=True
-)
+
+if __name__ == '__main__':
+    # Example usage
+    plot_chart(
+        file_path='2024-11-29/i5mins_d4hrs_c5g_l2hrs_n3/500030.csv',
+        meal_length=30,
+        n_step=1,
+        bgl_bins=50,
+        rate_bins=40,
+        use_fan_chart=True,
+        to_normalized=True
+    )
