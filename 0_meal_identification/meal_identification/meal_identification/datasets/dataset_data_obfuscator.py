@@ -131,10 +131,9 @@ def logging_behaviour_obfuscator(
         return patient_df, "none"
 
 
-def generate_meal_logging_distribution(direction='right'):
+def generate_meal_logging_distribution(direction='left'):
     """
     Generate distribution parameters with internal direction handling randomly.
-    TODO: Spread should be params
     Parameters
     ----------
     direction: 'right', 'left', or 'normal'
@@ -145,27 +144,35 @@ def generate_meal_logging_distribution(direction='right'):
     For skewed: (shape, scale, offset, distribution_object)
     """
     if direction == 'normal':
-        mean = random.uniform(-15, 15)  # TODO: Should be a param
-        std = random.uniform(8, 12)  # TODO: Should be a param
+        mean = random.uniform(-15, 15)
+        std = random.uniform(4, 15)
         return mean, std, norm(mean, std)
-
     else:
-        if direction == 'left':  # hasty logger (early)
-            # More conservative parameters for early logging
-            shape = random.uniform(2.5, 3.5)  # TODO: Should be a param
-            scale = random.uniform(2, 3)      # TODO: Should be a param
-            offset = random.uniform(-8, -5)          # TODO: Should be a param
-
-        else:  # right skew - forgetful logger (late)
+        """
+            Shape parameter (α):
+             - Lower values make the curve rise more steeply at the start
+             - Higher values shift the rise point right and make it more S-shaped (towards a perfect bell shape)
+            
+            Scale parameter (β):
+             - Stretches the CDF horizontally
+             - Larger scales mean it takes longer to reach high probabilities
+             - Smaller scales compress the curve, reaching high probabilities faster
+        """
+        if direction == 'left':  # Late logger
             # More extreme parameters for late logging
-            shape = random.uniform(1.5, 2.5)  # TODO: Should be a param
-            scale = random.uniform(4, 6)      # TODO: Should be a param
-            offset = random.uniform(5, 10)    # TODO: Should be a param
+            shape = random.uniform(2, 4)
+            scale = random.uniform(2.5, 3)
+            offset = random.uniform(10, 30)  # Shift right 10 to 30 mins late
+
+        else:  # Early logger
+            shape = random.uniform(1, 3)
+            scale = random.uniform(3, 3.5)
+            offset = random.uniform(10, 15)  # Shift left 10 to 15 mins early
 
         return shape, scale, offset
 
 
-def shift_meals(patient_df, direction='right'):
+def shift_meals(patient_df, direction):
     """
     Simulates different meal logging behaviors by shifting meal announcement times based on specified patterns.
 
@@ -179,11 +186,11 @@ def shift_meals(patient_df, direction='right'):
         - 'date'
         - 'msg_type_log' column containing 'ANNOUNCE_MEAL' entries from logging_behaviour_obfuscator()
 
-    direction : str, default='right'
+    direction : str
         The type of logging behavior to simulate:
         - 'normal': Symmetric shifts around actual meal times
-        - 'left': Hasty logger who tends to log before meals
-        - 'right': Forgetful logger who tends to log after meals
+        - 'right': Hasty logger who tends to log before meals
+        - 'left': Forgetful logger who tends to log after meals
 
     Returns
     -------
@@ -204,24 +211,18 @@ def shift_meals(patient_df, direction='right'):
 
     # Shift each meal time with random sampling from the distribution
     for meal_time in meal_times:
-        # Generate new parameters for each meal
         if direction == 'normal':
             mean, std, _ = generate_meal_logging_distribution(direction)
-            min_to_shift = np.random.normal(mean, std)
+            # Centered around 0?
+            min_to_shift = np.random.normal(0, std)
         else:
             shape, scale, offset = generate_meal_logging_distribution(direction)
-            raw_sample = gamma.rvs(a=shape, scale=scale)
-            median = shape * scale * (1 - 2 / (9 * shape)) ** 3
-
             if direction == 'left':
-                # hasty logger
-                # min_to_shit: Mean - Median < 0
-                min_to_shift = (raw_sample + gamma.ppf(0.05, a=shape, scale=scale) + offset) - median / 2
-
+                # Late logger
+                min_to_shift = -(gamma.rvs(a=shape, scale=scale, loc=-offset))
             else:
-                # forgetful logger
-                #  min_to_shit: Mean - Median > 0
-                min_to_shift = (raw_sample + gamma.ppf(0.01, a=shape, scale=scale) + offset) - median
+                # Early logger
+                min_to_shift = gamma.rvs(a=shape, scale=scale, loc=-offset)
 
         # Shift the meal
         new_time = meal_time + pd.Timedelta(minutes=min_to_shift)
@@ -257,13 +258,13 @@ def logging_timing_obfuscator(
 
     # Should be working with `msg_type_log` column from meal_logging_obfuscator
     if distribution[0] <= logger_timeing < distribution[1]:
-        # Type 1: Temporally right skewed
-        patient_df = shift_meals(patient_df, "right")
+        # Type 1: Temporally left skewed
+        patient_df = shift_meals(patient_df, "left")
         return patient_df, "forgetful"
 
     elif distribution[1] <= logger_timeing < distribution[2]:
-        # Type 2: Temporally left skewed
-        patient_df = shift_meals(patient_df, "left")
+        # Type 2: Temporally right skewed
+        patient_df = shift_meals(patient_df, "right")
         return patient_df, "hasty"
 
     elif distribution[2] <= logger_timeing < distribution[3]:
@@ -285,9 +286,9 @@ def start():
     # TODO: Need to figure out why some files from data/raw/sim have a new line character at the end
     csv_files = [f for f in os.listdir(sim_dir) if f.endswith('.csv')]
 
+    csv_files = csv_files[10:180:10]
 
     patient_count = len(csv_files)
-
     print("Total patients: {}".format(patient_count))
 
     # Ranges for different types of meal logging behavior
@@ -315,7 +316,8 @@ def start():
             patient_df, logger_type = logging_behaviour_obfuscator(df, logger_type, distribution_logging_behaviour)
 
             # Simulate logging timing
-            patient_df, logger_timeing = logging_timing_obfuscator(patient_df, logger_timeing, distribution_logging_timing)
+            patient_df, logger_timeing = logging_timing_obfuscator(patient_df, logger_timeing,
+                                                                   distribution_logging_timing)
 
             # Remove old .csv extension
             file = file.replace('.csv', '')
