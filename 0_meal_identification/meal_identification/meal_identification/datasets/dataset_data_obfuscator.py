@@ -286,8 +286,6 @@ def start():
     # TODO: Need to figure out why some files from data/raw/sim have a new line character at the end
     csv_files = [f for f in os.listdir(sim_dir) if f.endswith('.csv')]
 
-    csv_files = csv_files[10:180:10]
-
     patient_count = len(csv_files)
     print("Total patients: {}".format(patient_count))
 
