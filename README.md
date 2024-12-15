@@ -1,5 +1,7 @@
 # Blood Glucose Control with [WAT.ai](https://watai.ca/) and [Gluroo Imaginations Inc](https://gluroo.com/).
 
+**ATTENTION**: The work from the Blood Glucose Control team has migrated from this repo to an [organization page](https://github.com/Blood-Glucose-Control) to facilitate more streamlined project management. 
+
 ## Causal and Time Series Modeling for Diabetes Management
 
 TPMs: [Christopher Risi](https://github.com/RobotPsychologist), [Walker Payne](https://github.com/walkerpayne), [Dvir Zagury-Grynbaum](https://github.com/dvirzg).
